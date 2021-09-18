@@ -1,21 +1,19 @@
 import React, { useState } from 'react'
 import { Image, StyleSheet, Text, View, Dimensions } from 'react-native'
-import { Colors } from '../Utils/Colors'
+import { Colors, commonStyles } from '../Utils/Configs'
 import { useGlobal } from '../context'
 import { Ionicons } from '@expo/vector-icons';
 import GameButton from '../components/GameButton';
+import { Fontisto } from '@expo/vector-icons';
 
 let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 
+
 const SelectionScreen = () => {
     const { theme, changeTheme } = useGlobal();
     const styles = StyleSheet.create({
-        selectionContainer: {
-            flex: 1,
-            paddingTop: phoneHeight * .05,
-            backgroundColor: Colors[theme].primary,
-        },
+        selectionContainer: commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
         imageHeader: {
             flexDirection: 'row',
             alignItems: 'center',
@@ -24,7 +22,6 @@ const SelectionScreen = () => {
         img: {
             width: phoneHeight * .14,
             height: phoneHeight * .14,
-            marginLeft: -phoneWidth / 20
         },
         selectionHeading: {
             color: 'white',
@@ -66,6 +63,12 @@ const SelectionScreen = () => {
         playButtonText: {
             textAlign: 'center',
             fontSize: phoneWidth / 25
+        },
+        toggleIcon: {
+            ...commonStyles(theme, phoneHeight, phoneWidth).common.iconStyle,
+            left: 2,
+            bottom: 3,
+            position: 'relative'
         }
 
     })
@@ -84,12 +87,14 @@ const SelectionScreen = () => {
         setLetters(letters)
     }
 
+
+
     return (
         <View style={styles.selectionContainer}>
             <View style={styles.imageHeader}>
                 <Ionicons style={styles.backIcon} name="arrow-back" size={phoneWidth / 18} color={Colors.orange} />
                 <Image style={styles.img} source={require('../assets/Logo.png')} />
-                <Text></Text>
+                <Fontisto onPress={() => changeTheme()} style={styles.toggleIcon} name={`toggle-${theme === 'black' ? 'on' : 'off'}`} size={34} color="white" />
             </View>
             <Text style={styles.selectionHeading}>Select Game Type</Text>
             <View style={styles.horizontalContainer}>

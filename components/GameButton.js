@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, View, Button, TouchableOpacity, Dimensions } from 'react-native'
 import { useGlobal } from '../context'
-import { Colors } from '../Utils/Colors'
+import { Colors } from '../Utils/Configs'
 
 let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height

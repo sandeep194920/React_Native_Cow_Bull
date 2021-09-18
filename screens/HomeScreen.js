@@ -1,15 +1,14 @@
 import React from 'react'
 import { StyleSheet, Text, View, Image, Dimensions, TouchableOpacity } from 'react-native'
 import GameButton from '../components/GameButton'
-import { useGlobal } from '../context'
-import { Colors } from '../Utils/Colors'
-
+import { useGlobal, Icon } from '../context'
+import { Colors, commonStyles } from '../Utils/Configs'
+import { Fontisto } from '@expo/vector-icons';
 let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 
 const HomeScreen = () => {
     const { theme, changeTheme } = useGlobal();
-
 
 
     const styles = StyleSheet.create({
@@ -56,15 +55,18 @@ const HomeScreen = () => {
             borderBottomColor: Colors.orange,
             paddingBottom: 6,
             borderBottomWidth: 0.5
+        },
+        toggleIcon: {
+            ...commonStyles(theme, phoneHeight, phoneWidth).common.iconStyle,
         }
     })
 
-
-
-
     return (
         <View style={styles.homeContainer}>
-            <Image style={styles.img} source={require('../assets/Logo.png')} />
+            <View>
+                <Image style={styles.img} source={require('../assets/Logo.png')} />
+                <Fontisto onPress={() => changeTheme()} style={styles.toggleIcon} name={`toggle-${theme === 'black' ? 'on' : 'off'}`} size={34} color="white" />
+            </View>
             <Text style={{ ...styles.headingText, ...styles.heading }}>Cow{' '}
                 <Text style={styles.headingText2}>Bull</Text>
             </Text>
