@@ -1,21 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { StyleSheet, Text, View, } from 'react-native';
+import HomeScreen from './screens/HomeScreen';
+import { Colors } from './Utils/Colors';
+import { AppContext, AppProvider } from './context'
+import SelectionScreen from './screens/SelectionScreen';
 
 export default function App() {
+
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+  });
+
+
   return (
     <View style={styles.container}>
-      <Text>My first app </Text>
-      <StatusBar style="auto" />
-    </View>
+      <AppProvider>
+        {/* <HomeScreen /> */}
+        <SelectionScreen />
+      </AppProvider>
+    </View >
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
