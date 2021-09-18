@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Image, StyleSheet, Text, View, Dimensions } from 'react-native'
 import { Colors } from '../Utils/Colors'
 import { useGlobal } from '../context'
@@ -10,15 +10,10 @@ let phoneHeight = Dimensions.get('window').height
 
 const SelectionScreen = () => {
     const { theme, changeTheme } = useGlobal();
-    console.log(phoneWidth)
-    console.log(phoneHeight)
     const styles = StyleSheet.create({
         selectionContainer: {
             flex: 1,
-            paddingTop: phoneHeight * .1,
-
-            // justifyContent: 'center',
-            // alignItems: 'center',
+            paddingTop: phoneHeight * .05,
             backgroundColor: Colors[theme].primary,
         },
         imageHeader: {
@@ -27,8 +22,8 @@ const SelectionScreen = () => {
             justifyContent: 'space-around'
         },
         img: {
-            width: phoneHeight * .1,
-            height: phoneHeight * .1,
+            width: phoneHeight * .14,
+            height: phoneHeight * .14,
             marginLeft: -phoneWidth / 20
         },
         selectionHeading: {
@@ -52,16 +47,21 @@ const SelectionScreen = () => {
             marginVertical: phoneHeight / 60
         },
         playButtonContainer: {
-            width: '100%',
-            flexDirection: 'row',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: 2,
+            position: 'absolute',
+            bottom: phoneHeight - (phoneHeight * .98),
+            width: phoneWidth
         },
         playButton: {
-            backgroundColor: Colors.lightGreen,
+            backgroundColor: Colors[theme].play,
             overflow: 'hidden',
-            borderRadius: 0,
-            marginTop: phoneHeight - (phoneHeight * .95),
+            borderBottomEndRadius: 20,
+            borderBottomStartRadius: 20,
             width: '90%',
+            alignSelf: 'center',
+            margin: 0
         },
         playButtonText: {
             textAlign: 'center',
@@ -70,6 +70,19 @@ const SelectionScreen = () => {
 
     })
 
+
+    const levels = ['Easy', 'Medium', 'Hard']
+    const numberOfLetters = [3, 4, 5, 6]
+    const [difficulty, setDifficulty] = useState('Easy')
+    const [letters, setLetters] = useState(4)
+    const selectDifficulty = (level) => {
+        setDifficulty(level)
+    }
+
+    const setNumberOfLetters = (letters) => {
+        console.log(letters)
+        setLetters(letters)
+    }
 
     return (
         <View style={styles.selectionContainer}>
@@ -80,20 +93,28 @@ const SelectionScreen = () => {
             </View>
             <Text style={styles.selectionHeading}>Select Game Type</Text>
             <View style={styles.horizontalContainer}>
-                <GameButton>Easy</GameButton>
-                <GameButton>Medium</GameButton>
-                <GameButton>Hard</GameButton>
+
+                {levels.map((level) => {
+                    return <GameButton propStyle={level === difficulty && { backgroundColor: Colors.orange }} param={level} func={selectDifficulty} key={level}>{level}</GameButton>
+                })}
+
             </View>
             <View style={styles.verticleContainer}>
-                <GameButton propStyle={styles.wordButton}>3 Words</GameButton>
-                <GameButton propStyle={styles.wordButton}>4 Words</GameButton>
-                <GameButton propStyle={styles.wordButton}>5 Words</GameButton>
-                <GameButton propStyle={styles.wordButton}>6 Words</GameButton>
+
+
+                {numberOfLetters.map((letter) => {
+
+                    let buttonStyle = letter === letters && { backgroundColor: Colors.orange }
+                    buttonStyle = { ...buttonStyle, ...styles.wordButton }
+
+                    return <GameButton key={letter} propStyle={buttonStyle} param={letter} func={setNumberOfLetters}>{letter} Words</GameButton>
+
+                })}
             </View>
             <View style={styles.playButtonContainer}>
                 <GameButton btnTextProp={styles.playButtonText} propStyle={styles.playButton}>PLAY</GameButton>
             </View>
-        </View>
+        </View >
     )
 }
 

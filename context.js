@@ -4,7 +4,7 @@ const AppContext = React.createContext()
 
 export const AppProvider = ({ children }) => {
 
-    const [theme, setTheme] = useState('blue')
+    const [theme, setTheme] = useState('black')
 
     const changeTheme = (color) => {
         setTheme(color)
