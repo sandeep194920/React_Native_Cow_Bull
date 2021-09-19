@@ -1,7 +1,8 @@
 export const Colors = {
     orange: '#FFA62B',
     gray: '#848995',
-
+    lightBlue: '#67D0FF',
+    lightGreen: '#CEFF6F',
     blue: {
         primary: '#14274E',
         light: '#394867',
@@ -27,7 +28,12 @@ export const commonStyles = (theme, phoneHeight, phoneWidth) => {
             position: 'absolute',
             left: phoneWidth * .5,
             bottom: phoneHeight * .23
-        }
+        },
+        header: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-around'
+        },
     }
 
     return { common }

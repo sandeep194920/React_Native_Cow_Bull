@@ -9,7 +9,7 @@ let phoneHeight = Dimensions.get('window').height
 
 export const AppProvider = ({ children }) => {
 
-    const [theme, setTheme] = useState('blue')
+    const [theme, setTheme] = useState('black')
 
     const changeTheme = () => {
         setTheme(currentColor => currentColor === 'black' ? 'blue' : 'black')

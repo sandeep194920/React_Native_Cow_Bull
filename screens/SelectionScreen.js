@@ -2,9 +2,8 @@ import React, { useState } from 'react'
 import { Image, StyleSheet, Text, View, Dimensions } from 'react-native'
 import { Colors, commonStyles } from '../Utils/Configs'
 import { useGlobal } from '../context'
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, Fontisto } from '@expo/vector-icons';
 import GameButton from '../components/GameButton';
-import { Fontisto } from '@expo/vector-icons';
 
 let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
@@ -14,11 +13,7 @@ const SelectionScreen = () => {
     const { theme, changeTheme } = useGlobal();
     const styles = StyleSheet.create({
         selectionContainer: commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
-        imageHeader: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-around'
-        },
+        header: commonStyles(theme, phoneHeight, phoneWidth).common.header,
         img: {
             width: phoneHeight * .14,
             height: phoneHeight * .14,
@@ -34,7 +29,7 @@ const SelectionScreen = () => {
         },
         horizontalContainer: {
             flexDirection: 'row',
-            justifyContent: 'space-evenly'
+            justifyContent: 'space-evenly',
         },
         verticleContainer: {
             alignItems: 'center',
@@ -87,11 +82,9 @@ const SelectionScreen = () => {
         setLetters(letters)
     }
 
-
-
     return (
         <View style={styles.selectionContainer}>
-            <View style={styles.imageHeader}>
+            <View style={styles.header}>
                 <Ionicons style={styles.backIcon} name="arrow-back" size={phoneWidth / 18} color={Colors.orange} />
                 <Image style={styles.img} source={require('../assets/Logo.png')} />
                 <Fontisto onPress={() => changeTheme()} style={styles.toggleIcon} name={`toggle-${theme === 'black' ? 'on' : 'off'}`} size={34} color="white" />

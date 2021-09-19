@@ -17,9 +17,9 @@ export default function App() {
   return (
     <View style={styles.container}>
       <AppProvider>
-        <HomeScreen />
+        {/* <HomeScreen /> */}
         {/* <SelectionScreen /> */}
-        {/* <GameScreen /> */}
+        <GameScreen />
       </AppProvider>
     </View >
   );
