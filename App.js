@@ -4,6 +4,7 @@ import HomeScreen from './screens/HomeScreen';
 import { AppContext, AppProvider, useGlobal } from './context'
 import SelectionScreen from './screens/SelectionScreen';
 import GameScreen from './screens/GameScreen';
+import InputLetters from './screens/InputLetters';
 
 let theme;
 export default function App() {
@@ -19,7 +20,8 @@ export default function App() {
       <AppProvider>
         {/* <HomeScreen /> */}
         {/* <SelectionScreen /> */}
-        <GameScreen />
+        {/* <GameScreen /> */}
+        {/* <InputLetters /> */}
       </AppProvider>
     </View >
   );

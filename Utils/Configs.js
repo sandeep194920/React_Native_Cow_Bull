@@ -3,10 +3,13 @@ export const Colors = {
     gray: '#848995',
     lightBlue: '#67D0FF',
     lightGreen: '#CEFF6F',
+    red: '#dc2f02',
+    error: '#ff99c8',
     blue: {
         primary: '#14274E',
         light: '#394867',
-        play: '#2A7CDF'
+        play: '#2A7CDF',
+        error: '#D7385E',
     },
     black: {
         primary: '#000',
@@ -26,13 +29,20 @@ export const commonStyles = (theme, phoneHeight, phoneWidth) => {
         },
         iconStyle: {
             position: 'absolute',
-            left: phoneWidth * .5,
+            left: phoneWidth * .49,
             bottom: phoneHeight * .23
         },
         header: {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-around'
+        },
+        borderedText: {
+            borderWidth: 1,
+            borderColor: 'white',
+            borderRadius: 20,
+            padding: phoneHeight * 0.01,
+            fontSize: phoneHeight * .017
         },
     }
 

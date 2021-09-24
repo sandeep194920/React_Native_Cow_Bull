@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Dimensions } from 'react-native'
 import { useGlobal } from '../context'
 import { Colors } from '../Utils/Configs'
 
-const Attempt = () => {
+const Attempt = (props) => {
 
     let phoneWidth = Dimensions.get('window').width
     let phoneHeight = Dimensions.get('window').height
@@ -14,15 +14,11 @@ const Attempt = () => {
         attempt: {
             flexDirection: 'row',
             justifyContent: 'space-between',
-            // backgroundColor: 'green',
             alignItems: 'center',
             marginVertical: phoneHeight * 0.015
-
         },
         attemptTextContainer: {
             flexDirection: 'row',
-            // backgroundColor: 'grey',
-
         },
         attemptNumber: {
             marginRight: phoneWidth * 0.02,
@@ -58,28 +54,26 @@ const Attempt = () => {
         }
     })
 
-    const [letters, setLetters] = useState(['I', 'A', 'N', 'G', 'L', 'E'])
-
     return (
         <View style={styles.attempt}>
             <View style={styles.attemptTextContainer}>
-                <Text style={{ ...styles.commonText, ...styles.attemptNumber }} >1.</Text>
-                {letters.map((letter) => {
+                <Text style={{ ...styles.commonText, ...styles.attemptNumber }} >{props.slno}.</Text>
+                {props.letters.map((letter, index) => {
                     return (
-                        <Text key={letter} style={{ ...styles.commonText, ...styles.letter }} >{letter}</Text>
+                        <Text key={letter + index} style={{ ...styles.commonText, ...styles.letter }} >{letter}</Text>
                     )
                 })}
 
             </View>
             <View style={styles.result}>
-                <Text style={{ ...styles.commonText, ...styles.orangeCol }}>{' '}2
+                <Text style={{ ...styles.commonText, ...styles.orangeCol }}>{' '}0
                     <Text style={styles.bull}> B{' '} </Text>
                 </Text>
-                <Text style={{ ...styles.commonText, ...styles.orangeCol }}>{' '}2
+                <Text style={{ ...styles.commonText, ...styles.orangeCol }}>{' '}0
                     <Text style={styles.cow}> C{' '} </Text>
                 </Text>
             </View>
-        </View>
+        </View >
     )
 }
 

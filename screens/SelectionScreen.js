@@ -1,23 +1,19 @@
 import React, { useState } from 'react'
-import { Image, StyleSheet, Text, View, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, Dimensions } from 'react-native'
 import { Colors, commonStyles } from '../Utils/Configs'
 import { useGlobal } from '../context'
-import { Ionicons, Fontisto } from '@expo/vector-icons';
 import GameButton from '../components/GameButton';
+import Header from '../components/Header';
 
 let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 
 
 const SelectionScreen = () => {
-    const { theme, changeTheme } = useGlobal();
+    const { theme } = useGlobal();
     const styles = StyleSheet.create({
         selectionContainer: commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
         header: commonStyles(theme, phoneHeight, phoneWidth).common.header,
-        img: {
-            width: phoneHeight * .14,
-            height: phoneHeight * .14,
-        },
         selectionHeading: {
             color: 'white',
             fontSize: phoneWidth / 24,
@@ -59,15 +55,7 @@ const SelectionScreen = () => {
             textAlign: 'center',
             fontSize: phoneWidth / 25
         },
-        toggleIcon: {
-            ...commonStyles(theme, phoneHeight, phoneWidth).common.iconStyle,
-            left: 2,
-            bottom: 3,
-            position: 'relative'
-        }
-
     })
-
 
     const levels = ['Easy', 'Medium', 'Hard']
     const numberOfLetters = [3, 4, 5, 6]
@@ -84,11 +72,7 @@ const SelectionScreen = () => {
 
     return (
         <View style={styles.selectionContainer}>
-            <View style={styles.header}>
-                <Ionicons style={styles.backIcon} name="arrow-back" size={phoneWidth / 18} color={Colors.orange} />
-                <Image style={styles.img} source={require('../assets/Logo.png')} />
-                <Fontisto onPress={() => changeTheme()} style={styles.toggleIcon} name={`toggle-${theme === 'black' ? 'on' : 'off'}`} size={34} color="white" />
-            </View>
+            <Header />
             <Text style={styles.selectionHeading}>Select Game Type</Text>
             <View style={styles.horizontalContainer}>
 
@@ -105,7 +89,7 @@ const SelectionScreen = () => {
                     let buttonStyle = letter === letters && { backgroundColor: Colors.orange }
                     buttonStyle = { ...buttonStyle, ...styles.wordButton }
 
-                    return <GameButton key={letter} propStyle={buttonStyle} param={letter} func={setNumberOfLetters}>{letter} Words</GameButton>
+                    return <GameButton key={letter} propStyle={buttonStyle} param={letter} func={setNumberOfLetters}>{letter} Letters</GameButton>
 
                 })}
             </View>

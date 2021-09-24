@@ -27,7 +27,10 @@ const GameButton = (props) => {
     })
 
     return (
-        <TouchableOpacity onPress={() => props.func(props.param)} activeOpacity={1} style={{ ...styles.button, ...props.propStyle }}>
+        <TouchableOpacity
+            onPress={() => props.func(props.param)}
+            // onPress={props.func}
+            activeOpacity={1} style={{ ...styles.button, ...props.propStyle }}>
             <Text style={{ ...styles.buttonText, ...props.btnTextProp }} >{props.children}</Text>
         </TouchableOpacity>
     )

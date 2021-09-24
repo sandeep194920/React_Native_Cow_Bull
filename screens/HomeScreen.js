@@ -9,8 +9,6 @@ let phoneHeight = Dimensions.get('window').height
 
 const HomeScreen = () => {
     const { theme, changeTheme } = useGlobal();
-
-
     const styles = StyleSheet.create({
         homeContainer: {
             paddingTop: phoneHeight * .12,

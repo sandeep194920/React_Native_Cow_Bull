@@ -1,16 +1,17 @@
-import React from 'react'
-import { StyleSheet, Text, View, Dimensions, Image, ScrollView } from 'react-native'
+import React, { useState } from 'react'
+import { StyleSheet, Text, View, Dimensions, Image, ScrollView, Platform, Modal } from 'react-native'
 import { useGlobal } from '../context'
 import { Colors, commonStyles } from '../Utils/Configs'
-import { Ionicons, Fontisto } from '@expo/vector-icons';
 import Attempt from '../components/Attempt';
 import GameButton from '../components/GameButton';
+import Header from '../components/Header';
+import InputLetters from './InputLetters';
 
 let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 
 const GameScreen = () => {
-    const { theme, changeTheme } = useGlobal()
+    const { theme, isGuessNext, guessNextWord, words, addNewWord } = useGlobal()
     const styles = StyleSheet.create({
         gameContainer: {
             ...commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
@@ -31,11 +32,7 @@ const GameScreen = () => {
             color: 'white'
         },
         attempts: {
-            borderWidth: 1,
-            borderColor: 'white',
-            borderRadius: 20,
-            padding: phoneHeight * 0.01,
-            fontSize: phoneHeight * .017
+            ...commonStyles(theme, phoneHeight, phoneWidth).common.borderedText,
         },
         gameHeading: {
             fontSize: phoneHeight * .027
@@ -78,49 +75,40 @@ const GameScreen = () => {
         },
         hintBtnTxt: {
             color: Colors.lightGreen,
-        }
+        },
+
     })
 
+    // const [isGuessNext, setIsGuessNext] = useState(false)
     return (
-
         <View style={styles.gameContainer}>
-            <View style={styles.header}>
-                <Ionicons style={styles.backIcon} name="arrow-back" size={phoneWidth / 18} color={Colors.orange} />
-                <Image style={styles.img} source={require('../assets/Logo.png')} />
-                <Fontisto onPress={() => changeTheme()} style={styles.toggleIcon} name={`toggle-${theme === 'black' ? 'on' : 'off'}`} size={34} color="white" />
-            </View>
+
+            {/* Showing InputContainer which is a Modal */}
+
+            <InputLetters visible={isGuessNext} />
+            <Header propHeaderImg={styles.img} />
             <View style={styles.gameDescription}>
                 <Text style={{ ...styles.commonText, ...styles.attempts }}><Text style={{ color: Colors.orange }}>12 </Text>/ <Text >14</Text>
                 </Text>
-
                 <Text style={{ ...styles.commonText, ...styles.gameHeading }}>4 Letter Game</Text>
 
                 <Text style={{ ...styles.commonText, ...styles.difficulty }}>Hard</Text>
-
             </View>
 
-
-            <ScrollView style={styles.attemptsContainer}>
-                <Attempt />
-                <Attempt />
-                <Attempt />
-                <Attempt />
-                <Attempt />
-                <Attempt />
-                <Attempt />
-                <Attempt />
-                <Attempt />
-                <Attempt />
-                <Attempt />
-                <Attempt />
-                <Attempt />
-                <Attempt />
-                <Attempt />
+            <ScrollView indicatorStyle='white' style={styles.attemptsContainer}>
+                {words.map((word, index) => {
+                    return <Attempt key={word + index} slno={index + 1} letters={word.toUpperCase().split('')} />
+                })}
             </ScrollView>
 
             <View style={styles.horizontalContainer}>
                 <GameButton propStyle={{ ...styles.revealBtn, ...styles.gameBtns }} btnTextProp={styles.revealBtnTxt}>Reveal</GameButton>
-                <GameButton propStyle={{ ...styles.guessBtn, ...styles.gameBtns }} btnTextProp={styles.guessBtnTxt}>Guess Next</GameButton>
+                <GameButton
+                    func={() => guessNextWord()}
+                    // this above func is equal to below func and param combined
+                    // func={guessNextWord}
+                    // param={true}
+                    propStyle={{ ...styles.guessBtn, ...styles.gameBtns }} btnTextProp={styles.guessBtnTxt}>Guess Next</GameButton>
                 <GameButton propStyle={{ ...styles.hintBtn, ...styles.gameBtns }} btnTextProp={styles.hintBtnTxt}>Hint</GameButton>
             </View>
         </View >
