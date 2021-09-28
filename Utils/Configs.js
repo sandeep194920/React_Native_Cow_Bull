@@ -48,3 +48,33 @@ export const commonStyles = (theme, phoneHeight, phoneWidth) => {
 
     return { common }
 }
+
+export const Screens = {
+    HOME: 'HOME',
+    SELECTION: 'SELECTION',
+    GAME: 'GAME',
+}
+
+export const errors = {
+    repeatedLetters: 'The letters can\'t be repeated',
+    invalidWord: 'The word is invalid. Please enter another word',
+    wordExists: 'This word already exists. Please enter another word'
+}
+
+export const GAME = {
+    type: {
+        NUMBER: 'NUMBER',
+        WORD: 'WORD'
+    },
+    level: {
+        EASY: 'EASY',
+        MEDIUM: 'MEDIUM',
+        HARD: 'HARD'
+    },
+    letters: {
+        '3': 3,
+        '4': 4,
+        '5': 5,
+        '6': 6
+    }
+}

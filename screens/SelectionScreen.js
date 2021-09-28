@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, Dimensions } from 'react-native'
-import { Colors, commonStyles } from '../Utils/Configs'
+import { Colors, commonStyles, Screens } from '../Utils/Configs'
 import { useGlobal } from '../context'
 import GameButton from '../components/GameButton';
 import Header from '../components/Header';
@@ -8,9 +8,9 @@ import Header from '../components/Header';
 let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 
-
-const SelectionScreen = () => {
-    const { theme } = useGlobal();
+const SelectionScreen = (props) => {
+    const { navigation } = props
+    const { theme, game, initializeGame } = useGlobal();
     const styles = StyleSheet.create({
         selectionContainer: commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
         header: commonStyles(theme, phoneHeight, phoneWidth).common.header,
@@ -55,29 +55,35 @@ const SelectionScreen = () => {
             textAlign: 'center',
             fontSize: phoneWidth / 25
         },
+        gameType: {
+            color: Colors.orange
+        }
     })
 
     const levels = ['Easy', 'Medium', 'Hard']
     const numberOfLetters = [3, 4, 5, 6]
-    const [difficulty, setDifficulty] = useState('Easy')
-    const [letters, setLetters] = useState(4)
-    const selectDifficulty = (level) => {
-        setDifficulty(level)
-    }
 
+    const selectDifficulty = (level) => {
+        initializeGame({ difficulty: level.toUpperCase() })
+    }
     const setNumberOfLetters = (letters) => {
-        console.log(letters)
-        setLetters(letters)
+        initializeGame({ letters })
+    }
+    const playGame = () => {
+        navigation.navigate(Screens.GAME)
     }
 
     return (
         <View style={styles.selectionContainer}>
-            <Header />
-            <Text style={styles.selectionHeading}>Select Game Type</Text>
+            <Header navigation={props.navigation} />
+            <Text style={styles.selectionHeading}>Select
+                <Text style={styles.gameType}> {game.gameType[0].toUpperCase()}{game.gameType.slice(1).toLowerCase()} </Text>
+
+                Game Type</Text>
             <View style={styles.horizontalContainer}>
 
                 {levels.map((level) => {
-                    return <GameButton propStyle={level === difficulty && { backgroundColor: Colors.orange }} param={level} func={selectDifficulty} key={level}>{level}</GameButton>
+                    return <GameButton propStyle={level.toUpperCase() === game.difficulty && { backgroundColor: Colors.orange }} param={level} func={selectDifficulty} key={level}>{level}</GameButton>
                 })}
 
             </View>
@@ -86,7 +92,7 @@ const SelectionScreen = () => {
 
                 {numberOfLetters.map((letter) => {
 
-                    let buttonStyle = letter === letters && { backgroundColor: Colors.orange }
+                    let buttonStyle = letter === game.letters && { backgroundColor: Colors.orange }
                     buttonStyle = { ...buttonStyle, ...styles.wordButton }
 
                     return <GameButton key={letter} propStyle={buttonStyle} param={letter} func={setNumberOfLetters}>{letter} Letters</GameButton>
@@ -94,7 +100,7 @@ const SelectionScreen = () => {
                 })}
             </View>
             <View style={styles.playButtonContainer}>
-                <GameButton btnTextProp={styles.playButtonText} propStyle={styles.playButton}>PLAY</GameButton>
+                <GameButton func={playGame} btnTextProp={styles.playButtonText} propStyle={styles.playButton}>PLAY</GameButton>
             </View>
         </View >
     )

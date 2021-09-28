@@ -1,14 +1,16 @@
 import React from 'react'
 import { StyleSheet, Text, View, Image, Dimensions, TouchableOpacity } from 'react-native'
 import GameButton from '../components/GameButton'
-import { useGlobal, Icon } from '../context'
-import { Colors, commonStyles } from '../Utils/Configs'
+import { useGlobal } from '../context'
+import { Colors, commonStyles, Screens } from '../Utils/Configs'
 import { Fontisto } from '@expo/vector-icons';
+import { GAME } from '../Utils/Configs'
 let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 
-const HomeScreen = () => {
-    const { theme, changeTheme } = useGlobal();
+const HomeScreen = (props) => {
+    const { navigation } = props
+    const { theme, changeTheme, initializeGame } = useGlobal();
     const styles = StyleSheet.create({
         homeContainer: {
             paddingTop: phoneHeight * .12,
@@ -59,6 +61,18 @@ const HomeScreen = () => {
         }
     })
 
+    const playGame = (gameType) => {
+        console.log(`The game type is ${gameType}`)
+        if (gameType === 'word') {
+            initializeGame({ gameType: GAME.type.WORD })
+        } else if (gameType === 'number') {
+            initializeGame({ gameType: GAME.type.NUMBER })
+        } else {
+            throw new Error('Invalid Game Type')
+        }
+        navigation.navigate(Screens.SELECTION)
+    }
+
     return (
         <View style={styles.homeContainer}>
             <View>
@@ -70,11 +84,11 @@ const HomeScreen = () => {
             </Text>
             <Text style={styles.desc}> Match me if you can </Text>
             <View style={styles.btnContainer}>
-                <GameButton propStyle={styles.button}>
+                <GameButton func={() => { playGame('word') }} propStyle={styles.button}>
                     Let's Play
                     <Text style={{ color: Colors.orange }}>{' '}Word</Text>
                 </GameButton>
-                <GameButton propStyle={styles.button}>
+                <GameButton func={() => { playGame('number') }} propStyle={styles.button}>
                     Let's Play
                     <Text style={{ color: Colors.orange }}>{' '}Number</Text>
                 </GameButton>

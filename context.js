@@ -1,12 +1,8 @@
 import React, { useState, useContext } from 'react'
-import { Fontisto } from '@expo/vector-icons';
-import { Dimensions, StyleSheet } from 'react-native';
-import { errors, gameWords } from './Utils/CommonText';
+import { GAME } from './Utils/Configs';
+import { gameWords } from './Utils/CommonText';
 
 const AppContext = React.createContext()
-
-let phoneWidth = Dimensions.get('window').width
-let phoneHeight = Dimensions.get('window').height
 
 export const AppProvider = ({ children }) => {
 
@@ -20,6 +16,9 @@ export const AppProvider = ({ children }) => {
     // Error
     const [errorMsg, setErrorMsg] = useState('')
 
+    // game
+    const [game, setGame] = useState({ gameType: GAME.type.WORD, letters: GAME.letters['4'], difficulty: GAME.level.EASY });
+
     const changeTheme = () => {
         setTheme(currentColor => currentColor === 'black' ? 'blue' : 'black')
     }
@@ -32,7 +31,16 @@ export const AppProvider = ({ children }) => {
         setWords(prevWords => [...prevWords, newWord])
     }
 
-    return <AppContext.Provider value={{ theme, changeTheme, isGuessNext, guessNextWord, words, addNewWord, errorMsg, setErrorMsg }}>
+    const initializeGame = (game) => {
+        setGame(prevGame => {
+            return {
+                ...prevGame,
+                ...game
+            }
+        })
+    }
+
+    return <AppContext.Provider value={{ theme, changeTheme, isGuessNext, guessNextWord, words, addNewWord, errorMsg, setErrorMsg, initializeGame, game }}>
         {children}
     </AppContext.Provider>
 }

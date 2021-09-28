@@ -1,6 +1,6 @@
 import React from 'react'
 import { Image, StyleSheet, View, Dimensions } from 'react-native'
-import { Colors, commonStyles } from '../Utils/Configs'
+import { Colors, commonStyles, Screens } from '../Utils/Configs'
 import { Ionicons, Fontisto } from '@expo/vector-icons';
 import { useGlobal } from '../context';
 
@@ -8,6 +8,7 @@ let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 
 const Header = (props) => {
+
     const { theme, changeTheme } = useGlobal()
 
     const styles = StyleSheet.create({
@@ -27,7 +28,7 @@ const Header = (props) => {
 
     return (
         <View style={{ ...styles.header, ...props.propHeader }}>
-            <Ionicons onPress={props.onPress} name="arrow-back" size={phoneWidth / 18} color={Colors.orange} />
+            <Ionicons onPress={() => props.navigation.goBack()} name="arrow-back" size={phoneWidth / 18} color={Colors.orange} />
             <Image style={{ ...styles.img, ...props.propHeaderImg }} source={require('../assets/Logo.png')} />
             <Fontisto onPress={() => changeTheme()} style={styles.toggleIcon} name={`toggle-${theme === 'black' ? 'on' : 'off'}`} size={phoneWidth / 15} color="white" />
         </View>

@@ -10,8 +10,8 @@ import InputLetters from './InputLetters';
 let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 
-const GameScreen = () => {
-    const { theme, isGuessNext, guessNextWord, words, addNewWord } = useGlobal()
+const GameScreen = (props) => {
+    const { theme, isGuessNext, guessNextWord, words, addNewWord, game } = useGlobal()
     const styles = StyleSheet.create({
         gameContainer: {
             ...commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
@@ -78,7 +78,7 @@ const GameScreen = () => {
         },
 
     })
-
+    console.log(game)
     // const [isGuessNext, setIsGuessNext] = useState(false)
     return (
         <View style={styles.gameContainer}>
@@ -86,13 +86,18 @@ const GameScreen = () => {
             {/* Showing InputContainer which is a Modal */}
 
             <InputLetters visible={isGuessNext} />
-            <Header propHeaderImg={styles.img} />
+            <Header navigation={props.navigation} propHeaderImg={styles.img} />
             <View style={styles.gameDescription}>
                 <Text style={{ ...styles.commonText, ...styles.attempts }}><Text style={{ color: Colors.orange }}>12 </Text>/ <Text >14</Text>
                 </Text>
-                <Text style={{ ...styles.commonText, ...styles.gameHeading }}>4 Letter Game</Text>
+                <Text style={{ ...styles.commonText, ...styles.gameHeading }}>{game.letters} Letter
 
-                <Text style={{ ...styles.commonText, ...styles.difficulty }}>Hard</Text>
+                    <Text style={{ color: Colors.orange }}> {game.gameType.slice(0, 1).toUpperCase()}{game.gameType.slice(1).toLowerCase()}
+                    </Text>
+
+                </Text>
+
+                <Text style={{ ...styles.commonText, ...styles.difficulty }}>{game.difficulty}</Text>
             </View>
 
             <ScrollView indicatorStyle='white' style={styles.attemptsContainer}>
