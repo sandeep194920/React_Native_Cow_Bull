@@ -5,12 +5,12 @@ import { useGlobal } from '../context'
 import GameButton from '../components/GameButton';
 import Header from '../components/Header';
 import Error from '../components/Error';
-import { errors } from '../Utils/CommonText'
+import { errors } from '../Utils/Configs'
 let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 
 const InputLetters = (props) => {
-    const { theme, guessNextWord, addNewWord, words, setErrorMsg } = useGlobal();
+    const { theme, guessNextWord, addNewWord, words, setErrorMsg, setAttempts, game } = useGlobal();
     const styles = StyleSheet.create({
         inputContainer: {
             ...commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
@@ -54,7 +54,13 @@ const InputLetters = (props) => {
         cancel: {
             backgroundColor: Colors.red
         },
-
+        welcomeMsg: {
+            color: Colors.lightBlue,
+            textAlign: 'center',
+            marginTop: phoneHeight * 0.03,
+            fontSize: phoneWidth * 0.04,
+            letterSpacing: phoneWidth * 0.004
+        }
     })
 
     const [lettersTyped, setLettersTyped] = useState(0)
@@ -66,6 +72,7 @@ const InputLetters = (props) => {
     }
 
     const guessCancel = () => {
+        console.log('reached guess cancel')
         guessNextWord(false)
         setLettersTyped(0)
         setWordEntered('')
@@ -79,18 +86,29 @@ const InputLetters = (props) => {
     }
 
     const addWordHandler = () => {
+        if (wordEntered.length < game.letters) {
+            return setErrorMsg(errors.noMinLetters)
+        }
         if (wordEntered) {
             if (checkForDuplicates(wordEntered)) {
                 return setErrorMsg(errors.repeatedLetters)
             }
-            if (words.includes(wordEntered)) {
+            if (words.includes(wordEntered.toLowerCase())) {
                 return setErrorMsg(errors.wordExists)
             }
             addNewWord(wordEntered.toLowerCase())
         }
+        setAttempts(prevAttempts => prevAttempts + 1)
         guessCancel()
         setErrorMsg('')
     }
+    const [firstAttempt, setFirstAttempt] = useState(false)
+    useEffect(() => {
+        if (words.length === 0) {
+            return setFirstAttempt(true)
+        }
+        setFirstAttempt(false)
+    }, [words])
 
     return (
         <KeyboardAvoidingView
@@ -100,11 +118,15 @@ const InputLetters = (props) => {
                 visible={props.visible} animationType="slide">
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <View style={styles.inputContainer}>
-                        <Header onPress={guessCancel} />
+                        {/* <Header navigation={props.navigation} /> */}
+                        <Header func={guessCancel} />
+                        {/* navigation={props.navigation} */}
+                        {firstAttempt && <Text style={styles.welcomeMsg}>Make your first guess</Text>}
                         <View style={styles.inputContentContainer}>
                             <TextInput
+                                maxLength={game.letters}
                                 autoFocus value={wordEntered} autoCorrect={false} onChangeText={lettersHandler} underlineColorAndroid='transparent' placeholderTextColor={Colors.gray} style={styles.input} autoCapitalize='characters' placeholder="Type your word" />
-                            <Text style={{ ...styles.commonText, ...styles.lettersLeft }}><Text style={{ color: Colors.orange }}>{lettersTyped} </Text>/ <Text >4</Text>
+                            <Text style={{ ...styles.commonText, ...styles.lettersLeft }}><Text style={{ color: Colors.orange }}>{lettersTyped} </Text>/ <Text >{game.letters}</Text>
                             </Text>
                         </View>
 

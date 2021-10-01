@@ -7,6 +7,7 @@ const AppContext = React.createContext()
 export const AppProvider = ({ children }) => {
 
     const [theme, setTheme] = useState('black')
+
     // Modal opens when guess btn is pressed
     const [isGuessNext, setIsGuessNext] = useState(false)
 
@@ -19,11 +20,15 @@ export const AppProvider = ({ children }) => {
     // game
     const [game, setGame] = useState({ gameType: GAME.type.WORD, letters: GAME.letters['4'], difficulty: GAME.level.EASY });
 
+    // number of attempts
+    const [attempts, setAttempts] = useState(0)
+
     const changeTheme = () => {
         setTheme(currentColor => currentColor === 'black' ? 'blue' : 'black')
     }
 
     const guessNextWord = (bool = true) => {
+        console.log('setting the guessNext word to ', bool)
         setIsGuessNext(bool)
     }
 
@@ -40,9 +45,9 @@ export const AppProvider = ({ children }) => {
         })
     }
 
-    return <AppContext.Provider value={{ theme, changeTheme, isGuessNext, guessNextWord, words, addNewWord, errorMsg, setErrorMsg, initializeGame, game }}>
+    return <AppContext.Provider value={{ theme, changeTheme, isGuessNext, guessNextWord, words, addNewWord, errorMsg, setErrorMsg, initializeGame, game, attempts, setAttempts }}>
         {children}
-    </AppContext.Provider>
+    </AppContext.Provider >
 }
 
 export const useGlobal = () => {

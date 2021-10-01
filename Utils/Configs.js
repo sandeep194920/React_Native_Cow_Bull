@@ -53,12 +53,14 @@ export const Screens = {
     HOME: 'HOME',
     SELECTION: 'SELECTION',
     GAME: 'GAME',
+    INPUT: 'InputLetters'
 }
 
 export const errors = {
     repeatedLetters: 'The letters can\'t be repeated',
     invalidWord: 'The word is invalid. Please enter another word',
-    wordExists: 'This word already exists. Please enter another word'
+    wordExists: 'This word already exists. Please enter another word',
+    noMinLetters: 'Please enter more letters to make your guess valid'
 }
 
 export const GAME = {

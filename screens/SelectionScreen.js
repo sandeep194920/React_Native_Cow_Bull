@@ -10,7 +10,7 @@ let phoneHeight = Dimensions.get('window').height
 
 const SelectionScreen = (props) => {
     const { navigation } = props
-    const { theme, game, initializeGame } = useGlobal();
+    const { theme, game, initializeGame, words } = useGlobal();
     const styles = StyleSheet.create({
         selectionContainer: commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
         header: commonStyles(theme, phoneHeight, phoneWidth).common.header,
@@ -70,6 +70,9 @@ const SelectionScreen = (props) => {
         initializeGame({ letters })
     }
     const playGame = () => {
+        // if (words.length === 0) {
+        //     return navigation.navigate(Screens.INPUT)
+        // }
         navigation.navigate(Screens.GAME)
     }
 

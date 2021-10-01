@@ -28,7 +28,7 @@ const Header = (props) => {
 
     return (
         <View style={{ ...styles.header, ...props.propHeader }}>
-            <Ionicons onPress={() => props.navigation.goBack()} name="arrow-back" size={phoneWidth / 18} color={Colors.orange} />
+            <Ionicons onPress={props.func ? props.func : () => props.navigation.goBack()} name="arrow-back" size={phoneWidth / 18} color={Colors.orange} />
             <Image style={{ ...styles.img, ...props.propHeaderImg }} source={require('../assets/Logo.png')} />
             <Fontisto onPress={() => changeTheme()} style={styles.toggleIcon} name={`toggle-${theme === 'black' ? 'on' : 'off'}`} size={phoneWidth / 15} color="white" />
         </View>
