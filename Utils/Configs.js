@@ -78,5 +78,52 @@ export const GAME = {
         '4': 4,
         '5': 5,
         '6': 6
+    },
+}
+
+export const GameAttempts = {
+    '3': {
+        EASY: {
+            chances: 10
+        },
+        MEDIUM: {
+            chances: 8
+        },
+        HARD: {
+            chances: 6
+        }
+    },
+    '4': {
+        EASY: {
+            chances: 12
+        },
+        MEDIUM: {
+            chances: 10
+        },
+        HARD: {
+            chances: 8
+        }
+    },
+    '5': {
+        EASY: {
+            chances: 14
+        },
+        MEDIUM: {
+            chances: 12
+        },
+        HARD: {
+            chances: 9
+        }
+    },
+    '6': {
+        EASY: {
+            chances: 15
+        },
+        MEDIUM: {
+            chances: 12
+        },
+        HARD: {
+            chances: 10
+        }
     }
 }

@@ -1,16 +1,17 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, Dimensions } from 'react-native'
-import { Colors, commonStyles, Screens } from '../Utils/Configs'
+import { Colors, commonStyles, GAME, Screens } from '../Utils/Configs'
 import { useGlobal } from '../context'
 import GameButton from '../components/GameButton';
 import Header from '../components/Header';
+import { computerWord, computerNumber } from '../GameLogic/computerChoice';
 
 let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 
 const SelectionScreen = (props) => {
     const { navigation } = props
-    const { theme, game, initializeGame, words } = useGlobal();
+    const { theme, game, initializeGame, GameAttempts, setComputerChoice } = useGlobal();
     const styles = StyleSheet.create({
         selectionContainer: commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
         header: commonStyles(theme, phoneHeight, phoneWidth).common.header,
@@ -70,9 +71,20 @@ const SelectionScreen = (props) => {
         initializeGame({ letters })
     }
     const playGame = () => {
-        // if (words.length === 0) {
-        //     return navigation.navigate(Screens.INPUT)
-        // }
+        // game logic where computer generates a word/number and remembers it
+
+        console.log(`The letters are ${game.letters} and the level is ${game.difficulty} and the game type is ${game.gameType}`)
+        console.log(GameAttempts[game.letters][game.difficulty].chances)
+        let compChoice = ''
+        if (game.gameType === GAME.type.NUMBER) {
+            compChoice = computerNumber(game.letters)
+            console.log(`The comp number is ${compChoice}`)
+        } else if (game.gameType === GAME.type.WORD) {
+            compChoice = computerWord(game.letters)
+            console.log(`The comp word is ${compChoice}`)
+        }
+        setComputerChoice(compChoice)
+        // navigate to game screen
         navigation.navigate(Screens.GAME)
     }
 

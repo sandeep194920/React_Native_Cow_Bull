@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { GAME } from './Utils/Configs';
+import { GAME, GameAttempts } from './Utils/Configs';
 import { gameWords } from './Utils/CommonText';
 
 const AppContext = React.createContext()
@@ -23,6 +23,9 @@ export const AppProvider = ({ children }) => {
     // number of attempts
     const [attempts, setAttempts] = useState(0)
 
+    // computer word/number
+    const [computerChoice, setComputerChoice] = useState(null);
+
     const changeTheme = () => {
         setTheme(currentColor => currentColor === 'black' ? 'blue' : 'black')
     }
@@ -45,7 +48,7 @@ export const AppProvider = ({ children }) => {
         })
     }
 
-    return <AppContext.Provider value={{ theme, changeTheme, isGuessNext, guessNextWord, words, addNewWord, errorMsg, setErrorMsg, initializeGame, game, attempts, setAttempts }}>
+    return <AppContext.Provider value={{ theme, changeTheme, isGuessNext, guessNextWord, words, addNewWord, errorMsg, setErrorMsg, initializeGame, game, attempts, setAttempts, GameAttempts, computerChoice, setComputerChoice }}>
         {children}
     </AppContext.Provider >
 }

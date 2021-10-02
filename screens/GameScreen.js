@@ -94,17 +94,18 @@ const GameScreen = (props) => {
             "Are you sure you want to quit the game?",
             [
                 {
-                    text: "Cancel",
+                    text: "Keep Playing",
                     onPress: () => {
                         console.log("Cancel Pressed")
                     },
-                    style: "cancel"
+                    style: "default"
                 },
                 {
-                    text: "OK", onPress: () => {
+                    text: "Quit", onPress: () => {
                         console.log("OK Pressed")
                         props.navigation.goBack()
-                    }
+                    },
+                    style: 'destructive'
                 }
             ],
             { cancelable: false }
