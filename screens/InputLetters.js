@@ -93,22 +93,23 @@ const InputLetters = (props) => {
     }
 
     const addWordHandler = () => {
-        console.log(`The word entered is ${wordEntered}`)
-        if (wordEntered.length < game.letters) {
-            return setErrorMsg(errors.noMinLetters)
-        }
+
         if (wordEntered) {
+            if (wordEntered.length < game.letters) {
+                return setErrorMsg(errors.noMinLetters)
+            }
+
             if (checkForDuplicates(wordEntered)) {
                 return setErrorMsg(errors.repeatedLetters)
             }
             if (words.includes(wordEntered.toLowerCase())) {
                 return setErrorMsg(errors.wordExists)
             }
-            console.log("The word straw is valid ", isValidWord("straw"))
 
             if (!isValidWord(wordEntered.toLowerCase())) {
                 return setErrorMsg(errors.invalidWord)
             }
+
             addNewWord(wordEntered.toLowerCase())
         }
         setAttempts(prevAttempts => prevAttempts + 1)

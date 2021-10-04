@@ -11,7 +11,7 @@ let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 
 const GameScreen = (props) => {
-    const { theme, isGuessNext, guessNextWord, words, addNewWord, game, attempts } = useGlobal()
+    const { theme, isGuessNext, guessNextWord, words, setWords, game, attempts, setAttempts } = useGlobal()
     const styles = StyleSheet.create({
         gameContainer: {
             ...commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
@@ -102,7 +102,8 @@ const GameScreen = (props) => {
                 },
                 {
                     text: "Quit", onPress: () => {
-                        console.log("OK Pressed")
+                        setWords([])
+                        setAttempts(0)
                         props.navigation.goBack()
                     },
                     style: 'destructive'
