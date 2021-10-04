@@ -6,6 +6,7 @@ import GameButton from '../components/GameButton';
 import Header from '../components/Header';
 import Error from '../components/Error';
 import { errors } from '../Utils/Configs'
+import isValidWord from '../GameLogic/checkWordValidity';
 let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 
@@ -67,6 +68,12 @@ const InputLetters = (props) => {
     const [wordEntered, setWordEntered] = useState('')
 
     const lettersHandler = (text) => {
+        const specialChars = `/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/; `
+        const isSpecialCharsPresent = specialChars.split('').some(char => text.includes(char))
+
+        if (isSpecialCharsPresent) {
+            return setErrorMsg(errors.specialChars)
+        }
         setWordEntered(text)
         setLettersTyped(text.length)
     }
@@ -96,6 +103,11 @@ const InputLetters = (props) => {
             if (words.includes(wordEntered.toLowerCase())) {
                 return setErrorMsg(errors.wordExists)
             }
+            console.log("The word straw is valid ", isValidWord("straw"))
+
+            if (!isValidWord(wordEntered.toLowerCase())) {
+                return setErrorMsg(errors.invalidWord)
+            }
             addNewWord(wordEntered.toLowerCase())
         }
         setAttempts(prevAttempts => prevAttempts + 1)
@@ -124,6 +136,7 @@ const InputLetters = (props) => {
                         {firstAttempt && <Text style={styles.welcomeMsg}>Make your first guess</Text>}
                         <View style={styles.inputContentContainer}>
                             <TextInput
+                                // keyboardType="number-pad"
                                 maxLength={game.letters}
                                 autoFocus value={wordEntered} autoCorrect={false} onChangeText={lettersHandler} underlineColorAndroid='transparent' placeholderTextColor={Colors.gray} style={styles.input} autoCapitalize='characters' placeholder="Type your word" />
                             <Text style={{ ...styles.commonText, ...styles.lettersLeft }}><Text style={{ color: Colors.orange }}>{lettersTyped} </Text>/ <Text >{game.letters}</Text>
