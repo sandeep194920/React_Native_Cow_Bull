@@ -64,6 +64,11 @@ export const errors = {
     specialChars: 'The letters can\'t include special characters and space'
 }
 
+export const gameResult = {
+    won: `Hurray! You're a genius 😁 You guessed it right 😁`,
+    lost: `Sorry, You lost the game 😥 Better luck next time 😞`
+}
+
 export const GAME = {
     type: {
         NUMBER: 'NUMBER',

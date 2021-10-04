@@ -1,6 +1,6 @@
 import React from 'react'
 import { Image, StyleSheet, View, Dimensions } from 'react-native'
-import { Colors, commonStyles, Screens } from '../Utils/Configs'
+import { Colors, commonStyles } from '../Utils/Configs'
 import { Ionicons, Fontisto } from '@expo/vector-icons';
 import { useGlobal } from '../context';
 
