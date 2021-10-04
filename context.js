@@ -36,7 +36,13 @@ export const AppProvider = ({ children }) => {
     }
 
     const addNewWord = (newWord) => {
-        setWords(prevWords => [...prevWords, newWord])
+        // see how many bulls and cows and then set them accordingly
+        let word = {
+            userWord: newWord,
+            cow: 1,
+            bull: 1
+        }
+        setWords(prevWords => [...prevWords, word])
     }
 
     const initializeGame = (game) => {

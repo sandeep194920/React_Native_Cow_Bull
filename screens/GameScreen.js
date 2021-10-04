@@ -131,7 +131,8 @@ const GameScreen = (props) => {
 
             <ScrollView indicatorStyle='white' style={styles.attemptsContainer}>
                 {words.map((word, index) => {
-                    return <Attempt key={word + index} slno={index + 1} letters={word.toUpperCase().split('')} />
+                    console.log(word)
+                    return <Attempt word={word} key={word + index} slno={index + 1} letters={word.userWord.toUpperCase().split('')} />
                 })}
             </ScrollView>
 

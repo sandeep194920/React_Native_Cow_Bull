@@ -93,6 +93,7 @@ const InputLetters = (props) => {
     }
 
     const addWordHandler = () => {
+        console.log(`The word entered is ${wordEntered}`)
         if (wordEntered.length < game.letters) {
             return setErrorMsg(errors.noMinLetters)
         }

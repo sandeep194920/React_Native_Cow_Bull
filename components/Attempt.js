@@ -4,7 +4,7 @@ import { useGlobal } from '../context'
 import { Colors } from '../Utils/Configs'
 
 const Attempt = (props) => {
-
+    console.log(`The props are ${props.word.bull}`)
     let phoneWidth = Dimensions.get('window').width
     let phoneHeight = Dimensions.get('window').height
 
@@ -66,10 +66,10 @@ const Attempt = (props) => {
 
             </View>
             <View style={styles.result}>
-                <Text style={{ ...styles.commonText, ...styles.orangeCol }}>{' '}0
+                <Text style={{ ...styles.commonText, ...styles.orangeCol }}>{' '}{props.word.bull}
                     <Text style={styles.bull}> B{' '} </Text>
                 </Text>
-                <Text style={{ ...styles.commonText, ...styles.orangeCol }}>{' '}0
+                <Text style={{ ...styles.commonText, ...styles.orangeCol }}>{' '}{props.word.cow}
                     <Text style={styles.cow}> C{' '} </Text>
                 </Text>
             </View>
