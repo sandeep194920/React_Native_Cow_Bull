@@ -8,7 +8,8 @@ let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 
 const Header = (props) => {
-
+    // console.log("Navigation is ")
+    // console.log(props.navigation)
     const { theme, changeTheme } = useGlobal()
 
     const styles = StyleSheet.create({

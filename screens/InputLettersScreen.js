@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Image, StyleSheet, Text, View, Dimensions, TextInput, Platform, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, Modal } from 'react-native'
-import { Colors, commonStyles } from '../Utils/Configs'
+import { Colors, commonStyles, GameAttempts } from '../Utils/Configs'
 import { useGlobal } from '../context'
 import GameButton from '../components/GameButton';
 import Header from '../components/Header';
@@ -10,8 +10,8 @@ import isValidWord from '../GameLogic/checkWordValidity';
 let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 
-const InputLetters = (props) => {
-    const { theme, guessNextWord, addNewWord, words, setErrorMsg, setAttempts, game } = useGlobal();
+const InputLettersScreen = (props) => {
+    const { theme, guessNextWord, addNewWord, words, attempts, setErrorMsg, setAttempts, game } = useGlobal();
     const styles = StyleSheet.create({
         inputContainer: {
             ...commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
@@ -20,7 +20,7 @@ const InputLetters = (props) => {
             flexDirection: 'row',
             marginLeft: phoneWidth * 0.07,
             marginRight: phoneWidth * 0.07,
-            marginTop: phoneHeight * 0.05,
+            marginTop: phoneHeight * 0.03,
             justifyContent: 'space-around',
         },
         input: {
@@ -61,7 +61,23 @@ const InputLetters = (props) => {
             marginTop: phoneHeight * 0.03,
             fontSize: phoneWidth * 0.04,
             letterSpacing: phoneWidth * 0.004
+        },
+        attemptsContainer: {
+            flexDirection: 'row',
+            justifyContent: 'center',
+            marginTop: phoneHeight * 0.03,
+        },
+        attemptInfo: {
+            color: 'white',
+            fontSize: phoneWidth * 0.043,
+            letterSpacing: phoneWidth * 0.001
+        },
+        attempt: {
+            color: Colors.orange,
+            fontSize: phoneWidth * 0.043,
+            letterSpacing: phoneWidth * 0.001
         }
+
     })
 
     const [lettersTyped, setLettersTyped] = useState(0)
@@ -93,17 +109,19 @@ const InputLetters = (props) => {
     }
 
     const addWordHandler = () => {
-
         if (wordEntered) {
             if (wordEntered.length < game.letters) {
                 return setErrorMsg(errors.noMinLetters)
             }
-
             if (checkForDuplicates(wordEntered)) {
                 return setErrorMsg(errors.repeatedLetters)
             }
-            if (words.includes(wordEntered.toLowerCase())) {
-                return setErrorMsg(errors.wordExists)
+
+            // check if the word already exists
+            for (const word of words) {
+                if (word.userWord === wordEntered.toLowerCase()) {
+                    return setErrorMsg(errors.wordExists)
+                }
             }
 
             if (!isValidWord(wordEntered.toLowerCase())) {
@@ -124,6 +142,7 @@ const InputLetters = (props) => {
         setFirstAttempt(false)
     }, [words])
 
+
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -136,7 +155,12 @@ const InputLetters = (props) => {
                         <Header func={guessCancel} />
                         {/* navigation={props.navigation} */}
                         {firstAttempt && <Text style={styles.welcomeMsg}>Make your first guess</Text>}
+                        <View style={styles.attemptsContainer}>
+                            <Text style={styles.attemptInfo}>Attempt - </Text>
+                            <Text style={styles.attempt}> {GameAttempts[game.letters][game.difficulty].chances === attempts + 1 ? 'Last Chance' : attempts + 1}</Text>
+                        </View>
                         <View style={styles.inputContentContainer}>
+
                             <TextInput
                                 // keyboardType="number-pad"
                                 maxLength={game.letters}
@@ -159,4 +183,4 @@ const InputLetters = (props) => {
     )
 }
 
-export default InputLetters
+export default InputLettersScreen

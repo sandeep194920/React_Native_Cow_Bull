@@ -1,17 +1,18 @@
 import React from 'react'
-import { StyleSheet, Dimensions, Text, View, Image } from 'react-native'
+import { StyleSheet, Dimensions, Text, View, Image, BackHandler } from 'react-native'
 import GameButton from '../components/GameButton'
 import Header from '../components/Header'
 import { useGlobal } from '../context'
-import { Colors, commonStyles } from '../Utils/Configs'
+import { Colors, commonStyles, gameResultTxt } from '../Utils/Configs'
 
 let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 
 
-const GameOverScreen = (props) => {
-    const { navigation, gameResultText, gameResultImg } = props
-
+const GameOverScreen = (route, props) => {
+    const { gameResultText, gameResultImg } = props
+    const { gameResult } = route.route.params
+    const { computerChoice, attempts, resetGame } = useGlobal()
     const { theme } = useGlobal()
 
     const styles = StyleSheet.create({
@@ -26,18 +27,28 @@ const GameOverScreen = (props) => {
             color: 'white',
             fontSize: phoneWidth * 0.04,
             letterSpacing: phoneWidth * 0.001,
-            marginVertical: phoneHeight * 0.04,
-            lineHeight: phoneHeight * 0.03
+            marginTop: phoneHeight * 0.03,
+            lineHeight: phoneHeight * 0.045
+        },
+        attemptInfo: {
+            color: 'white',
+            marginTop: phoneHeight * 0.02,
+            fontSize: phoneWidth * 0.037,
+
+        },
+        attempt: {
+            color: Colors.orange,
 
         },
         wordInfo: {
             color: 'white',
             fontSize: phoneWidth * 0.04,
+
         },
         word: {
             color: Colors.orange,
             fontSize: phoneWidth * 0.06,
-            letterSpacing: phoneWidth * 0.01
+            letterSpacing: phoneWidth * 0.005
         },
         buttonContainer: {
             marginLeft: phoneWidth * 0.2,
@@ -46,11 +57,9 @@ const GameOverScreen = (props) => {
         playBtn: {
             backgroundColor: 'green',
             marginVertical: phoneHeight * 0.01
-
         },
         playBtnTxt: {
             textAlign: 'center',
-
         },
         gameBtns: {
             borderRadius: 8
@@ -62,7 +71,6 @@ const GameOverScreen = (props) => {
             color: Colors.error,
             textAlign: 'center',
             fontSize: phoneHeight * 0.02
-
         },
         imgContainer: {
             flexDirection: 'row',
@@ -73,33 +81,45 @@ const GameOverScreen = (props) => {
             alignItems: 'center',
             height: phoneHeight * 0.3,
             width: phoneWidth * 0.8
-        }
+        },
+
     })
+
+    console.log(`Prop nav is `)
+    console.log(route.navigation)
+
+    const exitApp = () => {
+        BackHandler.exitApp()
+    }
 
     return (
         <View style={styles.gameOverContainer}>
-            <Header navigation={navigation} />
+            <Header navigation={route.navigation} />
             <View style={styles.gameInfoContainer}>
                 <Text style={styles.gameInfo}>
-                    Hurray! You're a genius 😁 You guessed it right 😁
+                    {gameResultTxt[gameResult]}
                 </Text>
-                {/* <Text style={styles.gameInfo}>
-                    Sorry, You lost the game 😥 Better luck next time
-                </Text> */}
+
                 <Text style={styles.wordInfo}>The word is
-                    <Text style={styles.word}> MINE</Text>
+                    <Text style={styles.word}> {computerChoice.toUpperCase()}</Text>
                 </Text>
+
+                <Text style={styles.attemptInfo}>Attempts taken -
+                    <Text style={styles.attempt}> {attempts} </Text>
+                </Text>
+
             </View>
             <View style={styles.imgContainer}>
-                {/* <Image style={styles.img} source={require('../assets/lost.jpeg')} /> */}
-                <Image style={styles.img} source={require('../assets/won.jpeg')} />
+                {gameResult === 'won' ?
+                    <Image style={styles.img} source={require(`../assets/won.jpeg`)} /> :
+                    <Image style={styles.img} source={require(`../assets/lost.jpeg`)} />
+                }
             </View>
             <View style={styles.buttonContainer}>
                 <GameButton
-                    func={() => console.log("clicked ")}
+                    func={() => resetGame(route.navigation)}
                     propStyle={{ ...styles.playBtn, ...styles.gameBtns }} btnTextProp={styles.playBtnTxt}>Play Again</GameButton>
-                <GameButton propStyle={{ ...styles.quitBtn, ...styles.gameBtns }} btnTextProp={styles.quitBtnTxt}>Quit</GameButton>
-
+                {Platform.OS === 'android' && <GameButton func={exitApp} propStyle={{ ...styles.quitBtn, ...styles.gameBtns }} btnTextProp={styles.quitBtnTxt}>Quit</GameButton>}
             </View>
         </View>
     )

@@ -4,7 +4,7 @@ import HomeScreen from './screens/HomeScreen';
 import { AppContext, AppProvider, useGlobal } from './context'
 import SelectionScreen from './screens/SelectionScreen';
 import GameScreen from './screens/GameScreen';
-import InputLetters from './screens/InputLetters';
+import InputLetters from './screens/InputLettersScreen';
 import GameNavigator from '../cowbull/navigation/GameNavigator'
 
 import { NavigationContainer } from '@react-navigation/native';

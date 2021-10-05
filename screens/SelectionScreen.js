@@ -73,8 +73,8 @@ const SelectionScreen = (props) => {
     const playGame = () => {
         // game logic where computer generates a word/number and remembers it
 
-        console.log(`The letters are ${game.letters} and the level is ${game.difficulty} and the game type is ${game.gameType}`)
-        console.log(GameAttempts[game.letters][game.difficulty].chances)
+        // console.log(`The letters are ${game.letters} and the level is ${game.difficulty} and the game type is ${game.gameType}`)
+        // console.log(GameAttempts[game.letters][game.difficulty].chances)
         let compChoice = ''
         if (game.gameType === GAME.type.NUMBER) {
             compChoice = computerNumber(game.letters)

@@ -5,7 +5,9 @@ import HomeScreen from '../screens/HomeScreen';
 import SelectionScreen from '../screens/SelectionScreen';
 import { Screens } from '../Utils/Configs';
 import GameScreen from '../screens/GameScreen';
-import InputLetters from '../screens/InputLetters';
+import InputLetters from '../screens/InputLettersScreen';
+import InputLettersScreen from '../screens/InputLettersScreen';
+import GameOverScreen from '../screens/GameOverScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,7 +33,11 @@ const GameNavigator = () => {
                 />
                 <Stack.Screen
                     name={Screens.INPUT}
-                    component={InputLetters}
+                    component={InputLettersScreen}
+                />
+                <Stack.Screen
+                    name={Screens.GAME_OVER}
+                    component={GameOverScreen}
                 />
             </Stack.Navigator>
         </NavigationContainer>

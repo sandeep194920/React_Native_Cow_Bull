@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { GAME, GameAttempts } from './Utils/Configs';
+import { GAME, GameAttempts, Screens } from './Utils/Configs';
 import { gameWords } from './Utils/CommonText';
 import { cowBullCount } from './GameLogic/cowbullCount';
 
@@ -20,6 +20,9 @@ export const AppProvider = ({ children }) => {
 
     // game
     const [game, setGame] = useState({ gameType: GAME.type.WORD, letters: GAME.letters['4'], difficulty: GAME.level.EASY });
+
+    // game over
+    const [gameOver, setGameOver] = useState(false)
 
     // number of attempts
     const [attempts, setAttempts] = useState(0)
@@ -59,7 +62,15 @@ export const AppProvider = ({ children }) => {
         })
     }
 
-    return <AppContext.Provider value={{ theme, changeTheme, isGuessNext, guessNextWord, words, setWords, addNewWord, errorMsg, setErrorMsg, initializeGame, game, attempts, setAttempts, GameAttempts, computerChoice, setComputerChoice }}>
+    const resetGame = (navigation) => {
+        console.log("Playing again")
+        setAttempts(0)
+        setWords([])
+        setGameOver(false)
+        navigation.navigate(Screens.HOME)
+    }
+
+    return <AppContext.Provider value={{ theme, changeTheme, isGuessNext, guessNextWord, words, setWords, addNewWord, errorMsg, setErrorMsg, initializeGame, game, attempts, setAttempts, GameAttempts, computerChoice, setComputerChoice, gameOver, setGameOver, resetGame }}>
         {children}
     </AppContext.Provider >
 }

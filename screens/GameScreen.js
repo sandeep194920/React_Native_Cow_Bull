@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, Dimensions, Image, ScrollView, Platform, Modal, Alert } from 'react-native'
 import { useGlobal } from '../context'
-import { Colors, commonStyles, Screens } from '../Utils/Configs'
+import { Colors, commonStyles, GameAttempts, Screens } from '../Utils/Configs'
 import Attempt from '../components/Attempt';
 import GameButton from '../components/GameButton';
 import Header from '../components/Header';
-import InputLetters from './InputLetters';
+import InputLetters from './InputLettersScreen';
 
 let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 
 const GameScreen = (props) => {
-    const { theme, isGuessNext, guessNextWord, words, setWords, game, attempts, setAttempts } = useGlobal()
+    const { theme, isGuessNext, guessNextWord, words, setWords, game, attempts, setAttempts, navigation, gameOver, setGameOver, resetGame } = useGlobal()
     const styles = StyleSheet.create({
         gameContainer: {
             ...commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
@@ -77,7 +77,12 @@ const GameScreen = (props) => {
         hintBtnTxt: {
             color: Colors.lightGreen,
         },
-
+        quitBtn: {
+            backgroundColor: 'transparent'
+        },
+        quitBtnTxt: {
+            color: Colors.error,
+        },
     })
 
     // after selecting the game type, since no words are entered yet, 
@@ -86,6 +91,26 @@ const GameScreen = (props) => {
         if (words.length === 0) {
             guessNextWord(true)
         }
+    }, [words])
+
+
+    // if game over
+    useEffect(() => {
+
+        // won the game
+        if (words.length > 0 && words[words.length - 1].bull === game.letters) {
+            console.log("Won the game")
+            props.navigation.navigate(Screens.GAME_OVER, { gameResult: 'won', navigation })
+            setGameOver(true)
+
+        }
+
+        // lost the game
+        else if (words.length === GameAttempts[game.letters][game.difficulty].chances && words[words.length - 1].bull !== game.letters) {
+            props.navigation.navigate(Screens.GAME_OVER, { gameResult: 'lost', navigation })
+            setGameOver(true)
+        }
+
     }, [words])
 
     const gameCancelConfirmHandler = () => {
@@ -113,13 +138,40 @@ const GameScreen = (props) => {
         );
     }
 
+    let buttons = (
+        <View style={styles.horizontalContainer}>
+            <GameButton propStyle={{ ...styles.revealBtn, ...styles.gameBtns }} btnTextProp={styles.revealBtnTxt}>Reveal</GameButton>
+            <GameButton
+                func={() => guessNextWord()}
+                // this above func is equal to below func and param combined
+                // func={guessNextWord}
+                // param={true}
+                propStyle={{ ...styles.guessBtn, ...styles.gameBtns }} btnTextProp={styles.guessBtnTxt}>Guess Next {game.gameType.slice(0, 1).toUpperCase()}{game.gameType.slice(1).toLowerCase()}</GameButton>
+            <GameButton propStyle={{ ...styles.hintBtn, ...styles.gameBtns }} btnTextProp={styles.hintBtnTxt}>Hint</GameButton>
+        </View>
+    )
+
+    if (gameOver) {
+        buttons = (
+            <View style={styles.horizontalContainer}>
+                {/* <GameButton propStyle={{ ...styles.revealBtn, ...styles.gameBtns }} btnTextProp={styles.revealBtnTxt}>Reveal</GameButton> */}
+                <Text style={{ width: phoneWidth * 0.2 }}></Text>
+                <GameButton
+                    func={() => resetGame(props.navigation)}
+                    propStyle={{ ...styles.guessBtn, ...styles.gameBtns }} btnTextProp={styles.guessBtnTxt}>Play Again</GameButton>
+                {Platform.OS === 'android' && <GameButton propStyle={{ ...styles.quitBtn, ...styles.gameBtns }} btnTextProp={styles.quitBtnTxt}>Quit</GameButton>}
+                {Platform.OS === 'ios' && <Text style={{ width: phoneWidth * 0.2 }}></Text>}
+            </View>
+        )
+    }
+
     return (
         <View style={styles.gameContainer}>
             {/* Showing InputContainer which is a Modal */}
             <InputLetters visible={isGuessNext} />
             <Header func={gameCancelConfirmHandler} navigation={props.navigation} propHeaderImg={styles.img} />
             <View style={styles.gameDescription}>
-                <Text style={{ ...styles.commonText, ...styles.attempts }}><Text style={{ color: Colors.orange }}>{attempts}</Text>/ <Text >14</Text>
+                <Text style={{ ...styles.commonText, ...styles.attempts }}><Text style={{ color: Colors.orange }}>{attempts}</Text>/ <Text >{GameAttempts[game.letters][game.difficulty].chances}</Text>
                 </Text>
                 <Text style={{ ...styles.commonText, ...styles.gameHeading }}>{game.letters} Letter
 
@@ -136,17 +188,7 @@ const GameScreen = (props) => {
                     return <Attempt word={word} key={word + index} slno={index + 1} letters={word.userWord.toUpperCase().split('')} />
                 })}
             </ScrollView>
-
-            <View style={styles.horizontalContainer}>
-                <GameButton propStyle={{ ...styles.revealBtn, ...styles.gameBtns }} btnTextProp={styles.revealBtnTxt}>Reveal</GameButton>
-                <GameButton
-                    func={() => guessNextWord()}
-                    // this above func is equal to below func and param combined
-                    // func={guessNextWord}
-                    // param={true}
-                    propStyle={{ ...styles.guessBtn, ...styles.gameBtns }} btnTextProp={styles.guessBtnTxt}>Guess Next {game.gameType.slice(0, 1).toUpperCase()}{game.gameType.slice(1).toLowerCase()}</GameButton>
-                <GameButton propStyle={{ ...styles.hintBtn, ...styles.gameBtns }} btnTextProp={styles.hintBtnTxt}>Hint</GameButton>
-            </View>
+            {buttons}
         </View >
     )
 }

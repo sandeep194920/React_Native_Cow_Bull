@@ -62,7 +62,7 @@ const HomeScreen = (props) => {
     })
 
     const playGame = (gameType) => {
-        console.log(`The game type is ${gameType}`)
+        // console.log(`The game type is ${gameType}`)
         if (gameType === 'word') {
             initializeGame({ gameType: GAME.type.WORD })
         } else if (gameType === 'number') {
