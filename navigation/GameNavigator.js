@@ -8,6 +8,7 @@ import GameScreen from '../screens/GameScreen';
 import InputLetters from '../screens/InputLettersScreen';
 import InputLettersScreen from '../screens/InputLettersScreen';
 import GameOverScreen from '../screens/GameOverScreen';
+import GameRulesScreen from '../screens/GameRulesScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -38,6 +39,10 @@ const GameNavigator = () => {
                 <Stack.Screen
                     name={Screens.GAME_OVER}
                     component={GameOverScreen}
+                />
+                <Stack.Screen
+                    name={Screens.RULES}
+                    component={GameRulesScreen}
                 />
             </Stack.Navigator>
         </NavigationContainer>

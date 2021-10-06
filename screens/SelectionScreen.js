@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { StyleSheet, Text, View, Dimensions } from 'react-native'
 import { Colors, commonStyles, GAME, Screens } from '../Utils/Configs'
 import { useGlobal } from '../context'
@@ -103,10 +103,7 @@ const SelectionScreen = (props) => {
 
             </View>
             <View style={styles.verticleContainer}>
-
-
                 {numberOfLetters.map((letter) => {
-
                     let buttonStyle = letter === game.letters && { backgroundColor: Colors.orange }
                     buttonStyle = { ...buttonStyle, ...styles.wordButton }
 

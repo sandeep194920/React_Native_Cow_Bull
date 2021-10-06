@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { StyleSheet, Text, View, Dimensions, Image, ScrollView, Platform, Modal, Alert } from 'react-native'
 import { useGlobal } from '../context'
 import { Colors, commonStyles, GameAttempts, Screens } from '../Utils/Configs'
@@ -99,7 +99,6 @@ const GameScreen = (props) => {
 
         // won the game
         if (words.length > 0 && words[words.length - 1].bull === game.letters) {
-            console.log("Won the game")
             props.navigation.navigate(Screens.GAME_OVER, { gameResult: 'won', navigation })
             setGameOver(true)
 
@@ -120,9 +119,9 @@ const GameScreen = (props) => {
             [
                 {
                     text: "Keep Playing",
-                    onPress: () => {
-                        console.log("Cancel Pressed")
-                    },
+                    // onPress: () => {
+                    //     console.log("Cancel Pressed")
+                    // },
                     style: "default"
                 },
                 {
@@ -168,7 +167,7 @@ const GameScreen = (props) => {
     return (
         <View style={styles.gameContainer}>
             {/* Showing InputContainer which is a Modal */}
-            <InputLetters visible={isGuessNext} />
+            <InputLetters visible={isGuessNext} navigation={props.navigation} />
             <Header func={gameCancelConfirmHandler} navigation={props.navigation} propHeaderImg={styles.img} />
             <View style={styles.gameDescription}>
                 <Text style={{ ...styles.commonText, ...styles.attempts }}><Text style={{ color: Colors.orange }}>{attempts}</Text>/ <Text >{GameAttempts[game.letters][game.difficulty].chances}</Text>
@@ -184,7 +183,6 @@ const GameScreen = (props) => {
 
             <ScrollView indicatorStyle='white' style={styles.attemptsContainer}>
                 {words.map((word, index) => {
-                    console.log(word)
                     return <Attempt word={word} key={word + index} slno={index + 1} letters={word.userWord.toUpperCase().split('')} />
                 })}
             </ScrollView>

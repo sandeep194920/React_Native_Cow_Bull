@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { StyleSheet, Text, View, Image, Dimensions, TouchableOpacity } from 'react-native'
 import GameButton from '../components/GameButton'
 import { useGlobal } from '../context'
@@ -73,10 +73,17 @@ const HomeScreen = (props) => {
         navigation.navigate(Screens.SELECTION)
     }
 
+    const showGameRules = () => {
+        console.log("Here's the rules")
+        props.navigation.navigate(Screens.RULES)
+    }
+
     return (
         <View style={styles.homeContainer}>
             <View>
-                <Image style={styles.img} source={require('../assets/Logo.png')} />
+                <TouchableOpacity onPress={showGameRules}>
+                    <Image style={styles.img} source={require('../assets/Logo.png')} />
+                </TouchableOpacity>
                 <Fontisto onPress={() => changeTheme()} style={styles.toggleIcon} name={`toggle-${theme === 'black' ? 'on' : 'off'}`} size={34} color="white" />
             </View>
             <Text style={{ ...styles.headingText, ...styles.heading }}>Cow{' '}
@@ -94,7 +101,7 @@ const HomeScreen = (props) => {
                 </GameButton>
             </View>
             <TouchableOpacity style={styles.ruleBtnContainer} activeOpacity={0.8}>
-                <Text style={styles.ruleBtn}>How to Play?</Text>
+                <Text onPress={showGameRules} style={styles.ruleBtn}>How to Play?</Text>
             </TouchableOpacity>
         </View>
     )

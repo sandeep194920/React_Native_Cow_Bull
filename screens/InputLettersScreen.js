@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Image, StyleSheet, Text, View, Dimensions, TextInput, Platform, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, Modal } from 'react-native'
-import { Colors, commonStyles, GameAttempts, GAME } from '../Utils/Configs'
+import { StyleSheet, Text, View, Dimensions, TextInput, Platform, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, Modal, TouchableOpacity } from 'react-native'
+import { Colors, commonStyles, GameAttempts, GAME, Screens } from '../Utils/Configs'
 import { useGlobal } from '../context'
 import GameButton from '../components/GameButton';
 import Header from '../components/Header';
@@ -107,7 +107,6 @@ const InputLettersScreen = (props) => {
             return ind !== lettersArr.lastIndexOf(letter)
         })
     }
-
     const addWordHandler = () => {
         if (wordEntered) {
             if (wordEntered.length < game.letters) {
@@ -157,9 +156,9 @@ const InputLettersScreen = (props) => {
                 visible={props.visible} animationType="slide">
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <View style={styles.inputContainer}>
-                        {/* <Header navigation={props.navigation} /> */}
-                        <Header func={guessCancel} />
-                        {/* navigation={props.navigation} */}
+                        <Header
+                            navigation={props.navigation}
+                            func={guessCancel} />
                         {firstAttempt && <Text style={styles.welcomeMsg}>Make your first guess</Text>}
                         <View style={styles.attemptsContainer}>
                             <Text style={styles.attemptInfo}>Attempt - </Text>

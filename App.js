@@ -10,6 +10,7 @@ import GameNavigator from '../cowbull/navigation/GameNavigator'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import GameOverScreen from './screens/GameOverScreen';
+import GameRulesScreen from './screens/GameRulesScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -25,7 +26,7 @@ export default function App() {
   return (
     <AppProvider>
       <GameNavigator />
-      {/* <GameOverScreen /> */}
+      {/* <GameRulesScreen /> */}
     </AppProvider>
 
   );

@@ -4,7 +4,6 @@ import { useGlobal } from '../context'
 import { Colors } from '../Utils/Configs'
 
 const Attempt = (props) => {
-    console.log(`The props are ${props.word.bull}`)
     let phoneWidth = Dimensions.get('window').width
     let phoneHeight = Dimensions.get('window').height
 

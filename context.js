@@ -30,19 +30,20 @@ export const AppProvider = ({ children }) => {
     // computer word/number
     const [computerChoice, setComputerChoice] = useState(null);
 
+    // navigation
+
     const changeTheme = () => {
         setTheme(currentColor => currentColor === 'black' ? 'blue' : 'black')
     }
 
     const guessNextWord = (bool = true) => {
-        console.log('setting the guessNext word to ', bool)
         setIsGuessNext(bool)
     }
 
     const addNewWord = (userWord) => {
         // see how many bulls and cows and then set them accordingly
 
-        console.log(`We have access to comp word which is ${computerChoice}`)
+        console.log(`Computer choice is ${computerChoice}`)
         let { cow, bull } = cowBullCount(computerChoice, userWord)
 
         let word = {
@@ -63,7 +64,6 @@ export const AppProvider = ({ children }) => {
     }
 
     const resetGame = (navigation) => {
-        console.log("Playing again")
         setAttempts(0)
         setWords([])
         setGameOver(false)

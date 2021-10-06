@@ -54,7 +54,8 @@ export const Screens = {
     SELECTION: 'SELECTION',
     GAME: 'GAME',
     INPUT: 'INPUT',
-    GAME_OVER: 'GAME_OVER'
+    GAME_OVER: 'GAME_OVER',
+    RULES: 'RULES'
 }
 
 export const errors = {
@@ -67,8 +68,19 @@ export const errors = {
 
 export const gameResultTxt = {
     won: `Hurray! You're really a genius 😃 You guessed it right 😃`,
-    lost: `Sorry, You lost the game 😥 Better luck next time 😞`
+    lost: `Sorry, You lost the game as you're out of attempts 😥 Better luck next time 😞`
 }
+
+export const gameRulesText = [
+    'You need to guess the hidden word/number in specified attempts',
+    'Number of attempts you have depend on the difficulty level you selected',
+    'Letters will not be repeated in the hidden word and can\'t be repeated in your guess too',
+    'If you select the WORD game, the hidden word will be a valid word which is in the english dictionary. Your guess should also be a valid word',
+    'You win if you guess the word/number in specified attempts based on the cow and bull count of previous guesses',
+    'COW (C) means your word/number HAS a letter which is in the hidden word/number but NOT in the exact position',
+    'BULL (B) means your word/number HAS a letter which is in the hidden word/number IN the exact position',
+    'To see these rules, click on the game logo anywhere in the app'
+]
 
 export const GAME = {
     type: {

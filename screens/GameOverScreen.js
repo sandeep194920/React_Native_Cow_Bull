@@ -10,10 +10,8 @@ let phoneHeight = Dimensions.get('window').height
 
 
 const GameOverScreen = (route, props) => {
-    const { gameResultText, gameResultImg } = props
     const { gameResult } = route.route.params
-    const { computerChoice, attempts, resetGame } = useGlobal()
-    const { theme } = useGlobal()
+    const { theme, computerChoice, attempts, resetGame } = useGlobal()
 
     const styles = StyleSheet.create({
         gameOverContainer: commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
@@ -82,11 +80,7 @@ const GameOverScreen = (route, props) => {
             height: phoneHeight * 0.3,
             width: phoneWidth * 0.8
         },
-
     })
-
-    console.log(`Prop nav is `)
-    console.log(route.navigation)
 
     const exitApp = () => {
         BackHandler.exitApp()
@@ -107,7 +101,6 @@ const GameOverScreen = (route, props) => {
                 <Text style={styles.attemptInfo}>Attempts taken -
                     <Text style={styles.attempt}> {attempts} </Text>
                 </Text>
-
             </View>
             <View style={styles.imgContainer}>
                 {gameResult === 'won' ?

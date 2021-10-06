@@ -1,16 +1,13 @@
 import React from 'react'
-import { Image, StyleSheet, View, Dimensions } from 'react-native'
-import { Colors, commonStyles } from '../Utils/Configs'
+import { Image, StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native'
+import { Colors, commonStyles, Screens } from '../Utils/Configs'
 import { Ionicons, Fontisto } from '@expo/vector-icons';
 import { useGlobal } from '../context';
-
 let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
-
+import { CommonActions } from '@react-navigation/native';
 const Header = (props) => {
-    // console.log("Navigation is ")
-    // console.log(props.navigation)
-    const { theme, changeTheme } = useGlobal()
+    const { theme, changeTheme, guessNextWord, isGuessNext } = useGlobal()
 
     const styles = StyleSheet.create({
         header: commonStyles(theme, phoneHeight, phoneWidth).common.header,
@@ -26,11 +23,22 @@ const Header = (props) => {
         }
     })
 
+    const showGameRules = () => {
+        // If the modal is open then it must first be closed and then the rules 
+        // screen must appear
+        if (isGuessNext) {
+            console.log("Here's the  srules")
+            guessNextWord(false)
+        }
+        props.navigation.navigate(Screens.RULES)
+    }
 
     return (
         <View style={{ ...styles.header, ...props.propHeader }}>
             <Ionicons onPress={props.func ? props.func : () => props.navigation.goBack()} name="arrow-back" size={phoneWidth / 18} color={Colors.orange} />
-            <Image style={{ ...styles.img, ...props.propHeaderImg }} source={require('../assets/Logo.png')} />
+            <TouchableOpacity onPress={showGameRules}>
+                <Image style={{ ...styles.img, ...props.propHeaderImg }} source={require('../assets/Logo.png')} />
+            </TouchableOpacity>
             <Fontisto onPress={() => changeTheme()} style={styles.toggleIcon} name={`toggle-${theme === 'black' ? 'on' : 'off'}`} size={phoneWidth / 15} color="white" />
         </View>
     )
