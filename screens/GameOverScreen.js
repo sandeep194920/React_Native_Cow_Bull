@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Dimensions, Text, View, Image, BackHandler } from 'react-native'
+import { StyleSheet, Dimensions, Text, View, Image, BackHandler, Platform } from 'react-native'
 import GameButton from '../components/GameButton'
 import Header from '../components/Header'
 import { useGlobal } from '../context'
@@ -56,7 +56,7 @@ const GameOverScreen = (route, props) => {
         },
         playBtn: {
             backgroundColor: 'green',
-            marginVertical: phoneHeight * 0.01
+            marginVertical: Platform.OS === "android" ? phoneHeight * 0.01 : phoneHeight * 0.1
         },
         playBtnTxt: {
             textAlign: 'center',

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Image, StyleSheet, Text, View, Dimensions, TextInput, Platform, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, Modal } from 'react-native'
-import { Colors, commonStyles, GameAttempts } from '../Utils/Configs'
+import { Colors, commonStyles, GameAttempts, GAME } from '../Utils/Configs'
 import { useGlobal } from '../context'
 import GameButton from '../components/GameButton';
 import Header from '../components/Header';
@@ -117,17 +117,23 @@ const InputLettersScreen = (props) => {
                 return setErrorMsg(errors.repeatedLetters)
             }
 
-            // check if the word already exists
-            for (const word of words) {
-                if (word.userWord === wordEntered.toLowerCase()) {
-                    return setErrorMsg(errors.wordExists)
+            // check if the word already exists (applies only
+            // for words and not numbers)
+            if (game.gameType === GAME.type.WORD) {
+                console.log("REACHED WORD TESTER")
+                for (const word of words) {
+                    if (word.userWord === wordEntered.toLowerCase()) {
+                        return setErrorMsg(errors.wordExists)
+                    }
                 }
             }
-
-            if (!isValidWord(wordEntered.toLowerCase())) {
-                return setErrorMsg(errors.invalidWord)
+            // check if the word already exists (applies only
+            // for words and not numbers)
+            if (game.gameType === GAME.type.WORD) {
+                if (!isValidWord(wordEntered.toLowerCase())) {
+                    return setErrorMsg(errors.invalidWord)
+                }
             }
-
             addNewWord(wordEntered.toLowerCase())
         }
         setAttempts(prevAttempts => prevAttempts + 1)
@@ -162,7 +168,8 @@ const InputLettersScreen = (props) => {
                         <View style={styles.inputContentContainer}>
 
                             <TextInput
-                                // keyboardType="number-pad"
+
+                                keyboardType={game.gameType === GAME.type.NUMBER ? "number-pad" : 'default'}
                                 maxLength={game.letters}
                                 autoFocus value={wordEntered} autoCorrect={false} onChangeText={lettersHandler} underlineColorAndroid='transparent' placeholderTextColor={Colors.gray} style={styles.input} autoCapitalize='characters' placeholder="Type your word" />
                             <Text style={{ ...styles.commonText, ...styles.lettersLeft }}><Text style={{ color: Colors.orange }}>{lettersTyped} </Text>/ <Text >{game.letters}</Text>
