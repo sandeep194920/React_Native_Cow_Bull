@@ -108,6 +108,9 @@ const InputLettersScreen = (props) => {
         })
     }
     const addWordHandler = () => {
+        if (!wordEntered) {
+            return setErrorMsg(errors.noMinLetters)
+        }
         if (wordEntered) {
             if (wordEntered.length < game.letters) {
                 return setErrorMsg(errors.noMinLetters)
@@ -167,7 +170,7 @@ const InputLettersScreen = (props) => {
                         <View style={styles.inputContentContainer}>
 
                             <TextInput
-
+                                onSubmitEditing={addWordHandler}
                                 keyboardType={game.gameType === GAME.type.NUMBER ? "number-pad" : 'default'}
                                 maxLength={game.letters}
                                 autoFocus value={wordEntered} autoCorrect={false} onChangeText={lettersHandler} underlineColorAndroid='transparent' placeholderTextColor={Colors.gray} style={styles.input} autoCapitalize='characters' placeholder="Type your word" />

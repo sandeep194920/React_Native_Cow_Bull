@@ -68,7 +68,8 @@ export const errors = {
 
 export const gameResultTxt = {
     won: `Hurray! You're really a genius 😃 You guessed it right 😃`,
-    lost: `Sorry, You lost the game as you're out of attempts 😥 Better luck next time 😞`
+    lost: `Sorry, You lost the game as you're out of attempts 😥 Better luck next time 😞`,
+    revealed: `Sorry, You lost the game as you revealed the word 😥 Better luck next time 😞`
 }
 
 export const gameRulesText = [

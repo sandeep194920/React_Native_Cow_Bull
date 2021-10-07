@@ -101,7 +101,6 @@ const GameScreen = (props) => {
         if (words.length > 0 && words[words.length - 1].bull === game.letters) {
             props.navigation.navigate(Screens.GAME_OVER, { gameResult: 'won', navigation })
             setGameOver(true)
-
         }
 
         // lost the game
@@ -137,9 +136,33 @@ const GameScreen = (props) => {
         );
     }
 
+    const revealGame = () => {
+        Alert.alert(
+            "Would you give up?",
+            "Are you sure you want to reveal the letters and end the fun? You can use the hint if you want",
+            [
+                {
+                    text: "Not at all",
+                    // onPress: () => {
+                    //     console.log("Cancel Pressed")
+                    // },
+                    style: "default"
+                },
+                {
+                    text: "Yes, Reveal", onPress: () => {
+                        props.navigation.navigate(Screens.GAME_OVER, { gameResult: 'revealed', navigation })
+                        setGameOver(true)
+                    },
+                    style: 'destructive'
+                }
+            ],
+            { cancelable: false }
+        );
+    }
+
     let buttons = (
         <View style={styles.horizontalContainer}>
-            <GameButton propStyle={{ ...styles.revealBtn, ...styles.gameBtns }} btnTextProp={styles.revealBtnTxt}>Reveal</GameButton>
+            <GameButton func={revealGame} propStyle={{ ...styles.revealBtn, ...styles.gameBtns }} btnTextProp={styles.revealBtnTxt}>Reveal</GameButton>
             <GameButton
                 func={() => guessNextWord()}
                 // this above func is equal to below func and param combined
@@ -148,6 +171,7 @@ const GameScreen = (props) => {
                 propStyle={{ ...styles.guessBtn, ...styles.gameBtns }} btnTextProp={styles.guessBtnTxt}>Guess Next {game.gameType.slice(0, 1).toUpperCase()}{game.gameType.slice(1).toLowerCase()}</GameButton>
             <GameButton propStyle={{ ...styles.hintBtn, ...styles.gameBtns }} btnTextProp={styles.hintBtnTxt}>Hint</GameButton>
         </View>
+
     )
 
     if (gameOver) {

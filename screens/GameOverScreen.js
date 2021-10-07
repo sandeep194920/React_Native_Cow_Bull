@@ -11,7 +11,7 @@ let phoneHeight = Dimensions.get('window').height
 
 const GameOverScreen = (route, props) => {
     const { gameResult } = route.route.params
-    const { theme, computerChoice, attempts, resetGame } = useGlobal()
+    const { theme, game, computerChoice, attempts, resetGame } = useGlobal()
 
     const styles = StyleSheet.create({
         gameOverContainer: commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
@@ -25,22 +25,22 @@ const GameOverScreen = (route, props) => {
             color: 'white',
             fontSize: phoneWidth * 0.04,
             letterSpacing: phoneWidth * 0.001,
-            marginTop: phoneHeight * 0.03,
+            marginTop: phoneHeight * 0.015,
             lineHeight: phoneHeight * 0.045
         },
         attemptInfo: {
             color: 'white',
-            marginTop: phoneHeight * 0.02,
+            marginTop: phoneHeight * 0.03,
             fontSize: phoneWidth * 0.037,
 
         },
         attempt: {
             color: Colors.orange,
-
         },
         wordInfo: {
             color: 'white',
             fontSize: phoneWidth * 0.04,
+            marginTop: phoneHeight * 0.03
 
         },
         word: {
@@ -94,7 +94,7 @@ const GameOverScreen = (route, props) => {
                     {gameResultTxt[gameResult]}
                 </Text>
 
-                <Text style={styles.wordInfo}>The word is
+                <Text style={styles.wordInfo}>The hidden {game.gameType.toLowerCase()} is
                     <Text style={styles.word}> {computerChoice.toUpperCase()}</Text>
                 </Text>
 
