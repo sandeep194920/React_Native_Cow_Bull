@@ -11,7 +11,7 @@ let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 
 const GameScreen = (props) => {
-    const { theme, isGuessNext, guessNextWord, words, setWords, game, attempts, setAttempts, navigation, gameOver, setGameOver, resetGame } = useGlobal()
+    const { theme, isGuessNext, guessNextWord, words, setWords, game, attempts, setAttempts, navigation, gameOver, setGameOver, resetGame, computerChoice, setHintsTaken, hintsTaken, userHintPositions, setUserHintPositions } = useGlobal()
     const styles = StyleSheet.create({
         gameContainer: {
             ...commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
@@ -127,6 +127,7 @@ const GameScreen = (props) => {
                     text: "Quit", onPress: () => {
                         setWords([])
                         setAttempts(0)
+                        setHintsTaken(0)
                         props.navigation.goBack()
                     },
                     style: 'destructive'
@@ -160,6 +161,58 @@ const GameScreen = (props) => {
         );
     }
 
+    const hintsHandler = () => {
+
+        setHintsTaken(prevHints => prevHints + 1)
+        if (hintsTaken > GameAttempts[game.letters][game.difficulty].hints - 1) {
+            console.log(`Sorry no more hints`)
+            Alert.alert('Sorry, no more hints', `You've already taken ${GameAttempts[game.letters][game.difficulty].hints} hints`)
+        } else {
+
+            let randomLetterCount = Math.floor(Math.random() * computerChoice.length)
+
+            // if this hint is already shown then the new hint must be generated
+            while (userHintPositions.includes(randomLetterCount)) {
+                randomLetterCount = Math.floor(Math.random() * computerChoice.length)
+            }
+
+            setUserHintPositions(prevHints =>
+                [...prevHints, randomLetterCount])
+
+            const randomLetter = computerChoice[randomLetterCount]
+            console.log(`${randomLetter} is in the place ${randomLetterCount + 1}`)
+
+            Alert.alert(`Hint - ${hintsTaken + 1}`, `${randomLetter.toUpperCase()} is in the place ${randomLetterCount + 1}`)
+
+
+        }
+    }
+
+    const showHint = () => {
+        Alert.alert(
+            "Want a hint?",
+            "Are you sure you want to reveal a letter",
+            [
+                {
+                    text: "Cancel",
+                    // onPress: () => {
+                    //     console.log("Cancel Pressed")
+                    // },
+                    style: "default"
+                },
+                {
+                    text: "Yes, Please", onPress: () => {
+                        hintsHandler()
+                    },
+                    style: 'destructive'
+                }
+            ],
+            { cancelable: false }
+        );
+    }
+
+
+
     let buttons = (
         <View style={styles.horizontalContainer}>
             <GameButton func={revealGame} propStyle={{ ...styles.revealBtn, ...styles.gameBtns }} btnTextProp={styles.revealBtnTxt}>Reveal</GameButton>
@@ -169,7 +222,7 @@ const GameScreen = (props) => {
                 // func={guessNextWord}
                 // param={true}
                 propStyle={{ ...styles.guessBtn, ...styles.gameBtns }} btnTextProp={styles.guessBtnTxt}>Guess Next {game.gameType.slice(0, 1).toUpperCase()}{game.gameType.slice(1).toLowerCase()}</GameButton>
-            <GameButton propStyle={{ ...styles.hintBtn, ...styles.gameBtns }} btnTextProp={styles.hintBtnTxt}>Hint</GameButton>
+            <GameButton func={showHint} propStyle={{ ...styles.hintBtn, ...styles.gameBtns }} btnTextProp={styles.hintBtnTxt}>Hint</GameButton>
         </View>
 
     )

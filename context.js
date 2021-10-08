@@ -30,6 +30,11 @@ export const AppProvider = ({ children }) => {
     // computer word/number
     const [computerChoice, setComputerChoice] = useState(null);
 
+    // hint
+    const [hintsTaken, setHintsTaken] = useState(0)
+
+    const [userHintPositions, setUserHintPositions] = useState([])
+
     // navigation
 
     const changeTheme = () => {
@@ -65,12 +70,13 @@ export const AppProvider = ({ children }) => {
 
     const resetGame = (navigation) => {
         setAttempts(0)
+        setHintsTaken(0)
         setWords([])
         setGameOver(false)
         navigation.navigate(Screens.HOME)
     }
 
-    return <AppContext.Provider value={{ theme, changeTheme, isGuessNext, guessNextWord, words, setWords, addNewWord, errorMsg, setErrorMsg, initializeGame, game, attempts, setAttempts, GameAttempts, computerChoice, setComputerChoice, gameOver, setGameOver, resetGame }}>
+    return <AppContext.Provider value={{ theme, changeTheme, isGuessNext, guessNextWord, words, setWords, addNewWord, errorMsg, setErrorMsg, initializeGame, game, attempts, setAttempts, GameAttempts, computerChoice, setComputerChoice, gameOver, setGameOver, resetGame, hintsTaken, setHintsTaken, userHintPositions, setUserHintPositions }}>
         {children}
     </AppContext.Provider >
 }

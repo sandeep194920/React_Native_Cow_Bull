@@ -104,46 +104,58 @@ export const GAME = {
 export const GameAttempts = {
     '3': {
         EASY: {
-            chances: 10
+            chances: 10,
+            hints: 2,
         },
         MEDIUM: {
-            chances: 8
+            chances: 8,
+            hints: 1
         },
         HARD: {
-            chances: 6
+            chances: 6,
+            hints: 1
         }
     },
     '4': {
         EASY: {
-            chances: 12
+            chances: 12,
+            hints: 2
         },
         MEDIUM: {
-            chances: 10
+            chances: 10,
+            hints: 2
         },
         HARD: {
-            chances: 8
+            chances: 8,
+            hints: 1
         }
     },
     '5': {
         EASY: {
-            chances: 14
+            chances: 14,
+            hints: 3
         },
         MEDIUM: {
-            chances: 12
+            chances: 12,
+            hints: 3
         },
         HARD: {
-            chances: 9
+            chances: 9,
+            hints: 2
         }
     },
     '6': {
         EASY: {
-            chances: 15
+            chances: 15,
+            hints: 3
         },
         MEDIUM: {
-            chances: 12
+            chances: 12,
+            hints: 3
         },
         HARD: {
-            chances: 10
+            chances: 10,
+            hints: 2
         }
     }
 }
