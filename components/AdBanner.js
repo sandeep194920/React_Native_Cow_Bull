@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, Dimensions, } from 'react-native'
+import { StyleSheet, Text, View, Dimensions, Platform, } from 'react-native'
 import {
     AdMobBanner,
     AdMobInterstitial,
@@ -22,12 +22,15 @@ const AdBanner = (props) => {
             alignItems: 'center',
         }
     })
+
+    let adUnit = Platform.OS === "ios" ? "ca-app-pub-7296629630933757/2926375308" : "ca-app-pub-7296629630933757/5957036786"
+
     return (
         <View style={styles.adBannerContainer}>
             <AdMobBanner
                 style={{ ...styles.ad, ...props.adStyle }}
                 bannerSize={props.bannerStyle}
-                adUnitID="ca-app-pub-3940256099942544/6300978111"
+                adUnitID={adUnit}
                 servePersonalizedAds
                 onDidFailToReceiveAdWithError={() => console.log("Banner error")} />
         </View>

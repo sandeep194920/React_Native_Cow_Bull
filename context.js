@@ -84,9 +84,16 @@ export const AppProvider = ({ children }) => {
     }
 
     // interstital ads
+
+    // AD UNIT ID FOR INTERSTITIAL AD
+    const interstitialID = Platform.select({
+        ios: "ca-app-pub-7296629630933757/6577668091",
+        android: "ca-app-pub-7296629630933757/5217496720",
+    });
+
     const interstitialAds = async () => {
         // Display an interstitial
-        await AdMobInterstitial.setAdUnitID('ca-app-pub-3940256099942544/1033173712'); // Test ID, Replace with your-admob-unit-id
+        await AdMobInterstitial.setAdUnitID(interstitialID); // Test ID, Replace with your-admob-unit-id
 
         try {
             await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: true });
@@ -97,9 +104,14 @@ export const AppProvider = ({ children }) => {
     }
 
     // reward ads
+    const rewardedAdID = Platform.select({
+        ios: "ca-app-pub-7296629630933757/4887497692",
+        android: "ca-app-pub-7296629630933757/6865620312",
+    });
+
     const rewardAds = async () => {
         // Display a rewarded ad
-        await AdMobRewarded.setAdUnitID('ca-app-pub-3940256099942544/5224354917'); // Test ID, Replace with your-admob-unit-id
+        await AdMobRewarded.setAdUnitID(rewardedAdID); // Test ID, Replace with your-admob-unit-id
         try {
             await AdMobRewarded.requestAdAsync();
             await AdMobRewarded.showAdAsync();
