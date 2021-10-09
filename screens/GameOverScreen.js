@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, Dimensions, Text, View, Image, BackHandler, Platform } from 'react-native'
+import AdBanner from '../components/AdBanner'
 import GameButton from '../components/GameButton'
 import Header from '../components/Header'
 import { useGlobal } from '../context'
@@ -88,6 +89,7 @@ const GameOverScreen = (route, props) => {
 
     return (
         <View style={styles.gameOverContainer}>
+
             <Header navigation={route.navigation} />
             <View style={styles.gameInfoContainer}>
                 <Text style={styles.gameInfo}>
@@ -109,11 +111,13 @@ const GameOverScreen = (route, props) => {
                 }
             </View>
             <View style={styles.buttonContainer}>
+
                 <GameButton
                     func={() => resetGame(route.navigation)}
                     propStyle={{ ...styles.playBtn, ...styles.gameBtns }} btnTextProp={styles.playBtnTxt}>Play Again</GameButton>
                 {Platform.OS === 'android' && <GameButton func={exitApp} propStyle={{ ...styles.quitBtn, ...styles.gameBtns }} btnTextProp={styles.quitBtnTxt}>Quit</GameButton>}
             </View>
+
         </View>
     )
 }

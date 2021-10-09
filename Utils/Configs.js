@@ -83,6 +83,16 @@ export const gameRulesText = [
     'To see these rules, click on the game logo anywhere in the app'
 ]
 
+export const AdBannerTypes = {
+    banner: 'banner',
+    largeBanner: 'largeBanner',
+    mediumRectangle: 'mediumRectangle',
+    fullBanner: 'fullBanner',
+    leaderboard: 'leaderboard',
+    smartBannerPortrait: 'smartBannerPortrait',
+    smartBannerLandscape: 'smartBannerLandscape'
+}
+
 export const GAME = {
     type: {
         NUMBER: 'NUMBER',

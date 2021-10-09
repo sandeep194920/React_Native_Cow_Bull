@@ -11,7 +11,7 @@ let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 
 const GameScreen = (props) => {
-    const { theme, isGuessNext, guessNextWord, words, setWords, game, attempts, setAttempts, navigation, gameOver, setGameOver, resetGame, computerChoice, setHintsTaken, hintsTaken, userHintPositions, setUserHintPositions } = useGlobal()
+    const { theme, isGuessNext, guessNextWord, words, setWords, game, attempts, setAttempts, navigation, gameOver, setGameOver, resetGame, computerChoice, setHintsTaken, hintsTaken, userHintPositions, setUserHintPositions, interstitialAds, rewardAds } = useGlobal()
     const styles = StyleSheet.create({
         gameContainer: {
             ...commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
@@ -137,6 +137,14 @@ const GameScreen = (props) => {
         );
     }
 
+    useEffect(() => {
+        if (words.length === 5 || words.length === 9) {
+            console.log("REACJED 5 and 9")
+            interstitialAds()
+        }
+    }, [words])
+
+
     const revealGame = () => {
         Alert.alert(
             "Would you give up?",
@@ -151,6 +159,7 @@ const GameScreen = (props) => {
                 },
                 {
                     text: "Yes, Reveal", onPress: () => {
+                        interstitialAds()
                         props.navigation.navigate(Screens.GAME_OVER, { gameResult: 'revealed', navigation })
                         setGameOver(true)
                     },
@@ -180,10 +189,10 @@ const GameScreen = (props) => {
                 [...prevHints, randomLetterCount])
 
             const randomLetter = computerChoice[randomLetterCount]
-            console.log(`${randomLetter} is in the place ${randomLetterCount + 1}`)
+            console.log(`Letter ${randomLetter} exists in hidden ${game.gameType}`)
+            rewardAds()
 
-            Alert.alert(`Hint - ${hintsTaken + 1}`, `${randomLetter.toUpperCase()} is in the place ${randomLetterCount + 1}`)
-
+            Alert.alert(`Hint - ${hintsTaken + 1}`, `Letter ${randomLetter.toUpperCase()} exists in hidden ${game.gameType.toLowerCase()}`)
 
         }
     }
@@ -202,6 +211,7 @@ const GameScreen = (props) => {
                 },
                 {
                     text: "Yes, Please", onPress: () => {
+                        // rewardAds()
                         hintsHandler()
                     },
                     style: 'destructive'

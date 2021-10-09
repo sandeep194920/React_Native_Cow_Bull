@@ -2,6 +2,13 @@ import React, { useState, useContext } from 'react'
 import { GAME, GameAttempts, Screens } from './Utils/Configs';
 import { gameWords } from './Utils/CommonText';
 import { cowBullCount } from './GameLogic/cowbullCount';
+import {
+    AdMobBanner,
+    AdMobInterstitial,
+    PublisherBanner,
+    AdMobRewarded,
+    setTestDeviceIDAsync,
+} from 'expo-ads-admob';
 
 const AppContext = React.createContext()
 
@@ -76,7 +83,33 @@ export const AppProvider = ({ children }) => {
         navigation.navigate(Screens.HOME)
     }
 
-    return <AppContext.Provider value={{ theme, changeTheme, isGuessNext, guessNextWord, words, setWords, addNewWord, errorMsg, setErrorMsg, initializeGame, game, attempts, setAttempts, GameAttempts, computerChoice, setComputerChoice, gameOver, setGameOver, resetGame, hintsTaken, setHintsTaken, userHintPositions, setUserHintPositions }}>
+    // interstital ads
+    const interstitialAds = async () => {
+        // Display an interstitial
+        await AdMobInterstitial.setAdUnitID('ca-app-pub-3940256099942544/1033173712'); // Test ID, Replace with your-admob-unit-id
+
+        try {
+            await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: true });
+            await AdMobInterstitial.showAdAsync();
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    // reward ads
+    const rewardAds = async () => {
+        // Display a rewarded ad
+        await AdMobRewarded.setAdUnitID('ca-app-pub-3940256099942544/5224354917'); // Test ID, Replace with your-admob-unit-id
+        try {
+            await AdMobRewarded.requestAdAsync();
+            await AdMobRewarded.showAdAsync();
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
+
+    return <AppContext.Provider value={{ theme, changeTheme, isGuessNext, guessNextWord, words, setWords, addNewWord, errorMsg, setErrorMsg, initializeGame, game, attempts, setAttempts, GameAttempts, computerChoice, setComputerChoice, gameOver, setGameOver, resetGame, hintsTaken, setHintsTaken, userHintPositions, setUserHintPositions, interstitialAds, rewardAds }}>
         {children}
     </AppContext.Provider >
 }

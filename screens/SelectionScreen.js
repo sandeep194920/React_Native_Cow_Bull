@@ -1,10 +1,11 @@
 import React from 'react'
 import { StyleSheet, Text, View, Dimensions } from 'react-native'
-import { Colors, commonStyles, GAME, Screens } from '../Utils/Configs'
+import { AdBannerTypes, Colors, commonStyles, GAME, Screens } from '../Utils/Configs'
 import { useGlobal } from '../context'
 import GameButton from '../components/GameButton';
 import Header from '../components/Header';
 import { computerWord, computerNumber } from '../GameLogic/computerChoice';
+import AdBanner from '../components/AdBanner';
 
 let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
@@ -58,6 +59,9 @@ const SelectionScreen = (props) => {
         },
         gameType: {
             color: Colors.orange
+        },
+        ad: {
+            marginBottom: phoneHeight * 0.99,
         }
     })
 
@@ -111,6 +115,7 @@ const SelectionScreen = (props) => {
 
                 })}
             </View>
+            {/* <AdBanner bannerStyle={AdBannerTypes.banner} adStyle={styles.ad} /> */}
             <View style={styles.playButtonContainer}>
                 <GameButton func={playGame} btnTextProp={styles.playButtonText} propStyle={styles.playButton}>PLAY</GameButton>
             </View>

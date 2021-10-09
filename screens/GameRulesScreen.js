@@ -2,9 +2,10 @@ import React from 'react'
 import { StyleSheet, Dimensions, Text, ScrollView, View, Image, BackHandler, Platform } from 'react-native'
 import Header from '../components/Header'
 import { useGlobal } from '../context'
-import { Colors, commonStyles, gameRulesText } from '../Utils/Configs'
+import { AdBannerTypes, Colors, commonStyles, gameRulesText } from '../Utils/Configs'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import GameButton from '../components/GameButton'
+import AdBanner from '../components/AdBanner'
 
 let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
@@ -89,6 +90,9 @@ const GameRulesScreen = (props) => {
             textAlign: 'center',
             letterSpacing: phoneWidth * 0.001,
             color: Colors.lightGreen
+        },
+        ad: {
+            marginTop: 0,
         }
 
     })
@@ -188,6 +192,8 @@ const GameRulesScreen = (props) => {
                     <GameButton func={() => props.navigation.goBack()} propStyle={{ ...styles.revealBtn, ...styles.btn }} btnTextProp={styles.btnTxt}>Back To Game</GameButton>
 
                 </ScrollView>
+                <AdBanner adStyle={styles.ad} bannerStyle={AdBannerTypes.smartBannerPortrait} />
+
             </ScrollView>
 
         </View >

@@ -2,15 +2,25 @@ import React, { useEffect } from 'react'
 import { StyleSheet, Text, View, Image, Dimensions, TouchableOpacity } from 'react-native'
 import GameButton from '../components/GameButton'
 import { useGlobal } from '../context'
-import { Colors, commonStyles, Screens } from '../Utils/Configs'
+import { AdBannerTypes, Colors, commonStyles, Screens } from '../Utils/Configs'
 import { Fontisto } from '@expo/vector-icons';
 import { GAME } from '../Utils/Configs'
+
+
+import {
+    AdMobBanner,
+    AdMobInterstitial,
+    PublisherBanner,
+    AdMobRewarded,
+    setTestDeviceIDAsync,
+} from 'expo-ads-admob';
+import AdBanner from '../components/AdBanner'
+
 let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
-
 const HomeScreen = (props) => {
     const { navigation } = props
-    const { theme, changeTheme, initializeGame } = useGlobal();
+    const { theme, changeTheme, initializeGame, rewardAds } = useGlobal();
     const styles = StyleSheet.create({
         homeContainer: {
             paddingTop: phoneHeight * .12,
@@ -58,7 +68,8 @@ const HomeScreen = (props) => {
         },
         toggleIcon: {
             ...commonStyles(theme, phoneHeight, phoneWidth).common.iconStyle,
-        }
+        },
+
     })
 
     const playGame = (gameType) => {
@@ -77,6 +88,10 @@ const HomeScreen = (props) => {
         console.log("Here's the rules")
         props.navigation.navigate(Screens.RULES)
     }
+
+    // useEffect(() => {
+    //     rewardAds()
+    // }, [])
 
     return (
         <View style={styles.homeContainer}>
@@ -103,6 +118,7 @@ const HomeScreen = (props) => {
             <TouchableOpacity style={styles.ruleBtnContainer} activeOpacity={0.8}>
                 <Text onPress={showGameRules} style={styles.ruleBtn}>How to Play?</Text>
             </TouchableOpacity>
+            <AdBanner bannerStyle={AdBannerTypes.smartBannerPortrait} />
         </View>
     )
 }
