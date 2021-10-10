@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "cowbull",
+    "name": "Match Me If U Can (Cow Bull)",
     "slug": "cowbull",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -15,12 +15,16 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
+      "bundleIdentifier": "com.starcoding.matchmeifucan",
+      "buildNumber": "1.0.0",
       "supportsTablet": true,
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-7296629630933757~8746867567"
       }
     },
     "android": {
+      "package": "com.starcoding.matchmeifucan_cow_bull",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

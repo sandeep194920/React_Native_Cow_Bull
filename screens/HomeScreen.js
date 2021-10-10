@@ -89,10 +89,6 @@ const HomeScreen = (props) => {
         props.navigation.navigate(Screens.RULES)
     }
 
-    // useEffect(() => {
-    //     rewardAds()
-    // }, [])
-
     return (
         <View style={styles.homeContainer}>
             <View>

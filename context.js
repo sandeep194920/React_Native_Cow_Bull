@@ -9,9 +9,9 @@ import {
     AdMobRewarded,
     setTestDeviceIDAsync,
 } from 'expo-ads-admob';
+import { BackHandler } from 'react-native';
 
 const AppContext = React.createContext()
-
 export const AppProvider = ({ children }) => {
 
     const [theme, setTheme] = useState('black')
@@ -75,12 +75,21 @@ export const AppProvider = ({ children }) => {
         })
     }
 
-    const resetGame = (navigation) => {
+    const gameDefaults = (navigation) => {
         setAttempts(0)
         setHintsTaken(0)
         setWords([])
         setGameOver(false)
         navigation.navigate(Screens.HOME)
+    }
+
+    const resetGame = (navigation) => {
+        gameDefaults(navigation)
+    }
+
+    const exitApp = (navigation) => {
+        gameDefaults(navigation)
+        BackHandler.exitApp()
     }
 
     // interstital ads
@@ -121,7 +130,8 @@ export const AppProvider = ({ children }) => {
         }
     }
 
-    return <AppContext.Provider value={{ theme, changeTheme, isGuessNext, guessNextWord, words, setWords, addNewWord, errorMsg, setErrorMsg, initializeGame, game, attempts, setAttempts, GameAttempts, computerChoice, setComputerChoice, gameOver, setGameOver, resetGame, hintsTaken, setHintsTaken, userHintPositions, setUserHintPositions, interstitialAds, rewardAds }}>
+
+    return <AppContext.Provider value={{ theme, changeTheme, isGuessNext, guessNextWord, words, setWords, addNewWord, errorMsg, setErrorMsg, initializeGame, game, attempts, setAttempts, GameAttempts, computerChoice, setComputerChoice, gameOver, setGameOver, resetGame, hintsTaken, setHintsTaken, userHintPositions, setUserHintPositions, interstitialAds, rewardAds, exitApp }}>
         {children}
     </AppContext.Provider >
 }

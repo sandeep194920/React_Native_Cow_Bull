@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, View, Dimensions, TextInput, Platform, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, Modal, TouchableOpacity } from 'react-native'
-import { Colors, commonStyles, GameAttempts, GAME, Screens } from '../Utils/Configs'
+import { StyleSheet, Text, View, Dimensions, TextInput, Platform, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, Modal, } from 'react-native'
+import { Colors, commonStyles, GameAttempts, GAME } from '../Utils/Configs'
 import { useGlobal } from '../context'
 import GameButton from '../components/GameButton';
 import Header from '../components/Header';
@@ -29,11 +29,11 @@ const InputLettersScreen = (props) => {
             borderRadius: 8,
             paddingLeft: phoneWidth * 0.05,
             color: 'white',
-            letterSpacing: phoneWidth * 0.007,
+            letterSpacing: phoneWidth * 0.002,
             padding: Platform.OS === 'ios' ? phoneWidth * 0.03 : 0,
             flex: 2,
             marginRight: phoneWidth * 0.03,
-            fontSize: phoneHeight * 0.02
+            fontSize: phoneHeight * 0.014
         },
         lettersLeft: {
             ...commonStyles(theme, phoneHeight, phoneWidth).common.borderedText,
@@ -95,7 +95,6 @@ const InputLettersScreen = (props) => {
     }
 
     const guessCancel = () => {
-        console.log('reached guess cancel')
         guessNextWord(false)
         setLettersTyped(0)
         setWordEntered('')
@@ -121,14 +120,14 @@ const InputLettersScreen = (props) => {
 
             // check if the word already exists (applies only
             // for words and not numbers)
-            if (game.gameType === GAME.type.WORD) {
-                console.log("REACHED WORD TESTER")
+            if (game.gameType === GAME.type.WORD || game.gameType === GAME.type.NUMBER) {
                 for (const word of words) {
                     if (word.userWord === wordEntered.toLowerCase()) {
                         return setErrorMsg(errors.wordExists)
                     }
                 }
             }
+
             // check if the word already exists (applies only
             // for words and not numbers)
             if (game.gameType === GAME.type.WORD) {
@@ -141,6 +140,7 @@ const InputLettersScreen = (props) => {
         setAttempts(prevAttempts => prevAttempts + 1)
         guessCancel()
         setErrorMsg('')
+
     }
     const [firstAttempt, setFirstAttempt] = useState(false)
     useEffect(() => {
@@ -149,7 +149,6 @@ const InputLettersScreen = (props) => {
         }
         setFirstAttempt(false)
     }, [words])
-
 
     return (
         <KeyboardAvoidingView
@@ -170,10 +169,12 @@ const InputLettersScreen = (props) => {
                         <View style={styles.inputContentContainer}>
 
                             <TextInput
+                                // ref={keyRef}
+                                autoFocus
                                 onSubmitEditing={addWordHandler}
                                 keyboardType={game.gameType === GAME.type.NUMBER ? "number-pad" : 'default'}
                                 maxLength={game.letters}
-                                autoFocus value={wordEntered} autoCorrect={false} onChangeText={lettersHandler} underlineColorAndroid='transparent' placeholderTextColor={Colors.gray} style={styles.input} autoCapitalize='characters' placeholder="Type your word" />
+                                value={wordEntered} autoCorrect={false} onChangeText={lettersHandler} underlineColorAndroid='transparent' placeholderTextColor={Colors.gray} style={styles.input} autoCapitalize='characters' placeholder="Type your letters (Press here)" />
                             <Text style={{ ...styles.commonText, ...styles.lettersLeft }}><Text style={{ color: Colors.orange }}>{lettersTyped} </Text>/ <Text >{game.letters}</Text>
                             </Text>
                         </View>

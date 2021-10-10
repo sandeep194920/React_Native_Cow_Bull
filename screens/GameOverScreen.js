@@ -12,7 +12,7 @@ let phoneHeight = Dimensions.get('window').height
 
 const GameOverScreen = (route, props) => {
     const { gameResult } = route.route.params
-    const { theme, game, computerChoice, attempts, resetGame } = useGlobal()
+    const { theme, game, computerChoice, attempts, resetGame, exitApp } = useGlobal()
 
     const styles = StyleSheet.create({
         gameOverContainer: commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
@@ -83,9 +83,9 @@ const GameOverScreen = (route, props) => {
         },
     })
 
-    const exitApp = () => {
-        BackHandler.exitApp()
-    }
+    // const exitApp = () => {
+    //     BackHandler.exitApp()
+    // }
 
     return (
         <View style={styles.gameOverContainer}>
@@ -115,7 +115,7 @@ const GameOverScreen = (route, props) => {
                 <GameButton
                     func={() => resetGame(route.navigation)}
                     propStyle={{ ...styles.playBtn, ...styles.gameBtns }} btnTextProp={styles.playBtnTxt}>Play Again</GameButton>
-                {Platform.OS === 'android' && <GameButton func={exitApp} propStyle={{ ...styles.quitBtn, ...styles.gameBtns }} btnTextProp={styles.quitBtnTxt}>Quit</GameButton>}
+                {Platform.OS === 'android' && <GameButton func={() => exitApp(route.navigation)} propStyle={{ ...styles.quitBtn, ...styles.gameBtns }} btnTextProp={styles.quitBtnTxt}>Quit</GameButton>}
             </View>
 
         </View>

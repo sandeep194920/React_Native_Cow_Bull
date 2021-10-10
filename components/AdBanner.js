@@ -23,14 +23,13 @@ const AdBanner = (props) => {
         }
     })
 
-    let adUnit = Platform.OS === "ios" ? "ca-app-pub-7296629630933757/2926375308" : "ca-app-pub-7296629630933757/5957036786"
 
     return (
         <View style={styles.adBannerContainer}>
             <AdMobBanner
                 style={{ ...styles.ad, ...props.adStyle }}
                 bannerSize={props.bannerStyle}
-                adUnitID={adUnit}
+                adUnitID={Platform.OS === "ios" ? "ca-app-pub-7296629630933757/2926375308" : "ca-app-pub-7296629630933757/5957036786"}
                 servePersonalizedAds
                 onDidFailToReceiveAdWithError={() => console.log("Banner error")} />
         </View>

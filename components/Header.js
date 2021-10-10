@@ -35,7 +35,7 @@ const Header = (props) => {
 
     return (
         <View style={{ ...styles.header, ...props.propHeader }}>
-            <Ionicons onPress={props.func ? props.func : () => props.navigation.goBack()} name="arrow-back" size={phoneWidth / 18} color={Colors.orange} />
+            <Ionicons onPress={props.func ? props.func : () => props.navigation.goBack()} name="arrow-back" size={phoneWidth * 0.06} color={Colors.orange} />
             <TouchableOpacity onPress={showGameRules}>
                 <Image style={{ ...styles.img, ...props.propHeaderImg }} source={require('../assets/Logo.png')} />
             </TouchableOpacity>

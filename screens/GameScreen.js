@@ -11,7 +11,7 @@ let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 
 const GameScreen = (props) => {
-    const { theme, isGuessNext, guessNextWord, words, setWords, game, attempts, setAttempts, navigation, gameOver, setGameOver, resetGame, computerChoice, setHintsTaken, hintsTaken, userHintPositions, setUserHintPositions, interstitialAds, rewardAds } = useGlobal()
+    const { theme, isGuessNext, guessNextWord, words, setWords, game, attempts, setAttempts, navigation, gameOver, setGameOver, resetGame, computerChoice, setHintsTaken, hintsTaken, userHintPositions, setUserHintPositions, interstitialAds, rewardAds, exitApp } = useGlobal()
     const styles = StyleSheet.create({
         gameContainer: {
             ...commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
@@ -245,7 +245,7 @@ const GameScreen = (props) => {
                 <GameButton
                     func={() => resetGame(props.navigation)}
                     propStyle={{ ...styles.guessBtn, ...styles.gameBtns }} btnTextProp={styles.guessBtnTxt}>Play Again</GameButton>
-                {Platform.OS === 'android' && <GameButton propStyle={{ ...styles.quitBtn, ...styles.gameBtns }} btnTextProp={styles.quitBtnTxt}>Quit</GameButton>}
+                {Platform.OS === 'android' && <GameButton propStyle={{ ...styles.quitBtn, ...styles.gameBtns }} func={() => exitApp(props.navigation)} btnTextProp={styles.quitBtnTxt}>Quit</GameButton>}
                 {Platform.OS === 'ios' && <Text style={{ width: phoneWidth * 0.2 }}></Text>}
             </View>
         )
