@@ -14,7 +14,7 @@ import { BackHandler } from 'react-native';
 const AppContext = React.createContext()
 export const AppProvider = ({ children }) => {
 
-    const [theme, setTheme] = useState('black')
+    const [theme, setTheme] = useState('blue')
 
     // Modal opens when guess btn is pressed
     const [isGuessNext, setIsGuessNext] = useState(false)
@@ -57,6 +57,13 @@ export const AppProvider = ({ children }) => {
 
         console.log(`Computer choice is ${computerChoice}`)
         let { cow, bull } = cowBullCount(computerChoice, userWord)
+
+        // FOR HARD LEVEL
+        // if the user word contains even a single bull, then it becomes easy to guess. So we need to re produce the computer word if the first attempt gets atleast one bull
+
+        // while (attempts === 1) {
+        //     console.log(`This is attempt 1`)
+        // }
 
         let word = {
             userWord,

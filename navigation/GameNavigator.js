@@ -17,7 +17,8 @@ const GameNavigator = () => {
         <NavigationContainer>
             <Stack.Navigator
                 screenOptions={{
-                    headerShown: false
+                    headerShown: false,
+                    gestureEnabled: false // disabling go back action
                 }}
                 initialRouteName={Screens.HOME}>
                 <Stack.Screen

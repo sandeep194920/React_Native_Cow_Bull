@@ -155,6 +155,7 @@ const InputLettersScreen = (props) => {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             keyboardVerticalOffset={70}>
             <Modal
+                onRequestClose={guessCancel}
                 visible={props.visible} animationType="slide">
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <View style={styles.inputContainer}>

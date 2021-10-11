@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { StyleSheet, Text, View, Dimensions, Image, ScrollView, Platform, Modal, Alert } from 'react-native'
+import { StyleSheet, Text, View, Dimensions, BackHandler, Image, ScrollView, Platform, Modal, Alert } from 'react-native'
 import { useGlobal } from '../context'
 import { Colors, commonStyles, GameAttempts, Screens } from '../Utils/Configs'
 import Attempt from '../components/Attempt';
@@ -111,7 +111,9 @@ const GameScreen = (props) => {
 
     }, [words])
 
-    const gameCancelConfirmHandler = () => {
+
+    const exitCurrentGame = () => {
+        console.log("Going back")
         Alert.alert(
             "Sad to see you go 😌 ",
             "Are you sure you want to quit the game?",
@@ -135,6 +137,33 @@ const GameScreen = (props) => {
             ],
             { cancelable: false }
         );
+    }
+
+    const gameCancelConfirmHandler = () => {
+        // Alert.alert(
+        //     "Sad to see you go 😌 ",
+        //     "Are you sure you want to quit the game?",
+        //     [
+        //         {
+        //             text: "Keep Playing",
+        //             // onPress: () => {
+        //             //     console.log("Cancel Pressed")
+        //             // },
+        //             style: "default"
+        //         },
+        //         {
+        //             text: "Quit", onPress: () => {
+        //                 setWords([])
+        //                 setAttempts(0)
+        //                 setHintsTaken(0)
+        //                 props.navigation.goBack()
+        //             },
+        //             style: 'destructive'
+        //         }
+        //     ],
+        //     { cancelable: false }
+        // );
+        exitCurrentGame()
     }
 
     useEffect(() => {
@@ -250,6 +279,28 @@ const GameScreen = (props) => {
             </View>
         )
     }
+
+    useEffect(() => {
+        const backAction = () => {
+            // Alert.alert("Hold on!", "Are you sure you want to go back?", [
+            //     {
+            //         text: "Cancel",
+            //         onPress: () => null,
+            //         style: "cancel"
+            //     },
+            //     { text: "YES", onPress: () => BackHandler.exitApp() }
+            // ]);
+            exitCurrentGame()
+            return true;
+        };
+
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        );
+
+        return () => backHandler.remove();
+    }, []);
 
     return (
         <View style={styles.gameContainer}>
