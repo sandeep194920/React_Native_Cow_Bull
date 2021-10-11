@@ -62,24 +62,17 @@ export const AppProvider = ({ children }) => {
         // FOR HARD LEVEL
         // if the user word contains even a single bull, then it becomes easy to guess. So we need to re produce the computer word if the first attempt gets atleast one bull
         while (attempts === 0 && game.difficulty === GAME.level.HARD && bull > 0) {
-            console.log(`This is first attemot`)
-            console.log(`New Computer choice is ${computerChoice}`);
-
             let newCompChoice = ''
             if (game.gameType === GAME.type.NUMBER) {
                 newCompChoice = computerNumber(game.letters)
-                console.log(`The comp number is ${newCompChoice}`)
+                console.log(`The New Computer choice is ${newCompChoice}`)
             } else if (game.gameType === GAME.type.WORD) {
                 newCompChoice = computerWord(game.letters)
-                console.log(`The comp word is ${newCompChoice}`)
+                console.log(`The New Computer choice is ${newCompChoice}`)
             }
-            setComputerChoice(newCompChoice)
-
-            bull = cowBullCount(newCompChoice, userWord).bull
-            cow = cowBullCount(newCompChoice, userWord).cow
+            setComputerChoice(newCompChoice);
+            ({ bull, cow } = cowBullCount(newCompChoice, userWord))
         }
-
-
 
         let word = {
             userWord,
