@@ -43,6 +43,9 @@ export const AppProvider = ({ children }) => {
 
     const [userHintPositions, setUserHintPositions] = useState([])
 
+    // focus input in input screen
+    const [focusInput, setFocusInput] = useState(true)
+
     // navigation
 
     const changeTheme = () => {
@@ -50,6 +53,7 @@ export const AppProvider = ({ children }) => {
     }
 
     const guessNextWord = (bool = true) => {
+        setFocusInput(true)
         setIsGuessNext(bool)
     }
 
@@ -112,8 +116,23 @@ export const AppProvider = ({ children }) => {
 
     // AD UNIT ID FOR INTERSTITIAL AD
     const interstitialID = Platform.select({
-        ios: "ca-app-pub-7296629630933757/6577668091",
-        android: "ca-app-pub-7296629630933757/5217496720",
+
+        // uncommnet below for prod
+
+        // ios: "ca-app-pub-7296629630933757/6577668091",
+        // android: "ca-app-pub-7296629630933757/5217496720",
+
+        // uncommnet above for prod
+
+
+        // test ads below
+
+        ios: "ca-app-pub-3940256099942544/1033173712",
+        android: "ca-app-pub-3940256099942544/1033173712"
+
+        // test ads above
+
+
     });
 
     const interstitialAds = async () => {
@@ -130,8 +149,22 @@ export const AppProvider = ({ children }) => {
 
     // reward ads
     const rewardedAdID = Platform.select({
-        ios: "ca-app-pub-7296629630933757/4887497692",
-        android: "ca-app-pub-7296629630933757/6865620312",
+
+        // uncommnet below for prod
+
+        // ios: "ca-app-pub-7296629630933757/4887497692",
+        // android: "ca-app-pub-7296629630933757/6865620312",
+
+        // uncommnet above for prod
+
+        // test ads below
+
+        ios: "ca-app-pub-3940256099942544/5224354917",
+        android: "ca-app-pub-3940256099942544/5224354917"
+
+        // test ads above
+
+
     });
 
     const rewardAds = async () => {
@@ -147,7 +180,7 @@ export const AppProvider = ({ children }) => {
     }
 
 
-    return <AppContext.Provider value={{ theme, changeTheme, isGuessNext, guessNextWord, words, setWords, addNewWord, errorMsg, setErrorMsg, initializeGame, game, attempts, setAttempts, GameAttempts, computerChoice, setComputerChoice, gameOver, setGameOver, resetGame, hintsTaken, setHintsTaken, userHintPositions, setUserHintPositions, interstitialAds, rewardAds, exitApp }}>
+    return <AppContext.Provider value={{ theme, changeTheme, isGuessNext, guessNextWord, words, setWords, addNewWord, errorMsg, setErrorMsg, initializeGame, game, attempts, setAttempts, GameAttempts, computerChoice, setComputerChoice, gameOver, setGameOver, resetGame, hintsTaken, setHintsTaken, userHintPositions, setUserHintPositions, interstitialAds, rewardAds, exitApp, focusInput, setFocusInput }}>
         {children}
     </AppContext.Provider >
 }
