@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { StyleSheet, Dimensions, Text, View, Image, BackHandler, Platform } from 'react-native'
 import AdBanner from '../components/AdBanner'
 import GameButton from '../components/GameButton'
 import Header from '../components/Header'
 import { useGlobal } from '../context'
-import { Colors, commonStyles, gameResultTxt } from '../Utils/Configs'
+import { AdBannerTypes, Colors, commonStyles, gameResultTxt } from '../Utils/Configs'
 
 let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
@@ -12,7 +12,7 @@ let phoneHeight = Dimensions.get('window').height
 
 const GameOverScreen = (route, props) => {
     const { gameResult } = route.route.params
-    const { theme, game, computerChoice, attempts, resetGame, exitApp } = useGlobal()
+    const { theme, game, computerChoice, attempts, resetGame, exitApp, setLoading } = useGlobal()
 
     const styles = StyleSheet.create({
         gameOverContainer: commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
@@ -76,21 +76,29 @@ const GameOverScreen = (route, props) => {
             justifyContent: 'center',
             marginVertical: phoneHeight * 0.04
         },
-        img: {
+        logoImg: {
+            width: phoneHeight * .09,
+            height: phoneHeight * .09,
+        },
+        gameOverImg: {
             alignItems: 'center',
-            height: phoneHeight * 0.3,
+            height: phoneHeight * 0.27,
             width: phoneWidth * 0.8
         },
+        ad: {
+            marginTop: -phoneHeight * 0.03
+        }
     })
 
-    // const exitApp = () => {
-    //     BackHandler.exitApp()
-    // }
+    useEffect(() => {
+        setLoading(false)
+    }, [])
 
     return (
         <View style={styles.gameOverContainer}>
 
-            <Header navigation={route.navigation} />
+            <Header navigation={route.navigation} propHeaderImg={styles.logoImg} />
+
             <View style={styles.gameInfoContainer}>
                 <Text style={styles.gameInfo}>
                     {gameResultTxt[gameResult]}
@@ -106,8 +114,8 @@ const GameOverScreen = (route, props) => {
             </View>
             <View style={styles.imgContainer}>
                 {gameResult === 'won' ?
-                    <Image style={styles.img} source={require(`../assets/won.jpeg`)} /> :
-                    <Image style={styles.img} source={require(`../assets/lost.jpeg`)} />
+                    <Image style={styles.gameOverImg} source={require(`../assets/won.jpeg`)} /> :
+                    <Image style={styles.gameOverImg} source={require(`../assets/lost.jpeg`)} />
                 }
             </View>
             <View style={styles.buttonContainer}>
@@ -116,8 +124,11 @@ const GameOverScreen = (route, props) => {
                     func={() => resetGame(route.navigation)}
                     propStyle={{ ...styles.playBtn, ...styles.gameBtns }} btnTextProp={styles.playBtnTxt}>Play Again</GameButton>
                 {Platform.OS === 'android' && <GameButton func={() => exitApp(route.navigation)} propStyle={{ ...styles.quitBtn, ...styles.gameBtns }} btnTextProp={styles.quitBtnTxt}>Quit</GameButton>}
-            </View>
 
+            </View>
+            <View style={styles.ad}>
+                <AdBanner />
+            </View>
         </View>
     )
 }

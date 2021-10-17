@@ -46,6 +46,10 @@ export const AppProvider = ({ children }) => {
     // focus input in input screen
     const [focusInput, setFocusInput] = useState(true)
 
+    // loading
+
+    const [loading, setLoading] = useState(false)
+
     // navigation
 
     const changeTheme = () => {
@@ -180,7 +184,7 @@ export const AppProvider = ({ children }) => {
     }
 
 
-    return <AppContext.Provider value={{ theme, changeTheme, isGuessNext, guessNextWord, words, setWords, addNewWord, errorMsg, setErrorMsg, initializeGame, game, attempts, setAttempts, GameAttempts, computerChoice, setComputerChoice, gameOver, setGameOver, resetGame, hintsTaken, setHintsTaken, userHintPositions, setUserHintPositions, interstitialAds, rewardAds, exitApp, focusInput, setFocusInput }}>
+    return <AppContext.Provider value={{ theme, changeTheme, isGuessNext, guessNextWord, words, setWords, addNewWord, errorMsg, setErrorMsg, initializeGame, game, attempts, setAttempts, GameAttempts, computerChoice, setComputerChoice, gameOver, setGameOver, resetGame, hintsTaken, setHintsTaken, userHintPositions, setUserHintPositions, interstitialAds, rewardAds, exitApp, focusInput, setFocusInput, loading, setLoading }}>
         {children}
     </AppContext.Provider >
 }

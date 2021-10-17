@@ -5,7 +5,7 @@ import { Ionicons, Fontisto } from '@expo/vector-icons';
 import { useGlobal } from '../context';
 let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
-import { CommonActions } from '@react-navigation/native';
+// import { CommonActions } from '@react-navigation/native';
 const Header = (props) => {
     const { theme, changeTheme, guessNextWord, isGuessNext } = useGlobal()
 
@@ -20,6 +20,10 @@ const Header = (props) => {
             left: 2,
             bottom: 3,
             position: 'relative'
+        },
+        icon: {
+            // backgroundColor: 'white',
+            // padding: phoneWidth * 0.012
         }
     })
 
@@ -35,11 +39,14 @@ const Header = (props) => {
 
     return (
         <View style={{ ...styles.header, ...props.propHeader }}>
-            <Ionicons onPress={props.func ? props.func : () => props.navigation.goBack()} name="arrow-back" size={phoneWidth * 0.06} color={Colors.orange} />
+            <Ionicons onPress={props.func ? props.func : () => props.navigation.goBack()} name="arrow-back" size={phoneWidth * 0.07} color={Colors.orange} style={styles.icon} />
+
             <TouchableOpacity onPress={showGameRules}>
                 <Image style={{ ...styles.img, ...props.propHeaderImg }} source={require('../assets/Logo.png')} />
             </TouchableOpacity>
-            <Fontisto onPress={() => changeTheme()} style={styles.toggleIcon} name={`toggle-${theme === 'black' ? 'on' : 'off'}`} size={phoneWidth / 15} color="white" />
+
+            <Ionicons onPress={() => changeTheme()} style={styles.toggleIcon} name={theme === "black" ? "sunny" : "moon-sharp"} size={phoneWidth * 0.07} color={Colors.orange} />
+
         </View>
     )
 }

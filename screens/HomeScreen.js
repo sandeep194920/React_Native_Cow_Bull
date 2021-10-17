@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, Dimensions, TouchableOpacity } from 'rea
 import GameButton from '../components/GameButton'
 import { useGlobal } from '../context'
 import { AdBannerTypes, Colors, commonStyles, Screens } from '../Utils/Configs'
-import { Fontisto } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { GAME } from '../Utils/Configs'
 
 
@@ -20,7 +20,7 @@ let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 const HomeScreen = (props) => {
     const { navigation } = props
-    const { theme, changeTheme, initializeGame, rewardAds } = useGlobal();
+    const { theme, changeTheme, initializeGame, setLoading } = useGlobal();
     const styles = StyleSheet.create({
         homeContainer: {
             paddingTop: phoneHeight * .12,
@@ -83,6 +83,9 @@ const HomeScreen = (props) => {
         }
         navigation.navigate(Screens.SELECTION)
     }
+    useEffect(() => {
+        setLoading(false)
+    }, [])
 
     const showGameRules = () => {
         console.log("Here's the rules")
@@ -95,7 +98,10 @@ const HomeScreen = (props) => {
                 <TouchableOpacity onPress={showGameRules}>
                     <Image style={styles.img} source={require('../assets/Logo.png')} />
                 </TouchableOpacity>
-                <Fontisto onPress={() => changeTheme()} style={styles.toggleIcon} name={`toggle-${theme === 'black' ? 'on' : 'off'}`} size={34} color="white" />
+                {/* <Fontisto onPress={() => changeTheme()} style={styles.toggleIcon} name={`toggle-${theme === 'black' ? 'on' : 'off'}`} size={34} color="white" /> */}
+
+                <Ionicons onPress={() => changeTheme()} style={styles.toggleIcon} name={theme === "black" ? "sunny" : "moon-sharp"} size={phoneWidth * 0.07} color={Colors.orange} />
+
             </View>
             <Text style={{ ...styles.headingText, ...styles.heading }}>Cow{' '}
                 <Text style={styles.headingText2}>Bull</Text>

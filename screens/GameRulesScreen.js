@@ -92,7 +92,8 @@ const GameRulesScreen = (props) => {
             color: Colors.lightGreen
         },
         ad: {
-            marginTop: 0,
+            marginBottom: phoneHeight * 0.05,
+            marginTop: -phoneHeight * 0.02,
         }
 
     })
@@ -103,14 +104,14 @@ const GameRulesScreen = (props) => {
             <ScrollView style={styles.rulesContainer}>
                 <Text style={styles.heading}>How to play?</Text>
                 <ScrollView style={styles.rulePoints}>
-                    {gameRulesText.map((rule, index) => {
+                    {/* {gameRulesText.map((rule, index) => {
                         return (
                             <View key={index} style={styles.rulePoint}>
                                 <MaterialCommunityIcons name="hand-pointing-right" size={phoneWidth * 0.07} color="orange" />
                                 <Text style={styles.ruleText}>{rule}</Text>
                             </View>
                         )
-                    })}
+                    })} */}
 
                     <View style={styles.exampleContainer}>
                         <Text style={styles.exampleHeading}>Example 1</Text>
@@ -189,10 +190,24 @@ const GameRulesScreen = (props) => {
                     </View>
 
 
+
+                    <AdBanner adStyle={styles.ad} bannerStyle={AdBannerTypes.smartBannerPortrait} />
+
+                    {gameRulesText.map((rule, index) => {
+                        return (
+                            <View key={index} style={styles.rulePoint}>
+                                <MaterialCommunityIcons name="hand-pointing-right" size={phoneWidth * 0.07} color="orange" />
+                                <Text style={styles.ruleText}>{rule}</Text>
+                            </View>
+                        )
+                    })}
+
+
                     <GameButton func={() => props.navigation.goBack()} propStyle={{ ...styles.revealBtn, ...styles.btn }} btnTextProp={styles.btnTxt}>Back To Game</GameButton>
 
+
                 </ScrollView>
-                <AdBanner adStyle={styles.ad} bannerStyle={AdBannerTypes.smartBannerPortrait} />
+
 
             </ScrollView>
 

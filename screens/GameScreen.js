@@ -1,27 +1,37 @@
 import React, { useEffect } from 'react'
 import { StyleSheet, Text, View, Dimensions, BackHandler, Image, ScrollView, Platform, Modal, Alert } from 'react-native'
 import { useGlobal } from '../context'
-import { Colors, commonStyles, GameAttempts, Screens } from '../Utils/Configs'
+import { AdBannerTypes, Colors, commonStyles, GameAttempts, Screens } from '../Utils/Configs'
 import Attempt from '../components/Attempt';
 import GameButton from '../components/GameButton';
 import Header from '../components/Header';
 import InputLetters from './InputLettersScreen';
+import AdBanner from '../components/AdBanner';
+import { AdMobRewarded, setTestDeviceIDAsync } from 'expo-ads-admob';
+import Loading from '../components/Loading';
 
 let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 
 const GameScreen = (props) => {
-    const { theme, isGuessNext, guessNextWord, words, setWords, game, attempts, setAttempts, navigation, gameOver, setGameOver, resetGame, computerChoice, setHintsTaken, hintsTaken, userHintPositions, setUserHintPositions, interstitialAds, rewardAds, exitApp } = useGlobal()
+    const { theme, isGuessNext, guessNextWord, words, setWords, game, attempts, setAttempts, navigation, gameOver, setGameOver, resetGame, computerChoice, setHintsTaken, hintsTaken, userHintPositions, setUserHintPositions, interstitialAds, rewardAds, exitApp, setLoading, loading } = useGlobal()
     const styles = StyleSheet.create({
         gameContainer: {
             ...commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
             paddingTop: phoneHeight * .027,
         },
         header: commonStyles(theme, phoneHeight, phoneWidth).common.header,
-        img: {
-            width: phoneHeight * .07,
-            height: phoneHeight * .07,
+        logoImg: {
+            width: phoneHeight * .09,
+            height: phoneHeight * .09,
         },
+        loadingImgContainer: {
+            backgroundColor: 'rgba(0,0,0,0.7)',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flex: 1,
+        },
+
         gameDescription: {
             flexDirection: 'row',
             alignItems: 'center',
@@ -46,12 +56,12 @@ const GameScreen = (props) => {
             marginRight: phoneHeight * 0.017,
             marginTop: phoneHeight * 0.02,
             borderBottomColor: 'white',
-            borderBottomWidth: .4,
-            marginBottom: 20
+            borderBottomWidth: .5,
+            marginBottom: -phoneHeight * 0.04,
         },
         horizontalContainer: {
             flexDirection: 'row',
-            marginBottom: phoneHeight * 0.03,
+            marginBottom: phoneHeight * 0.01,
             justifyContent: 'space-evenly'
         },
         revealBtn: {
@@ -83,6 +93,9 @@ const GameScreen = (props) => {
         quitBtnTxt: {
             color: Colors.error,
         },
+        ad: {
+            marginBottom: phoneHeight * 0.03
+        }
     })
 
     // after selecting the game type, since no words are entered yet, 
@@ -113,7 +126,6 @@ const GameScreen = (props) => {
 
 
     const exitCurrentGame = () => {
-        console.log("Going back")
         Alert.alert(
             "Sad to see you go 😌 ",
             "Are you sure you want to quit the game?",
@@ -130,6 +142,7 @@ const GameScreen = (props) => {
                         setWords([])
                         setAttempts(0)
                         setHintsTaken(0)
+                        // setFocusInput(true)
                         props.navigation.goBack()
                     },
                     style: 'destructive'
@@ -140,29 +153,6 @@ const GameScreen = (props) => {
     }
 
     const gameCancelConfirmHandler = () => {
-        // Alert.alert(
-        //     "Sad to see you go 😌 ",
-        //     "Are you sure you want to quit the game?",
-        //     [
-        //         {
-        //             text: "Keep Playing",
-        //             // onPress: () => {
-        //             //     console.log("Cancel Pressed")
-        //             // },
-        //             style: "default"
-        //         },
-        //         {
-        //             text: "Quit", onPress: () => {
-        //                 setWords([])
-        //                 setAttempts(0)
-        //                 setHintsTaken(0)
-        //                 props.navigation.goBack()
-        //             },
-        //             style: 'destructive'
-        //         }
-        //     ],
-        //     { cancelable: false }
-        // );
         exitCurrentGame()
     }
 
@@ -188,9 +178,12 @@ const GameScreen = (props) => {
                 },
                 {
                     text: "Yes, Reveal", onPress: () => {
+                        setLoading(true)
                         interstitialAds()
-                        props.navigation.navigate(Screens.GAME_OVER, { gameResult: 'revealed', navigation })
-                        setGameOver(true)
+                        setTimeout(() => {
+                            props.navigation.navigate(Screens.GAME_OVER, { gameResult: 'revealed', navigation })
+                            setGameOver(true)
+                        }, 2000)
                     },
                     style: 'destructive'
                 }
@@ -200,11 +193,11 @@ const GameScreen = (props) => {
     }
 
     const hintsHandler = () => {
-
         setHintsTaken(prevHints => prevHints + 1)
         if (hintsTaken > GameAttempts[game.letters][game.difficulty].hints - 1) {
             console.log(`Sorry no more hints`)
             Alert.alert('Sorry, no more hints', `You've already taken ${GameAttempts[game.letters][game.difficulty].hints} hints`)
+            setLoading(false)
         } else {
 
             let randomLetterCount = Math.floor(Math.random() * computerChoice.length)
@@ -219,10 +212,15 @@ const GameScreen = (props) => {
 
             const randomLetter = computerChoice[randomLetterCount]
             console.log(`Letter ${randomLetter} exists in hidden ${game.gameType}`)
+
+            // showing video ads
             rewardAds()
 
-            Alert.alert(`Hint - ${hintsTaken + 1}`, `Letter ${randomLetter.toUpperCase()} exists in hidden ${game.gameType.toLowerCase()}`)
-
+            // to show the ad after couple of seconds
+            setTimeout(() => {
+                setLoading(false)
+                Alert.alert(`Hint - ${hintsTaken + 1}`, `Letter ${randomLetter.toUpperCase()} exists in hidden ${game.gameType.toLowerCase()}`)
+            }, 3000)
         }
     }
 
@@ -241,6 +239,7 @@ const GameScreen = (props) => {
                 {
                     text: "Yes, Please", onPress: () => {
                         // rewardAds()
+                        setLoading(true)
                         hintsHandler()
                     },
                     style: 'destructive'
@@ -304,9 +303,10 @@ const GameScreen = (props) => {
 
     return (
         <View style={styles.gameContainer}>
+            {loading && <Loading />}
             {/* Showing InputContainer which is a Modal */}
             <InputLetters visible={isGuessNext} navigation={props.navigation} />
-            <Header func={gameCancelConfirmHandler} navigation={props.navigation} propHeaderImg={styles.img} />
+            <Header func={gameCancelConfirmHandler} navigation={props.navigation} propHeaderImg={styles.logoImg} />
             <View style={styles.gameDescription}>
                 <Text style={{ ...styles.commonText, ...styles.attempts }}><Text style={{ color: Colors.orange }}>{attempts}</Text>/ <Text >{GameAttempts[game.letters][game.difficulty].chances}</Text>
                 </Text>
@@ -324,6 +324,10 @@ const GameScreen = (props) => {
                     return <Attempt word={word} key={word + index} slno={index + 1} letters={word.userWord.toUpperCase().split('')} />
                 })}
             </ScrollView>
+
+            <View style={styles.ad}>
+                <AdBanner bannerStyle={AdBannerTypes.smartBannerPortrait} />
+            </View>
             {buttons}
         </View >
     )

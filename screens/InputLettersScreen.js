@@ -12,7 +12,7 @@ let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 
 const InputLettersScreen = (props) => {
-    const { theme, guessNextWord, addNewWord, words, attempts, setErrorMsg, setAttempts, game, focusInput, setFocusInput, errorMsg } = useGlobal();
+    const { theme, guessNextWord, addNewWord, words, attempts, setErrorMsg, setAttempts, game, focusInput, setFocusInput, gameOver } = useGlobal();
     const styles = StyleSheet.create({
         inputContainer: {
             ...commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
@@ -34,7 +34,8 @@ const InputLettersScreen = (props) => {
             padding: Platform.OS === 'ios' ? phoneWidth * 0.03 : 0,
             flex: 2,
             marginRight: phoneWidth * 0.03,
-            fontSize: phoneHeight * 0.025
+            fontSize: phoneHeight * 0.025,
+
         },
         lettersLeft: {
             ...commonStyles(theme, phoneHeight, phoneWidth).common.borderedText,
@@ -46,7 +47,7 @@ const InputLettersScreen = (props) => {
         },
         horizontalContainer: {
             flexDirection: 'row',
-            marginTop: phoneHeight * 0.08,
+            marginTop: phoneHeight * 0.06,
             justifyContent: 'space-evenly',
             marginBottom: 4
         },
@@ -156,13 +157,17 @@ const InputLettersScreen = (props) => {
 
     // to open the keyboard automatically
 
-    const inputEl = React.useRef();
-
+    const inputEl = React.useRef(null);
     useEffect(() => {
-        if (focusInput) {
-            setTimeout(() => inputEl.current.focus(), 100)
+        if (focusInput && !gameOver) {
+            setTimeout(() => {
+                // if (inputEl.current) {
+                inputEl.current?.focus()
+                // }
+            }, 100)
             setFocusInput(false)
         }
+
     })
 
     return (
@@ -184,30 +189,28 @@ const InputLettersScreen = (props) => {
                         </View>
                         <View style={styles.inputContentContainer}>
                             <TextInput
-                                // ref={inputEl ? inputEl : null}
-                                // autoFocus
+                                underlineColorAndroid='transparent'
                                 // autoFocus
                                 ref={inputEl}
                                 onSubmitEditing={addWordHandler}
                                 keyboardType={game.gameType === GAME.type.NUMBER ? "number-pad" : 'default'}
                                 maxLength={game.letters}
-                                value={wordEntered} autoCorrect={false} onChangeText={lettersHandler} underlineColorAndroid='transparent' placeholderTextColor={Colors.gray} style={styles.input} autoCapitalize='characters' placeholder="Input letters (Press here)" />
+                                value={wordEntered} autoCorrect={false} onChangeText={lettersHandler}
+                                placeholderTextColor={Colors.gray}
+                                style={styles.input}
+                                autoCapitalize='characters'
+                                placeholder="Input letters (Press here)"
+                                autoCorrect={false}
+                                // editable={false}
+                                selectionColor={Colors.orange}
+                            // underlineColorAndroid='transparent'
+                            />
 
-                            {/* <TextInput
-                                // ref={keyRef}
-                                autoFocus
-                                // autoFocus={focusInput}
-                                onSubmitEditing={addWordHandler}
-                                keyboardType={game.gameType === GAME.type.NUMBER ? "number-pad" : 'default'}
-                                maxLength={game.letters}
-                                value={wordEntered} autoCorrect={false} onChangeText={lettersHandler} underlineColorAndroid='transparent' placeholderTextColor={Colors.gray} style={styles.input} autoCapitalize='characters' placeholder="Input letters (Press here)" /> */}
                             <Text style={{ ...styles.commonText, ...styles.lettersLeft }}><Text style={{ color: Colors.orange }}>{lettersTyped} </Text>/ <Text >{game.letters}</Text>
                             </Text>
                         </View>
-
                         <Error />
-
-                        <View style={styles.horizontalContainer}>
+                        <View style={{ ...styles.horizontalContainer, marginTop: firstAttempt ? phoneHeight * 0.023 : phoneHeight * 0.07 }}>
                             <GameButton func={addWordHandler} propStyle={styles.confirm}>Confirm</GameButton>
                             <GameButton func={guessCancel} propStyle={styles.cancel}>Cancel</GameButton>
                         </View>
@@ -216,7 +219,7 @@ const InputLettersScreen = (props) => {
 
                 </TouchableWithoutFeedback>
             </Modal>
-        </KeyboardAvoidingView>
+        </KeyboardAvoidingView >
 
     )
 }
