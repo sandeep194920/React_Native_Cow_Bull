@@ -23,31 +23,34 @@ export default function App() {
     }
   });
 
+  // // background sound
+  // const [sound, setSound] = React.useState();
 
-  // background sound
-  const [sound, setSound] = React.useState();
+  // async function playSound() {
+  //   console.log('Loading Sound');
+  //   const { sound } = await Audio.Sound.createAsync(
+  //     require('./Sounds/backgroundSound.mp3'),
+  //     { isLooping: true }
+  //   );
+  //   setSound(sound);
 
-  async function playSound() {
-    console.log('Loading Sound');
-    const { sound } = await Audio.Sound.createAsync(
-      require('./Sounds/backgroundSound.mp3'),
-      { isLooping: true }
-    );
-    setSound(sound);
+  //   console.log('Playing Sound');
+  //   await sound.playAsync();
+  // }
 
-    console.log('Playing Sound');
-    await sound.playAsync();
-  }
 
-  React.useEffect(() => {
-    playSound()
-    return sound
-      ? () => {
-        console.log('Unloading Sound');
-        sound.unloadAsync();
-      }
-      : undefined;
-  }, []);
+  // React.useEffect(() => {
+
+  //   playSound()
+  //   return sound
+  //     ? () => {
+  //       console.log('Unloading Sound');
+  //       sound.unloadAsync();
+  //     }
+  //     : undefined;
+  // }, []);
+
+
 
   return (
     <AppProvider>

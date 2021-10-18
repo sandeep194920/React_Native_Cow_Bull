@@ -2,10 +2,9 @@ import React, { useEffect } from 'react'
 import { StyleSheet, Text, View, Image, Dimensions, TouchableOpacity } from 'react-native'
 import GameButton from '../components/GameButton'
 import { useGlobal } from '../context'
-import { AdBannerTypes, Colors, commonStyles, gameSounds, Screens } from '../Utils/Configs'
-import { Ionicons } from '@expo/vector-icons';
+import { AdBannerTypes, Colors, commonStyles, gameVoice, Screens } from '../Utils/Configs'
+import { Ionicons, Entypo } from '@expo/vector-icons';
 import { GAME } from '../Utils/Configs'
-import { Audio } from 'expo-av';
 
 import {
     AdMobBanner,
@@ -20,7 +19,7 @@ let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 const HomeScreen = (props) => {
     const { navigation } = props
-    const { theme, changeTheme, initializeGame, setLoading, sound, playSound } = useGlobal();
+    const { theme, changeTheme, initializeGame, setLoading, playVoice, shouldVoicePlay, setShouldVoicePlay, setPlayBg } = useGlobal();
     const styles = StyleSheet.create({
         homeContainer: {
             paddingTop: phoneHeight * .12,
@@ -60,6 +59,7 @@ const HomeScreen = (props) => {
             color: 'white',
             fontSize: phoneWidth / 30,
             letterSpacing: 1,
+            borderBottomWidth: 1
         },
         ruleBtnContainer: {
             borderBottomColor: Colors.orange,
@@ -67,18 +67,21 @@ const HomeScreen = (props) => {
             borderBottomWidth: 0.5
         },
         toggleIcon: {
-            ...commonStyles(theme, phoneHeight, phoneWidth).common.iconStyle,
+            ...commonStyles(theme, phoneHeight, phoneWidth).common.iconStyleRight,
         },
+        soundIcon: {
+            ...commonStyles(theme, phoneHeight, phoneWidth).common.iconStyleLeft,
+        }
 
     })
 
     const playGame = (gameType) => {
         // console.log(`The game type is ${gameType}`)
         if (gameType === 'word') {
-            playSound(gameSounds.PLAY_WORD)
+            shouldVoicePlay && playVoice(gameVoice.PLAY_WORD)
             initializeGame({ gameType: GAME.type.WORD })
         } else if (gameType === 'number') {
-            playSound(gameSounds.PLAY_NUMBER)
+            shouldVoicePlay && playVoice(gameVoice.PLAY_NUMBER)
             initializeGame({ gameType: GAME.type.NUMBER })
         } else {
             throw new Error('Invalid Game Type')
@@ -91,17 +94,60 @@ const HomeScreen = (props) => {
 
     const showGameRules = () => {
         console.log("Here's the rules")
-        playSound(gameSounds.SHOW_RULES)
+        shouldVoicePlay && playVoice(gameVoice.SHOW_RULES)
         props.navigation.navigate(Screens.RULES)
     }
 
     const themeHandler = () => {
-        theme === 'blue' ? playSound(gameSounds.DARK_THEME) : playSound(gameSounds.LIGHT_THEME)
+        console.log(shouldVoicePlay)
+        if (shouldVoicePlay) {
+            theme === 'blue' ? playVoice(gameVoice.DARK_THEME) : playVoice(gameVoice.LIGHT_THEME)
+        }
         changeTheme()
     }
 
+    const voiceMuteHandler = () => {
+        setShouldVoicePlay(preVal => !preVal)
+        setPlayBg(preVal => !preVal)
+    }
+
+
+    // background sound
+    // const [soundPlay, setSoundPlay] = React.useState();
+
+    // async function playBGSound() {
+    //     console.log('Loading Sound');
+    //     const { sound } = await Audio.Sound.createAsync(
+    //         require('../Sounds/backgroundSound.mp3'),
+    //         { isLooping: true }
+    //     );
+    //     setSoundPlay(sound);
+
+    //     console.log('Playing Sound');
+    //     await soundPlay.playAsync();
+
+    // }
+
+    // React.useEffect(() => {
+    //     playBGSound()
+    //     return sound
+    //         ? () => {
+    //             console.log('Unloading Sound');
+    //             soundPlay.unloadAsync();
+    //         }
+    //         : undefined;
+    // }, []);
+
+
+
+
     return (
         <View style={styles.homeContainer}>
+
+            {shouldVoicePlay ? <Entypo onPress={voiceMuteHandler} style={styles.soundIcon} name="sound" size={phoneWidth * 0.06} color={Colors.orange} />
+                :
+                <Entypo onPress={voiceMuteHandler} style={styles.soundIcon} name="sound-mute" size={phoneWidth * 0.07} color={Colors.gray} />}
+
             <View>
                 <TouchableOpacity onPress={showGameRules}>
                     <Image style={styles.img} source={require('../assets/Logo.png')} />

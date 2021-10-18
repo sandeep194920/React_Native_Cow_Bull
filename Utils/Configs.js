@@ -27,10 +27,15 @@ export const commonStyles = (theme, phoneHeight, phoneWidth) => {
             paddingTop: phoneHeight * .05,
             backgroundColor: Colors[theme].primary,
         },
-        iconStyle: {
+        iconStyleRight: {
             position: 'absolute',
             left: phoneWidth * .49,
             bottom: phoneHeight * .23
+        },
+        iconStyleLeft: {
+            position: 'absolute',
+            left: phoneWidth * .067,
+            top: phoneHeight * .055
         },
         header: {
             flexDirection: 'row',
@@ -93,7 +98,7 @@ export const AdBannerTypes = {
     smartBannerLandscape: 'smartBannerLandscape'
 }
 
-export const gameSounds = {
+export const gameVoice = {
     DARK_THEME: 'darkTheme',
     GOT_BULL: 'gotBull',
     LIGHT_THEME: 'lightTheme',
@@ -103,7 +108,8 @@ export const gameSounds = {
     WON: 'won',
     PLAY_NUMBER: 'playNumber',
     PLAY_WORD: 'playWord',
-    SHOW_RULES: 'showRules'
+    SHOW_RULES: 'showRules',
+    FIRST_GUESS: 'firstGuess'
 }
 
 export const GAME = {

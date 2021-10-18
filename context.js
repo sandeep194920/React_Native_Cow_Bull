@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react'
-import { GAME, GameAttempts, gameSounds, Screens } from './Utils/Configs';
+import React, { useState, useEffect, useContext, createContext } from 'react'
+import { GAME, GameAttempts, gameVoice, Screens } from './Utils/Configs';
 import { gameWords } from './Utils/CommonText';
 import { cowBullCount } from './GameLogic/cowbullCount';
 import {
@@ -13,7 +13,7 @@ import { BackHandler, Vibration } from 'react-native';
 import { computerWord, computerNumber } from './GameLogic/computerChoice';
 import { Audio } from 'expo-av';
 
-const AppContext = React.createContext()
+const AppContext = createContext()
 export const AppProvider = ({ children }) => {
 
     const [theme, setTheme] = useState('blue')
@@ -52,8 +52,10 @@ export const AppProvider = ({ children }) => {
     const [loading, setLoading] = useState(false)
 
     // sound
-    const [sound, setSound] = React.useState()
+    const [voice, setVoice] = useState()
 
+    // should voice be played
+    const [shouldVoicePlay, setShouldVoicePlay] = useState(true)
 
     // navigation
 
@@ -89,11 +91,11 @@ export const AppProvider = ({ children }) => {
 
         if (bull === 1) {
             Vibration.vibrate(2 * 100)
-            playSound(gameSounds.GOT_BULL)
+            shouldVoicePlay && playVoice(gameVoice.GOT_BULL)
         }
         if (bull > 1 && bull < game.letters) {
             Vibration.vibrate(2 * 200)
-            playSound(gameSounds.MORE_BULLS)
+            shouldVoicePlay && playVoice(gameVoice.MORE_BULLS)
         }
 
         let word = {
@@ -128,7 +130,7 @@ export const AppProvider = ({ children }) => {
     const exitApp = async (navigation) => {
         gameDefaults(navigation)
         BackHandler.exitApp()
-        await sound.unloadAsync();
+        await voice.unloadAsync();
     }
 
     // interstital ads
@@ -198,69 +200,117 @@ export const AppProvider = ({ children }) => {
         }
     }
 
-    // sounds
-    async function playSound(gameSound) {
-        let sound = null
-        switch (gameSound) {
-            case gameSounds.WON:
-                ({ sound } = await Audio.Sound.createAsync(
+    // voices
+    async function playVoice(voice) {
+        let vocal = null
+        switch (voice) {
+            case gameVoice.WON:
+                ({ sound: vocal } = await Audio.Sound.createAsync(
                     require(`./Sounds/won.mp3`)
                 ))
                 break
-            case gameSounds.LOST:
-                ({ sound } = await Audio.Sound.createAsync(
+            case gameVoice.LOST:
+                ({ sound: vocal } = await Audio.Sound.createAsync(
                     require(`./Sounds/lost.mp3`)
                 ))
                 break
-            case gameSounds.DARK_THEME:
-                ({ sound } = await Audio.Sound.createAsync(
+            case gameVoice.DARK_THEME:
+                ({ sound: vocal } = await Audio.Sound.createAsync(
                     require(`./Sounds/darkTheme.mp3`)
                 ))
                 break
-            case gameSounds.LIGHT_THEME:
-                ({ sound } = await Audio.Sound.createAsync(
+            case gameVoice.LIGHT_THEME:
+                ({ sound: vocal } = await Audio.Sound.createAsync(
                     require(`./Sounds/lightTheme.mp3`)
                 ))
                 break
-            case gameSounds.NO_COWS_BULLS:
-                ({ sound } = await Audio.Sound.createAsync(
+            case gameVoice.NO_COWS_BULLS:
+                ({ sound: vocal } = await Audio.Sound.createAsync(
                     require(`./Sounds/noCowsBulls.mp3`)
                 ))
                 break
-            case gameSounds.MORE_BULLS:
-                ({ sound } = await Audio.Sound.createAsync(
+            case gameVoice.MORE_BULLS:
+                ({ sound: vocal } = await Audio.Sound.createAsync(
                     require(`./Sounds/moreBulls.mp3`)
                 ))
                 break
-            case gameSounds.PLAY_WORD:
-                ({ sound } = await Audio.Sound.createAsync(
+            case gameVoice.PLAY_WORD:
+                ({ sound: vocal } = await Audio.Sound.createAsync(
                     require(`./Sounds/playWord.mp3`)
                 ))
                 break
-            case gameSounds.PLAY_NUMBER:
-                ({ sound } = await Audio.Sound.createAsync(
+            case gameVoice.PLAY_NUMBER:
+                ({ sound: vocal } = await Audio.Sound.createAsync(
                     require(`./Sounds/playNumber.mp3`)
                 ))
                 break
-            case gameSounds.GOT_BULL:
-                ({ sound } = await Audio.Sound.createAsync(
+            case gameVoice.GOT_BULL:
+                ({ sound: vocal } = await Audio.Sound.createAsync(
                     require(`./Sounds/gotBull.mp3`)
                 ))
                 break
-            case gameSounds.SHOW_RULES:
-                ({ sound } = await Audio.Sound.createAsync(
+            case gameVoice.SHOW_RULES:
+                ({ sound: vocal } = await Audio.Sound.createAsync(
                     require(`./Sounds/showRules.mp3`)
                 ))
+            case gameVoice.FIRST_GUESS:
+                ({ sound: vocal } = await Audio.Sound.createAsync(
+                    require(`./Sounds/firstGuess.mp3`)
+                ))
+                break
+            default:
                 break
         }
 
+        setVoice(vocal);
+        console.log('Playing Sound');
+        await vocal.playAsync();
+    }
+
+
+    // play bg sound
+    const [playBg, setPlayBg] = useState(true)
+    // background sound
+    const [sound, setSound] = React.useState();
+
+
+    async function playSound() {
+        console.log('Loading Sound');
+        const { sound } = await Audio.Sound.createAsync(
+            require('./Sounds/backgroundSound.mp3'),
+            { isLooping: true }
+        );
         setSound(sound);
+
         console.log('Playing Sound');
         await sound.playAsync();
     }
 
 
-    return <AppContext.Provider value={{ theme, changeTheme, isGuessNext, guessNextWord, words, setWords, addNewWord, errorMsg, setErrorMsg, initializeGame, game, attempts, setAttempts, GameAttempts, computerChoice, setComputerChoice, gameOver, setGameOver, resetGame, hintsTaken, setHintsTaken, userHintPositions, setUserHintPositions, interstitialAds, rewardAds, exitApp, focusInput, setFocusInput, loading, setLoading, sound, setSound, playSound }}>
+    React.useEffect(() => {
+        if (playBg) {
+            playSound()
+        } else {
+            console.log("STOP BG SOUND PLEASE");
+            // () => {
+            console.log('Unloading Sound');
+            sound.unloadAsync();
+            // }
+        }
+        return sound
+            ? () => {
+                console.log('Unloading Sound');
+                sound.unloadAsync();
+            }
+            : undefined;
+    }, [playBg]);
+
+
+
+    return <AppContext.Provider value={{
+        theme, changeTheme, isGuessNext, guessNextWord, words, setWords, addNewWord, errorMsg, setErrorMsg, initializeGame, game, attempts, setAttempts, GameAttempts, computerChoice, setComputerChoice, gameOver, setGameOver, resetGame, hintsTaken, setHintsTaken, userHintPositions, setUserHintPositions, interstitialAds, rewardAds, exitApp, focusInput, setFocusInput, loading, setLoading, voice, setVoice, playVoice, shouldVoicePlay, setShouldVoicePlay, setPlayBg
+
+    }}>
         {children}
     </AppContext.Provider >
 }

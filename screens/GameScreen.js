@@ -14,7 +14,7 @@ let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 
 const GameScreen = (props) => {
-    const { theme, isGuessNext, guessNextWord, words, setWords, game, attempts, setAttempts, navigation, gameOver, setGameOver, resetGame, computerChoice, setHintsTaken, hintsTaken, userHintPositions, setUserHintPositions, interstitialAds, rewardAds, exitApp, setLoading, loading, playSound } = useGlobal()
+    const { theme, isGuessNext, guessNextWord, words, setWords, game, attempts, setAttempts, navigation, gameOver, setGameOver, resetGame, computerChoice, setHintsTaken, hintsTaken, userHintPositions, setUserHintPositions, interstitialAds, rewardAds, exitApp, setLoading, loading, playVoice, shouldVoicePlay } = useGlobal()
     const styles = StyleSheet.create({
         gameContainer: {
             ...commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
@@ -114,7 +114,7 @@ const GameScreen = (props) => {
         if (words.length > 0 && words[words.length - 1].bull === game.letters) {
             props.navigation.navigate(Screens.GAME_OVER, { gameResult: 'won', navigation })
             setGameOver(true)
-            playSound(gameSounds.WON)
+            shouldVoicePlay && playVoice(gameSounds.WON)
             Vibration.vibrate(2 * 400)
         }
 
@@ -123,7 +123,7 @@ const GameScreen = (props) => {
 
             props.navigation.navigate(Screens.GAME_OVER, { gameResult: 'lost', navigation })
             setGameOver(true)
-            playSound(gameSounds.LOST)
+            shouldVoicePlay && playVoice(gameSounds.LOST)
         }
 
     }, [words])

@@ -1,13 +1,13 @@
 import React from 'react'
 import { Image, StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native'
-import { Colors, commonStyles, gameSounds, Screens } from '../Utils/Configs'
+import { Colors, commonStyles, gameVoice, Screens } from '../Utils/Configs'
 import { Ionicons, Fontisto } from '@expo/vector-icons';
 import { useGlobal } from '../context';
 let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 // import { CommonActions } from '@react-navigation/native';
 const Header = (props) => {
-    const { theme, changeTheme, guessNextWord, isGuessNext, playSound } = useGlobal()
+    const { theme, changeTheme, guessNextWord, isGuessNext, playVoice, shouldVoicePlay } = useGlobal()
 
     const styles = StyleSheet.create({
         header: commonStyles(theme, phoneHeight, phoneWidth).common.header,
@@ -38,7 +38,10 @@ const Header = (props) => {
     }
 
     const themeHandler = () => {
-        theme === 'blue' ? playSound(gameSounds.DARK_THEME) : playSound(gameSounds.LIGHT_THEME)
+
+        if (shouldVoicePlay) {
+            theme === 'blue' ? playVoice(gameVoice.DARK_THEME) : playVoice(gameVoice.LIGHT_THEME)
+        }
         changeTheme()
     }
 
