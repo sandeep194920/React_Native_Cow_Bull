@@ -1,13 +1,13 @@
 import React from 'react'
 import { Image, StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native'
-import { Colors, commonStyles, Screens } from '../Utils/Configs'
+import { Colors, commonStyles, gameSounds, Screens } from '../Utils/Configs'
 import { Ionicons, Fontisto } from '@expo/vector-icons';
 import { useGlobal } from '../context';
 let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 // import { CommonActions } from '@react-navigation/native';
 const Header = (props) => {
-    const { theme, changeTheme, guessNextWord, isGuessNext } = useGlobal()
+    const { theme, changeTheme, guessNextWord, isGuessNext, playSound } = useGlobal()
 
     const styles = StyleSheet.create({
         header: commonStyles(theme, phoneHeight, phoneWidth).common.header,
@@ -37,6 +37,11 @@ const Header = (props) => {
         props.navigation.navigate(Screens.RULES)
     }
 
+    const themeHandler = () => {
+        theme === 'blue' ? playSound(gameSounds.DARK_THEME) : playSound(gameSounds.LIGHT_THEME)
+        changeTheme()
+    }
+
     return (
         <View style={{ ...styles.header, ...props.propHeader }}>
             <Ionicons onPress={props.func ? props.func : () => props.navigation.goBack()} name="arrow-back" size={phoneWidth * 0.07} color={Colors.orange} style={styles.icon} />
@@ -45,7 +50,7 @@ const Header = (props) => {
                 <Image style={{ ...styles.img, ...props.propHeaderImg }} source={require('../assets/Logo.png')} />
             </TouchableOpacity>
 
-            <Ionicons onPress={() => changeTheme()} style={styles.toggleIcon} name={theme === "black" ? "sunny" : "moon-sharp"} size={phoneWidth * 0.07} color={Colors.orange} />
+            <Ionicons onPress={themeHandler} style={styles.toggleIcon} name={theme === "black" ? "sunny" : "moon-sharp"} size={phoneWidth * 0.07} color={Colors.orange} />
 
         </View>
     )

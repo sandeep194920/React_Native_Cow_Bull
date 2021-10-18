@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 import { StyleSheet, Text, View, Image, Dimensions, TouchableOpacity } from 'react-native'
 import GameButton from '../components/GameButton'
 import { useGlobal } from '../context'
-import { AdBannerTypes, Colors, commonStyles, Screens } from '../Utils/Configs'
+import { AdBannerTypes, Colors, commonStyles, gameSounds, Screens } from '../Utils/Configs'
 import { Ionicons } from '@expo/vector-icons';
 import { GAME } from '../Utils/Configs'
-
+import { Audio } from 'expo-av';
 
 import {
     AdMobBanner,
@@ -20,7 +20,7 @@ let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 const HomeScreen = (props) => {
     const { navigation } = props
-    const { theme, changeTheme, initializeGame, setLoading } = useGlobal();
+    const { theme, changeTheme, initializeGame, setLoading, sound, playSound } = useGlobal();
     const styles = StyleSheet.create({
         homeContainer: {
             paddingTop: phoneHeight * .12,
@@ -75,8 +75,10 @@ const HomeScreen = (props) => {
     const playGame = (gameType) => {
         // console.log(`The game type is ${gameType}`)
         if (gameType === 'word') {
+            playSound(gameSounds.PLAY_WORD)
             initializeGame({ gameType: GAME.type.WORD })
         } else if (gameType === 'number') {
+            playSound(gameSounds.PLAY_NUMBER)
             initializeGame({ gameType: GAME.type.NUMBER })
         } else {
             throw new Error('Invalid Game Type')
@@ -89,7 +91,13 @@ const HomeScreen = (props) => {
 
     const showGameRules = () => {
         console.log("Here's the rules")
+        playSound(gameSounds.SHOW_RULES)
         props.navigation.navigate(Screens.RULES)
+    }
+
+    const themeHandler = () => {
+        theme === 'blue' ? playSound(gameSounds.DARK_THEME) : playSound(gameSounds.LIGHT_THEME)
+        changeTheme()
     }
 
     return (
@@ -100,7 +108,7 @@ const HomeScreen = (props) => {
                 </TouchableOpacity>
                 {/* <Fontisto onPress={() => changeTheme()} style={styles.toggleIcon} name={`toggle-${theme === 'black' ? 'on' : 'off'}`} size={34} color="white" /> */}
 
-                <Ionicons onPress={() => changeTheme()} style={styles.toggleIcon} name={theme === "black" ? "sunny" : "moon-sharp"} size={phoneWidth * 0.07} color={Colors.orange} />
+                <Ionicons onPress={themeHandler} style={styles.toggleIcon} name={theme === "black" ? "sunny" : "moon-sharp"} size={phoneWidth * 0.07} color={Colors.orange} />
 
             </View>
             <Text style={{ ...styles.headingText, ...styles.heading }}>Cow{' '}

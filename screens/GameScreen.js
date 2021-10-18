@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
-import { StyleSheet, Text, View, Dimensions, BackHandler, Image, ScrollView, Platform, Modal, Alert } from 'react-native'
+import { StyleSheet, Text, View, Dimensions, BackHandler, Image, ScrollView, Platform, Modal, Alert, Vibration } from 'react-native'
 import { useGlobal } from '../context'
-import { AdBannerTypes, Colors, commonStyles, GameAttempts, Screens } from '../Utils/Configs'
+import { AdBannerTypes, Colors, commonStyles, GameAttempts, gameSounds, Screens } from '../Utils/Configs'
 import Attempt from '../components/Attempt';
 import GameButton from '../components/GameButton';
 import Header from '../components/Header';
@@ -14,7 +14,7 @@ let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 
 const GameScreen = (props) => {
-    const { theme, isGuessNext, guessNextWord, words, setWords, game, attempts, setAttempts, navigation, gameOver, setGameOver, resetGame, computerChoice, setHintsTaken, hintsTaken, userHintPositions, setUserHintPositions, interstitialAds, rewardAds, exitApp, setLoading, loading } = useGlobal()
+    const { theme, isGuessNext, guessNextWord, words, setWords, game, attempts, setAttempts, navigation, gameOver, setGameOver, resetGame, computerChoice, setHintsTaken, hintsTaken, userHintPositions, setUserHintPositions, interstitialAds, rewardAds, exitApp, setLoading, loading, playSound } = useGlobal()
     const styles = StyleSheet.create({
         gameContainer: {
             ...commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
@@ -114,12 +114,16 @@ const GameScreen = (props) => {
         if (words.length > 0 && words[words.length - 1].bull === game.letters) {
             props.navigation.navigate(Screens.GAME_OVER, { gameResult: 'won', navigation })
             setGameOver(true)
+            playSound(gameSounds.WON)
+            Vibration.vibrate(2 * 400)
         }
 
         // lost the game
         else if (words.length === GameAttempts[game.letters][game.difficulty].chances && words[words.length - 1].bull !== game.letters) {
+
             props.navigation.navigate(Screens.GAME_OVER, { gameResult: 'lost', navigation })
             setGameOver(true)
+            playSound(gameSounds.LOST)
         }
 
     }, [words])

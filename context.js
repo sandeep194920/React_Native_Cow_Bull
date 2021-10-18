@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { GAME, GameAttempts, Screens } from './Utils/Configs';
+import { GAME, GameAttempts, gameSounds, Screens } from './Utils/Configs';
 import { gameWords } from './Utils/CommonText';
 import { cowBullCount } from './GameLogic/cowbullCount';
 import {
@@ -9,8 +9,9 @@ import {
     AdMobRewarded,
     setTestDeviceIDAsync,
 } from 'expo-ads-admob';
-import { BackHandler } from 'react-native';
+import { BackHandler, Vibration } from 'react-native';
 import { computerWord, computerNumber } from './GameLogic/computerChoice';
+import { Audio } from 'expo-av';
 
 const AppContext = React.createContext()
 export const AppProvider = ({ children }) => {
@@ -50,6 +51,10 @@ export const AppProvider = ({ children }) => {
 
     const [loading, setLoading] = useState(false)
 
+    // sound
+    const [sound, setSound] = React.useState()
+
+
     // navigation
 
     const changeTheme = () => {
@@ -82,6 +87,15 @@ export const AppProvider = ({ children }) => {
             ({ bull, cow } = cowBullCount(newCompChoice, userWord))
         }
 
+        if (bull === 1) {
+            Vibration.vibrate(2 * 100)
+            playSound(gameSounds.GOT_BULL)
+        }
+        if (bull > 1 && bull < game.letters) {
+            Vibration.vibrate(2 * 200)
+            playSound(gameSounds.MORE_BULLS)
+        }
+
         let word = {
             userWord,
             cow,
@@ -111,9 +125,10 @@ export const AppProvider = ({ children }) => {
         gameDefaults(navigation)
     }
 
-    const exitApp = (navigation) => {
+    const exitApp = async (navigation) => {
         gameDefaults(navigation)
         BackHandler.exitApp()
+        await sound.unloadAsync();
     }
 
     // interstital ads
@@ -183,8 +198,69 @@ export const AppProvider = ({ children }) => {
         }
     }
 
+    // sounds
+    async function playSound(gameSound) {
+        let sound = null
+        switch (gameSound) {
+            case gameSounds.WON:
+                ({ sound } = await Audio.Sound.createAsync(
+                    require(`./Sounds/won.mp3`)
+                ))
+                break
+            case gameSounds.LOST:
+                ({ sound } = await Audio.Sound.createAsync(
+                    require(`./Sounds/lost.mp3`)
+                ))
+                break
+            case gameSounds.DARK_THEME:
+                ({ sound } = await Audio.Sound.createAsync(
+                    require(`./Sounds/darkTheme.mp3`)
+                ))
+                break
+            case gameSounds.LIGHT_THEME:
+                ({ sound } = await Audio.Sound.createAsync(
+                    require(`./Sounds/lightTheme.mp3`)
+                ))
+                break
+            case gameSounds.NO_COWS_BULLS:
+                ({ sound } = await Audio.Sound.createAsync(
+                    require(`./Sounds/noCowsBulls.mp3`)
+                ))
+                break
+            case gameSounds.MORE_BULLS:
+                ({ sound } = await Audio.Sound.createAsync(
+                    require(`./Sounds/moreBulls.mp3`)
+                ))
+                break
+            case gameSounds.PLAY_WORD:
+                ({ sound } = await Audio.Sound.createAsync(
+                    require(`./Sounds/playWord.mp3`)
+                ))
+                break
+            case gameSounds.PLAY_NUMBER:
+                ({ sound } = await Audio.Sound.createAsync(
+                    require(`./Sounds/playNumber.mp3`)
+                ))
+                break
+            case gameSounds.GOT_BULL:
+                ({ sound } = await Audio.Sound.createAsync(
+                    require(`./Sounds/gotBull.mp3`)
+                ))
+                break
+            case gameSounds.SHOW_RULES:
+                ({ sound } = await Audio.Sound.createAsync(
+                    require(`./Sounds/showRules.mp3`)
+                ))
+                break
+        }
 
-    return <AppContext.Provider value={{ theme, changeTheme, isGuessNext, guessNextWord, words, setWords, addNewWord, errorMsg, setErrorMsg, initializeGame, game, attempts, setAttempts, GameAttempts, computerChoice, setComputerChoice, gameOver, setGameOver, resetGame, hintsTaken, setHintsTaken, userHintPositions, setUserHintPositions, interstitialAds, rewardAds, exitApp, focusInput, setFocusInput, loading, setLoading }}>
+        setSound(sound);
+        console.log('Playing Sound');
+        await sound.playAsync();
+    }
+
+
+    return <AppContext.Provider value={{ theme, changeTheme, isGuessNext, guessNextWord, words, setWords, addNewWord, errorMsg, setErrorMsg, initializeGame, game, attempts, setAttempts, GameAttempts, computerChoice, setComputerChoice, gameOver, setGameOver, resetGame, hintsTaken, setHintsTaken, userHintPositions, setUserHintPositions, interstitialAds, rewardAds, exitApp, focusInput, setFocusInput, loading, setLoading, sound, setSound, playSound }}>
         {children}
     </AppContext.Provider >
 }

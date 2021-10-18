@@ -93,6 +93,19 @@ export const AdBannerTypes = {
     smartBannerLandscape: 'smartBannerLandscape'
 }
 
+export const gameSounds = {
+    DARK_THEME: 'darkTheme',
+    GOT_BULL: 'gotBull',
+    LIGHT_THEME: 'lightTheme',
+    LOST: 'lost',
+    MORE_BULLS: 'moreBulls',
+    NO_COWS_BULLS: 'noCowsBulls',
+    WON: 'won',
+    PLAY_NUMBER: 'playNumber',
+    PLAY_WORD: 'playWord',
+    SHOW_RULES: 'showRules'
+}
+
 export const GAME = {
     type: {
         NUMBER: 'NUMBER',
