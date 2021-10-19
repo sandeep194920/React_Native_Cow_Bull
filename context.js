@@ -42,6 +42,10 @@ export const AppProvider = ({ children }) => {
     // hint
     const [hintsTaken, setHintsTaken] = useState(0)
 
+
+    // first attempt done
+    const [firstAttemptDone, setFirstAttemptDone] = useState(false)
+
     const [userHintPositions, setUserHintPositions] = useState([])
 
     // focus input in input screen
@@ -308,7 +312,8 @@ export const AppProvider = ({ children }) => {
 
 
     return <AppContext.Provider value={{
-        theme, changeTheme, isGuessNext, guessNextWord, words, setWords, addNewWord, errorMsg, setErrorMsg, initializeGame, game, attempts, setAttempts, GameAttempts, computerChoice, setComputerChoice, gameOver, setGameOver, resetGame, hintsTaken, setHintsTaken, userHintPositions, setUserHintPositions, interstitialAds, rewardAds, exitApp, focusInput, setFocusInput, loading, setLoading, voice, setVoice, playVoice, shouldVoicePlay, setShouldVoicePlay, setPlayBg
+        theme, changeTheme, isGuessNext, guessNextWord, words, setWords, addNewWord, errorMsg, setErrorMsg, initializeGame, game, attempts, setAttempts, GameAttempts, computerChoice, setComputerChoice, gameOver, setGameOver, resetGame, hintsTaken, setHintsTaken, userHintPositions, setUserHintPositions, interstitialAds, rewardAds, exitApp, focusInput, setFocusInput, loading, setLoading, voice, setVoice, playVoice, shouldVoicePlay, setShouldVoicePlay, setPlayBg,
+        firstAttemptDone, setFirstAttemptDone
 
     }}>
         {children}

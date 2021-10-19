@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, Dimensions, TextInput, Platform, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, Modal } from 'react-native'
-import { Colors, commonStyles, GameAttempts, GAME, AdBannerTypes } from '../Utils/Configs'
+import { Colors, commonStyles, GameAttempts, GAME, AdBannerTypes, gameVoice } from '../Utils/Configs'
 import { useGlobal } from '../context'
 import GameButton from '../components/GameButton';
 import Header from '../components/Header';
@@ -12,7 +12,7 @@ let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 
 const InputLettersScreen = (props) => {
-    const { theme, guessNextWord, addNewWord, words, attempts, setErrorMsg, setAttempts, game, focusInput, setFocusInput, gameOver } = useGlobal();
+    const { theme, guessNextWord, addNewWord, words, attempts, setErrorMsg, setAttempts, game, focusInput, setFocusInput, gameOver, shouldVoicePlay, playVoice, firstAttemptDone, setFirstAttemptDone } = useGlobal();
     const styles = StyleSheet.create({
         inputContainer: {
             ...commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
@@ -147,7 +147,14 @@ const InputLettersScreen = (props) => {
         setErrorMsg('')
 
     }
+    // let playedFirstAttemptSound = false
+
     useEffect(() => {
+        // first attempt voice
+        if (!firstAttemptDone) {
+            shouldVoicePlay && playVoice(gameVoice.FIRST_GUESS)
+            setFirstAttemptDone(true)
+        }
         if (words.length === 0) {
             return setFirstAttempt(true)
         }
