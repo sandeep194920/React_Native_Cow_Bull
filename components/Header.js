@@ -1,11 +1,10 @@
 import React from 'react'
 import { Image, StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native'
 import { Colors, commonStyles, gameVoice, Screens } from '../Utils/Configs'
-import { Ionicons, Fontisto } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { useGlobal } from '../context';
 let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
-// import { CommonActions } from '@react-navigation/native';
 const Header = (props) => {
     const { theme, changeTheme, guessNextWord, isGuessNext, playVoice, shouldVoicePlay } = useGlobal()
 

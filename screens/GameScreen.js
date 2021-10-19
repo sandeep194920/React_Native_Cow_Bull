@@ -7,7 +7,6 @@ import GameButton from '../components/GameButton';
 import Header from '../components/Header';
 import InputLetters from './InputLettersScreen';
 import AdBanner from '../components/AdBanner';
-import { AdMobRewarded, setTestDeviceIDAsync } from 'expo-ads-admob';
 import Loading from '../components/Loading';
 
 let phoneWidth = Dimensions.get('window').width

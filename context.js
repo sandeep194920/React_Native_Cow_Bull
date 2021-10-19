@@ -144,16 +144,16 @@ export const AppProvider = ({ children }) => {
 
         // uncommnet below for prod
 
-        // ios: "ca-app-pub-7296629630933757/6577668091",
-        // android: "ca-app-pub-7296629630933757/5217496720",
+        ios: "ca-app-pub-7296629630933757/6577668091",
+        android: "ca-app-pub-7296629630933757/5217496720",
 
         // uncommnet above for prod
 
 
         // test ads below
 
-        ios: "ca-app-pub-3940256099942544/1033173712",
-        android: "ca-app-pub-3940256099942544/1033173712"
+        // ios: "ca-app-pub-3940256099942544/1033173712",
+        // android: "ca-app-pub-3940256099942544/1033173712"
 
         // test ads above
 
@@ -177,15 +177,15 @@ export const AppProvider = ({ children }) => {
 
         // uncommnet below for prod
 
-        // ios: "ca-app-pub-7296629630933757/4887497692",
-        // android: "ca-app-pub-7296629630933757/6865620312",
+        ios: "ca-app-pub-7296629630933757/4887497692",
+        android: "ca-app-pub-7296629630933757/6865620312",
 
         // uncommnet above for prod
 
         // test ads below
 
-        ios: "ca-app-pub-3940256099942544/5224354917",
-        android: "ca-app-pub-3940256099942544/5224354917"
+        // ios: "ca-app-pub-3940256099942544/5224354917",
+        // android: "ca-app-pub-3940256099942544/5224354917"
 
         // test ads above
 

@@ -5,14 +5,6 @@ import { useGlobal } from '../context'
 import { AdBannerTypes, Colors, commonStyles, gameVoice, Screens } from '../Utils/Configs'
 import { Ionicons, Entypo } from '@expo/vector-icons';
 import { GAME } from '../Utils/Configs'
-
-import {
-    AdMobBanner,
-    AdMobInterstitial,
-    PublisherBanner,
-    AdMobRewarded,
-    setTestDeviceIDAsync,
-} from 'expo-ads-admob';
 import AdBanner from '../components/AdBanner'
 
 let phoneWidth = Dimensions.get('window').width

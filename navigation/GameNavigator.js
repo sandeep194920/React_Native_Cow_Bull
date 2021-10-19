@@ -24,7 +24,6 @@ const GameNavigator = () => {
                 <Stack.Screen
                     name={Screens.HOME}
                     component={HomeScreen}
-                // initialParams={{ setBgSound: props.setBgSound }}
                 />
                 <Stack.Screen
                     name={Screens.SELECTION}
