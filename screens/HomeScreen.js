@@ -58,11 +58,11 @@ const HomeScreen = (props) => {
             paddingBottom: 6,
             borderBottomWidth: 0.5
         },
-        toggleIcon: {
-            ...commonStyles(theme, phoneHeight, phoneWidth).common.iconStyleRight,
-        },
-        soundIcon: {
-            ...commonStyles(theme, phoneHeight, phoneWidth).common.iconStyleLeft,
+        iconContainer: {
+            flexDirection: 'row',
+            marginTop: -phoneHeight * 0.06,
+            width: phoneWidth * 0.88,
+            justifyContent: 'space-between',
         }
 
     })
@@ -104,49 +104,19 @@ const HomeScreen = (props) => {
     }
 
 
-    // background sound
-    // const [soundPlay, setSoundPlay] = React.useState();
-
-    // async function playBGSound() {
-    //     console.log('Loading Sound');
-    //     const { sound } = await Audio.Sound.createAsync(
-    //         require('../Sounds/backgroundSound.mp3'),
-    //         { isLooping: true }
-    //     );
-    //     setSoundPlay(sound);
-
-    //     console.log('Playing Sound');
-    //     await soundPlay.playAsync();
-
-    // }
-
-    // React.useEffect(() => {
-    //     playBGSound()
-    //     return sound
-    //         ? () => {
-    //             console.log('Unloading Sound');
-    //             soundPlay.unloadAsync();
-    //         }
-    //         : undefined;
-    // }, []);
-
-
-
-
     return (
         <View style={styles.homeContainer}>
-
-            {shouldVoicePlay ? <Entypo onPress={voiceMuteHandler} style={styles.soundIcon} name="sound" size={phoneWidth * 0.06} color={Colors.orange} />
-                :
-                <Entypo onPress={voiceMuteHandler} style={styles.soundIcon} name="sound-mute" size={phoneWidth * 0.07} color={Colors.gray} />}
+            <View style={styles.iconContainer}>
+                {shouldVoicePlay ? <Entypo onPress={voiceMuteHandler} style={styles.sound} name="sound" size={phoneWidth * 0.06} color={Colors.orange} />
+                    :
+                    <Entypo onPress={voiceMuteHandler} style={styles.sound} name="sound-mute" size={phoneWidth * 0.07} color={Colors.gray} />}
+                <Ionicons onPress={themeHandler} style={styles.theme} name={theme === "black" ? "sunny" : "moon-sharp"} size={phoneWidth * 0.07} color={Colors.orange} />
+            </View>
 
             <View>
                 <TouchableOpacity onPress={showGameRules}>
                     <Image style={styles.img} source={require('../assets/Logo.png')} />
                 </TouchableOpacity>
-                {/* <Fontisto onPress={() => changeTheme()} style={styles.toggleIcon} name={`toggle-${theme === 'black' ? 'on' : 'off'}`} size={34} color="white" /> */}
-
-                <Ionicons onPress={themeHandler} style={styles.toggleIcon} name={theme === "black" ? "sunny" : "moon-sharp"} size={phoneWidth * 0.07} color={Colors.orange} />
 
             </View>
             <Text style={{ ...styles.headingText, ...styles.heading }}>Cow{' '}

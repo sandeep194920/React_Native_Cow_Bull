@@ -26,7 +26,7 @@ const GameOverScreen = (route, props) => {
             color: 'white',
             fontSize: phoneWidth * 0.04,
             letterSpacing: phoneWidth * 0.001,
-            marginTop: phoneHeight * 0.015,
+            marginTop: phoneHeight * 0.035,
             lineHeight: phoneHeight * 0.045
         },
         attemptInfo: {

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { StyleSheet, Text, View, Dimensions, BackHandler, Image, ScrollView, Platform, Modal, Alert, Vibration } from 'react-native'
 import { useGlobal } from '../context'
-import { AdBannerTypes, Colors, commonStyles, GameAttempts, gameSounds, Screens } from '../Utils/Configs'
+import { AdBannerTypes, Colors, commonStyles, GameAttempts, gameVoice, Screens } from '../Utils/Configs'
 import Attempt from '../components/Attempt';
 import GameButton from '../components/GameButton';
 import Header from '../components/Header';
@@ -113,7 +113,7 @@ const GameScreen = (props) => {
         if (words.length > 0 && words[words.length - 1].bull === game.letters) {
             props.navigation.navigate(Screens.GAME_OVER, { gameResult: 'won', navigation })
             setGameOver(true)
-            shouldVoicePlay && playVoice(gameSounds.WON)
+            shouldVoicePlay && playVoice(gameVoice.WON)
             Vibration.vibrate(2 * 400)
         }
 
@@ -122,7 +122,7 @@ const GameScreen = (props) => {
 
             props.navigation.navigate(Screens.GAME_OVER, { gameResult: 'lost', navigation })
             setGameOver(true)
-            shouldVoicePlay && playVoice(gameSounds.LOST)
+            shouldVoicePlay && playVoice(gameVoice.LOST)
         }
 
     }, [words])
@@ -185,6 +185,7 @@ const GameScreen = (props) => {
                         interstitialAds()
                         setTimeout(() => {
                             props.navigation.navigate(Screens.GAME_OVER, { gameResult: 'revealed', navigation })
+                            shouldVoicePlay && playVoice(gameVoice.LOST)
                             setGameOver(true)
                         }, 2000)
                     },

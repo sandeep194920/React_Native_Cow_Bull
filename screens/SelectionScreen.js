@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View, Dimensions } from 'react-native'
-import { AdBannerTypes, Colors, commonStyles, GAME, Screens } from '../Utils/Configs'
+import { AdBannerTypes, Colors, commonStyles, GAME, Screens, gameVoice } from '../Utils/Configs'
 import { useGlobal } from '../context'
 import GameButton from '../components/GameButton';
 import Header from '../components/Header';
@@ -12,7 +12,7 @@ let phoneHeight = Dimensions.get('window').height
 
 const SelectionScreen = (props) => {
     const { navigation } = props
-    const { theme, game, initializeGame, GameAttempts, setComputerChoice } = useGlobal();
+    const { theme, game, initializeGame, shouldVoicePlay, playVoice, setComputerChoice } = useGlobal();
     const styles = StyleSheet.create({
         selectionContainer: commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
         header: commonStyles(theme, phoneHeight, phoneWidth).common.header,
@@ -88,6 +88,9 @@ const SelectionScreen = (props) => {
             console.log(`The comp word is ${compChoice}`)
         }
         setComputerChoice(compChoice)
+        //first guess voice
+        shouldVoicePlay && playVoice(gameVoice.FIRST_GUESS)
+
         // navigate to game screen
         navigation.navigate(Screens.GAME)
     }

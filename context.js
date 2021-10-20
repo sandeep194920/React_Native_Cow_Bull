@@ -42,10 +42,6 @@ export const AppProvider = ({ children }) => {
     // hint
     const [hintsTaken, setHintsTaken] = useState(0)
 
-
-    // first attempt done
-    const [firstAttemptDone, setFirstAttemptDone] = useState(false)
-
     const [userHintPositions, setUserHintPositions] = useState([])
 
     // focus input in input screen
@@ -145,7 +141,7 @@ export const AppProvider = ({ children }) => {
         // uncommnet below for prod
 
         ios: "ca-app-pub-7296629630933757/6577668091",
-        android: "ca-app-pub-7296629630933757/5217496720",
+        android: "ca-app-pub-7296629630933757/2708244263",
 
         // uncommnet above for prod
 
@@ -178,7 +174,7 @@ export const AppProvider = ({ children }) => {
         // uncommnet below for prod
 
         ios: "ca-app-pub-7296629630933757/4887497692",
-        android: "ca-app-pub-7296629630933757/6865620312",
+        android: "ca-app-pub-7296629630933757/9820447521",
 
         // uncommnet above for prod
 
@@ -257,6 +253,7 @@ export const AppProvider = ({ children }) => {
                 ({ sound: vocal } = await Audio.Sound.createAsync(
                     require(`./Sounds/showRules.mp3`)
                 ))
+                break
             case gameVoice.FIRST_GUESS:
                 ({ sound: vocal } = await Audio.Sound.createAsync(
                     require(`./Sounds/firstGuess.mp3`)
@@ -313,7 +310,7 @@ export const AppProvider = ({ children }) => {
 
     return <AppContext.Provider value={{
         theme, changeTheme, isGuessNext, guessNextWord, words, setWords, addNewWord, errorMsg, setErrorMsg, initializeGame, game, attempts, setAttempts, GameAttempts, computerChoice, setComputerChoice, gameOver, setGameOver, resetGame, hintsTaken, setHintsTaken, userHintPositions, setUserHintPositions, interstitialAds, rewardAds, exitApp, focusInput, setFocusInput, loading, setLoading, voice, setVoice, playVoice, shouldVoicePlay, setShouldVoicePlay, setPlayBg,
-        firstAttemptDone, setFirstAttemptDone
+
 
     }}>
         {children}

@@ -7,7 +7,6 @@ let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 const Header = (props) => {
     const { theme, changeTheme, guessNextWord, isGuessNext, playVoice, shouldVoicePlay } = useGlobal()
-
     const styles = StyleSheet.create({
         header: commonStyles(theme, phoneHeight, phoneWidth).common.header,
         img: {
@@ -20,10 +19,6 @@ const Header = (props) => {
             bottom: 3,
             position: 'relative'
         },
-        icon: {
-            // backgroundColor: 'white',
-            // padding: phoneWidth * 0.012
-        }
     })
 
     const showGameRules = () => {
@@ -33,6 +28,7 @@ const Header = (props) => {
             console.log("Here's the  srules")
             guessNextWord(false)
         }
+        shouldVoicePlay && playVoice(gameVoice.SHOW_RULES)
         props.navigation.navigate(Screens.RULES)
     }
 

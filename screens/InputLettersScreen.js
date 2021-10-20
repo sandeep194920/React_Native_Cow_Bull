@@ -12,7 +12,7 @@ let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 
 const InputLettersScreen = (props) => {
-    const { theme, guessNextWord, addNewWord, words, attempts, setErrorMsg, setAttempts, game, focusInput, setFocusInput, gameOver, shouldVoicePlay, playVoice, firstAttemptDone, setFirstAttemptDone } = useGlobal();
+    const { theme, guessNextWord, addNewWord, words, attempts, setErrorMsg, setAttempts, game, focusInput, setFocusInput, gameOver } = useGlobal();
     const styles = StyleSheet.create({
         inputContainer: {
             ...commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
@@ -150,11 +150,6 @@ const InputLettersScreen = (props) => {
     // let playedFirstAttemptSound = false
 
     useEffect(() => {
-        // first attempt voice
-        if (!firstAttemptDone) {
-            shouldVoicePlay && playVoice(gameVoice.FIRST_GUESS)
-            setFirstAttemptDone(true)
-        }
         if (words.length === 0) {
             return setFirstAttempt(true)
         }
