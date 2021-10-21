@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, createContext } from 'react'
-import { GAME, GameAttempts, gameVoice, Screens } from './Utils/Configs';
+import { GAME, GameAttempts, gameVoice, Screens, AD_KEYS } from './Utils/Configs';
 import { gameWords } from './Utils/CommonText';
 import { cowBullCount } from './GameLogic/cowbullCount';
 import {
@@ -140,8 +140,13 @@ export const AppProvider = ({ children }) => {
 
         // uncommnet below for prod
 
-        ios: "ca-app-pub-7296629630933757/6577668091",
-        android: "ca-app-pub-7296629630933757/2708244263",
+        // ios: "ca-app-pub-7296629630933757/6577668091",
+        // android: "ca-app-pub-7296629630933757/2708244263",
+
+
+        ios: AD_KEYS.Ios.INTERSTITIAL_ID,
+        android: AD_KEYS.Android.INTERSTITIAL_ID,
+
 
         // uncommnet above for prod
 
@@ -173,8 +178,11 @@ export const AppProvider = ({ children }) => {
 
         // uncommnet below for prod
 
-        ios: "ca-app-pub-7296629630933757/4887497692",
-        android: "ca-app-pub-7296629630933757/9820447521",
+        // ios: "ca-app-pub-7296629630933757/4887497692",
+        // android: "ca-app-pub-7296629630933757/9820447521",
+
+        ios: AD_KEYS.Ios.REWARD_ID,
+        android: AD_KEYS.Android.REWARD_ID
 
         // uncommnet above for prod
 

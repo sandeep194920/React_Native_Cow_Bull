@@ -7,6 +7,7 @@ import {
     AdMobRewarded,
     setTestDeviceIDAsync,
 } from 'expo-ads-admob';
+import { AD_KEYS } from '../Utils/Configs';
 
 let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
@@ -32,7 +33,11 @@ const AdBanner = (props) => {
 
                 // prod ad below. Uncomment it for prod
 
-                adUnitID={Platform.OS === "ios" ? "ca-app-pub-7296629630933757/2926375308" : "ca-app-pub-7296629630933757/7382535185"}
+                // adUnitID={Platform.OS === "ios" ? "ca-app-pub-7296629630933757/2926375308" : "ca-app-pub-7296629630933757/7382535185"}
+
+                adUnitID={Platform.OS === "ios" ?
+                    AD_KEYS.Ios.BANNER_ID :
+                    AD_KEYS.Android.BANNER_ID}
 
                 // prod ad above. Uncomment it for prod
 
