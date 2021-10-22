@@ -47,7 +47,7 @@ const AdBanner = (props) => {
                 //test ad above. comment it for prod
 
                 servePersonalizedAds
-                onDidFailToReceiveAdWithError={() => console.log("Banner error")} />
+                onDidFailToReceiveAdWithError={(e) => console.log(e)} />
         </View>
     )
 }

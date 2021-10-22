@@ -13,7 +13,9 @@ let phoneWidth = Dimensions.get('window').width
 let phoneHeight = Dimensions.get('window').height
 
 const GameScreen = (props) => {
-    const { theme, isGuessNext, guessNextWord, words, setWords, game, attempts, setAttempts, navigation, gameOver, setGameOver, resetGame, computerChoice, setHintsTaken, hintsTaken, userHintPositions, setUserHintPositions, interstitialAds, rewardAds, exitApp, setLoading, loading, playVoice, shouldVoicePlay } = useGlobal()
+    const { theme, isGuessNext, guessNextWord, words, setWords, game, attempts, setAttempts, navigation, gameOver, setGameOver, resetGame, computerChoice, setHintsTaken, hintsTaken, userHintPositions, setUserHintPositions, interstitialAds, rewardAds, exitApp, setLoading, loading, playVoice, shouldVoicePlay,
+        extraChancesTaken, setExtraChancesTaken, initializeGame
+    } = useGlobal()
     const styles = StyleSheet.create({
         gameContainer: {
             ...commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
@@ -97,12 +99,63 @@ const GameScreen = (props) => {
         }
     })
 
+    const increaseAttemptsHandler = () => {
+        Alert.alert(
+            "Nearing Last attempt",
+            "Next attempt is your last chance. You deserve more chances as this game seems tricky. Feel free to use it 😍",
+            [
+                {
+                    text: "Cancel",
+                    // onPress: () => {
+                    //     console.log("Cancel Pressed")
+                    // },
+                    style: "default"
+                },
+                {
+                    text: "More Chances", onPress: () => {
+
+                        // const maxAttempts = GameAttempts[game.letters][game.difficulty].chances
+                        setLoading(true)
+                        console.log(`From destination - The max attmpts are ${game.maxAttempts}`)
+
+                        initializeGame({ maxAttempts: game.maxAttempts + 5 })
+
+                        // showing video ads
+                        rewardAds()
+
+                        // to show the ad after couple of seconds
+                        setTimeout(() => {
+                            setLoading(false)
+                            // Alert.alert(`Hint - ${hintsTaken + 1}`, `Letter ${randomLetter.toUpperCase()} exists in hidden ${game.gameType.toLowerCase()}`)
+                        }, 3000)
+
+                        setExtraChancesTaken(true)
+
+
+                    },
+                    style: 'default'
+                }
+            ],
+            { cancelable: false }
+        );
+    }
+
     // after selecting the game type, since no words are entered yet, 
     // the modal should open
     useEffect(() => {
         if (words.length === 0) {
             guessNextWord(true)
         }
+        if (attempts === game['maxAttempts'] - 1) {
+            console.log(`Next chance is the last chance`)
+            if (!extraChancesTaken) {
+                // show user an option that he can take more chances
+                increaseAttemptsHandler()
+            }
+        }
+        // console.log(GameAttempts[game.letters][game.difficulty].chances)
+
+        // console.log(attempts)
     }, [words])
 
 
@@ -118,7 +171,7 @@ const GameScreen = (props) => {
         }
 
         // lost the game
-        else if (words.length === GameAttempts[game.letters][game.difficulty].chances && words[words.length - 1].bull !== game.letters) {
+        else if (words.length === game['maxAttempts'] && words[words.length - 1].bull !== game.letters) {
 
             props.navigation.navigate(Screens.GAME_OVER, { gameResult: 'lost', navigation })
             setGameOver(true)
@@ -160,8 +213,8 @@ const GameScreen = (props) => {
     }
 
     useEffect(() => {
-        if (words.length === 5 || words.length === 9) {
-            console.log("REACJED 5 and 9")
+        if (words.length === 5) {
+            console.log("showing ad now at chance 5")
             interstitialAds()
         }
     }, [words])
@@ -312,7 +365,9 @@ const GameScreen = (props) => {
             <InputLetters visible={isGuessNext} navigation={props.navigation} />
             <Header func={gameCancelConfirmHandler} navigation={props.navigation} propHeaderImg={styles.logoImg} />
             <View style={styles.gameDescription}>
-                <Text style={{ ...styles.commonText, ...styles.attempts }}><Text style={{ color: Colors.orange }}>{attempts}</Text>/ <Text >{GameAttempts[game.letters][game.difficulty].chances}</Text>
+                {/* <Text style={{ ...styles.commonText, ...styles.attempts }}><Text style={{ color: Colors.orange }}>{attempts}</Text>/ <Text >{GameAttempts[game.letters][game.difficulty].chances}</Text> */}
+                <Text style={{ ...styles.commonText, ...styles.attempts }}><Text style={{ color: Colors.orange }}>{attempts}</Text>/ <Text >{game['maxAttempts']}</Text>
+
                 </Text>
                 <Text style={{ ...styles.commonText, ...styles.gameHeading }}>{game.letters} Letter
 

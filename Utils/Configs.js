@@ -133,7 +133,7 @@ export const GAME = {
 export const GameAttempts = {
     '3': {
         EASY: {
-            chances: 10,
+            chances: 11,
             hints: 2,
         },
         MEDIUM: {
@@ -141,7 +141,7 @@ export const GameAttempts = {
             hints: 1
         },
         HARD: {
-            chances: 6,
+            chances: 7,
             hints: 1
         }
     },
@@ -195,12 +195,12 @@ export const AD_KEYS = {
         // Test IDs
         // BANNER_ID: 'ca-app-pub-3940256099942544/6300978111',
         // INTERSTITIAL_ID: 'ca-app-pub-3940256099942544/1033173712',
-        // REWARD_ID: 'ca-app-pub-3940256099942544/5224354917',
+        REWARD_ID: 'ca-app-pub-3940256099942544/5224354917',
 
         // PROD IDs
         BANNER_ID: 'ca-app-pub-7296629630933757/7382535185',
         INTERSTITIAL_ID: 'ca-app-pub-7296629630933757/2708244263',
-        REWARD_ID: 'ca-app-pub-7296629630933757/9820447521'
+        // REWARD_ID: 'ca-app-pub-7296629630933757/9820447521'
     },
     Ios: {
         BANNER_ID: 'ca-app-pub-7296629630933757/7382535185',

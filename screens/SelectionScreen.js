@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View, Dimensions } from 'react-native'
-import { AdBannerTypes, Colors, commonStyles, GAME, Screens, gameVoice } from '../Utils/Configs'
+import { AdBannerTypes, Colors, commonStyles, GAME, Screens, gameVoice, GameAttempts } from '../Utils/Configs'
 import { useGlobal } from '../context'
 import GameButton from '../components/GameButton';
 import Header from '../components/Header';
@@ -65,15 +65,35 @@ const SelectionScreen = (props) => {
         }
     })
 
+    // const letterSelected = useState('4')
+    // const levelSelected = useState('Medium')
+
     const levels = ['Easy', 'Medium', 'Hard']
     const numberOfLetters = [3, 4, 5, 6]
 
     const selectDifficulty = (level) => {
+        // const maxAttempts = GameAttempts[letters.toString()][level.toUpperCase()].chances
+
         initializeGame({ difficulty: level.toUpperCase() })
     }
     const setNumberOfLetters = (letters) => {
+
+        // const maxAttempts = GameAttempts[letters.toString()][level.toUpperCase()].chances
+        // console.log(`Max attempts are ${maxAttempts}`)
+
         initializeGame({ letters })
     }
+
+
+    const defineMaxAttemptsHandler = () => {
+        console.log('Calling maxAtt handler')
+        console.log(`the letters are ${game.letters} and level is ${game.difficulty}`)
+        const maxAttempts = GameAttempts[game.letters][game.difficulty].chances
+
+        initializeGame({ maxAttempts })
+        console.log(`The max atts are ${maxAttempts}`)
+    }
+
     const playGame = () => {
         // game logic where computer generates a word/number and remembers it
 
@@ -88,6 +108,11 @@ const SelectionScreen = (props) => {
             console.log(`The comp word is ${compChoice}`)
         }
         setComputerChoice(compChoice)
+
+
+        // based on letters and difficulty selected, assign max attempts
+        defineMaxAttemptsHandler()
+
         //first guess voice
         shouldVoicePlay && playVoice(gameVoice.FIRST_GUESS)
 
@@ -100,7 +125,6 @@ const SelectionScreen = (props) => {
             <Header navigation={props.navigation} />
             <Text style={styles.selectionHeading}>Select
                 <Text style={styles.gameType}> {game.gameType[0].toUpperCase()}{game.gameType.slice(1).toLowerCase()} </Text>
-
                 Game Type</Text>
             <View style={styles.horizontalContainer}>
 
@@ -111,6 +135,7 @@ const SelectionScreen = (props) => {
             </View>
             <View style={styles.verticleContainer}>
                 {numberOfLetters.map((letter) => {
+
                     let buttonStyle = letter === game.letters && { backgroundColor: Colors.orange }
                     buttonStyle = { ...buttonStyle, ...styles.wordButton }
 

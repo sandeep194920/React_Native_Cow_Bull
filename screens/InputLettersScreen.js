@@ -187,7 +187,11 @@ const InputLettersScreen = (props) => {
                         {firstAttempt && <Text style={styles.welcomeMsg}>Make your first guess</Text>}
                         <View style={styles.attemptsContainer}>
                             <Text style={styles.attemptInfo}>Attempt - </Text>
-                            <Text style={styles.attempt}> {GameAttempts[game.letters][game.difficulty].chances === attempts + 1 ? 'Last Chance' : attempts + 1}</Text>
+                            {/* <Text style={styles.attempt}> {GameAttempts[game.letters][game.difficulty].chances === attempts + 1 ? 'Last Chance' : attempts + 1}</Text> */}
+
+                            <Text style={styles.attempt}> {game['maxAttempts'] === attempts + 1 ? 'Last Chance' : attempts + 1}</Text>
+
+
                         </View>
                         <View style={styles.inputContentContainer}>
                             <TextInput

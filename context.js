@@ -28,7 +28,7 @@ export const AppProvider = ({ children }) => {
     const [errorMsg, setErrorMsg] = useState('')
 
     // game
-    const [game, setGame] = useState({ gameType: GAME.type.WORD, letters: GAME.letters['4'], difficulty: GAME.level.EASY });
+    const [game, setGame] = useState({ gameType: GAME.type.WORD, letters: GAME.letters['4'], difficulty: GAME.level.EASY, maxAttempts: GameAttempts[GAME.letters['4']][GAME.level.EASY].chances });
 
     // game over
     const [gameOver, setGameOver] = useState(false)
@@ -56,6 +56,11 @@ export const AppProvider = ({ children }) => {
 
     // should voice be played
     const [shouldVoicePlay, setShouldVoicePlay] = useState(true)
+
+
+    // increased attempts
+    const [extraChancesTaken, setExtraChancesTaken] = useState(false)
+
 
     // navigation
 
@@ -107,6 +112,24 @@ export const AppProvider = ({ children }) => {
     }
 
     const initializeGame = (game) => {
+        console.log(`The details of the game`)
+        console.log(game)
+        // const maxAttempts = game.letters
+
+        // GameAttempts = {
+        //     '3': {
+        //         EASY: {
+        //             chances: 11,
+        //             hints: 2,
+        //         },
+
+        // const letters = game.letters ? game.letters : '4'
+        // const difficulty = game.difficulty ? game.difficulty : 'EASY'
+
+        // console.log(`Letters are ${letters} and dfc = ${difficulty}`)
+        // const maxAttempts = GameAttempts[letters][difficulty].chances
+        // const maxAttempts = GameAttempts[`${game.letters}`][game.difficulty].chances
+        // console.log(`The max attempts are ${maxAttempts}`)
         setGame(prevGame => {
             return {
                 ...prevGame,
@@ -318,8 +341,7 @@ export const AppProvider = ({ children }) => {
 
     return <AppContext.Provider value={{
         theme, changeTheme, isGuessNext, guessNextWord, words, setWords, addNewWord, errorMsg, setErrorMsg, initializeGame, game, attempts, setAttempts, GameAttempts, computerChoice, setComputerChoice, gameOver, setGameOver, resetGame, hintsTaken, setHintsTaken, userHintPositions, setUserHintPositions, interstitialAds, rewardAds, exitApp, focusInput, setFocusInput, loading, setLoading, voice, setVoice, playVoice, shouldVoicePlay, setShouldVoicePlay, setPlayBg,
-
-
+        extraChancesTaken, setExtraChancesTaken
     }}>
         {children}
     </AppContext.Provider >
