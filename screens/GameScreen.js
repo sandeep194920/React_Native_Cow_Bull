@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { StyleSheet, Text, View, Dimensions, BackHandler, Image, ScrollView, Platform, Modal, Alert, Vibration } from 'react-native'
+import { StyleSheet, Text, View, Dimensions, BackHandler, ScrollView, Platform, Alert, Vibration } from 'react-native'
 import { useGlobal } from '../context'
 import { AdBannerTypes, Colors, commonStyles, GameAttempts, gameVoice, Screens } from '../Utils/Configs'
 import Attempt from '../components/Attempt';
@@ -126,11 +126,10 @@ const GameScreen = (props) => {
                         // to show the ad after couple of seconds
                         setTimeout(() => {
                             setLoading(false)
-                            // Alert.alert(`Hint - ${hintsTaken + 1}`, `Letter ${randomLetter.toUpperCase()} exists in hidden ${game.gameType.toLowerCase()}`)
+                            Alert.alert(`Congrats, you got 5 more attempts`)
                         }, 3000)
 
                         setExtraChancesTaken(true)
-
 
                     },
                     style: 'default'
@@ -153,9 +152,7 @@ const GameScreen = (props) => {
                 increaseAttemptsHandler()
             }
         }
-        // console.log(GameAttempts[game.letters][game.difficulty].chances)
 
-        // console.log(attempts)
     }, [words])
 
 
