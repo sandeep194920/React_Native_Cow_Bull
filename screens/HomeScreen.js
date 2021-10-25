@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, Dimensions, TouchableOpacity } from 'rea
 import GameButton from '../components/GameButton'
 import { useGlobal } from '../context'
 import { AdBannerTypes, Colors, commonStyles, gameVoice, Screens } from '../Utils/Configs'
-import { Ionicons, Entypo } from '@expo/vector-icons';
+import { Ionicons, Entypo, AntDesign } from '@expo/vector-icons';
 import { GAME } from '../Utils/Configs'
 import AdBanner from '../components/AdBanner'
 
@@ -107,9 +107,14 @@ const HomeScreen = (props) => {
     return (
         <View style={styles.homeContainer}>
             <View style={styles.iconContainer}>
-                {shouldVoicePlay ? <Entypo onPress={voiceMuteHandler} style={styles.sound} name="sound" size={phoneWidth * 0.06} color={Colors.orange} />
+                {/* {shouldVoicePlay ? <Entypo onPress={voiceMuteHandler} style={styles.sound} name="sound" size={phoneWidth * 0.06} color={Colors.orange} />
                     :
-                    <Entypo onPress={voiceMuteHandler} style={styles.sound} name="sound-mute" size={phoneWidth * 0.07} color={Colors.gray} />}
+                    <Entypo onPress={voiceMuteHandler} style={styles.sound} name="sound-mute" size={phoneWidth * 0.07} color={Colors.gray} />} */}
+
+                {shouldVoicePlay ? <AntDesign onPress={voiceMuteHandler} name="sound" size={phoneWidth * 0.07} color={Colors.orange} />
+                    :
+                    <AntDesign onPress={voiceMuteHandler} name="sound" size={phoneWidth * 0.07} color={Colors.gray} />}
+
                 <Ionicons onPress={themeHandler} style={styles.theme} name={theme === "black" ? "sunny" : "moon-sharp"} size={phoneWidth * 0.07} color={Colors.orange} />
             </View>
 

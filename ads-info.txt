@@ -1,0 +1,89 @@
+EXPO ANDROID KEYS
+
+
+* Fetch key credentials using command
+
+      expo fetch:android:keystore
+
+     This gives you the the file credentials like below (Note : every time you run this command, the old .jks file with new name gets generated and the current jks gets updated. Please be aware of that)
+
+      Keystore credentials
+  
+  Keystore password: 37cfd7ffb4964db8a0b1b173fed33a1b
+  Key alias:         QHNhbmRlZXBhbWFybmF0aC9jb3didWxs
+  Key password:      accb347f54704cedb067e667216baa3f
+
+  Path to Keystore:  /Users/sandeepamarnath/Coding/Workspace_Sandeep194920/React Native/CowBull/cowbull/cowbull.jks
+
+
+* Check current SHA by using command
+
+      expo fetch:android:hashes --config ./app.json
+
+	Accessing credentials for sandeepamarnath in project cowbull
+
+Google Certificate Fingerprint:     94:1E:98:A5:18:33:00:58:64:E5:0F:B8:92:C9:85:15:37:A1:6D:2B
+Google Certificate Hash (SHA-1):    941E98A51833005864E50FB892C9851537A16D2B
+Google Certificate Hash (SHA-256):  40C2DE0E9BBC851E365DC0AF2B269B5DB966DDD0A09BA6B72EE588BACA801747
+Facebook Key Hash:                  lB6YpRgzAFhk5Q+4ksmFFTehbSs=
+
+
+* To generate a new key store (.jks) file), use the command 
+
+	expo credentials:manager
+
+
+       * Select ‘Update upload key store’ option to select the .jks file hence SHA. For this you need to remember the old password
+
+* To create aab/apk, we need this SHA where that apk/aab will be signed using this SHA
+
+
+
+
+
+* Summarizing all the above content, follow the below steps.  
+
+Before generating aab / apk file,
+
+1. Fetch the credentials first using the command 
+      expo fetch:android:keystore
+
+2. The above command gives you the credentials. Keep it safe. Pasting it below for future reference. You should use this same credentials and .jks file for future releases. If you forget these creds or lose the .jks file then you need to contact google and they will tell u to generate a new SHA.
+
+Keystore credentials
+
+  Keystore password: 37cfd7ffb4964db8a0b1b173fed33a1b
+  Key alias:         QHNhbmRlZXBhbWFybmF0aC9jb3didWxs
+  Key password:      accb347f54704cedb067e667216baa3f
+
+  Path to Keystore:  /Users/sandeepamarnath/Coding/Workspace_Sandeep194920/React Native/CowBull/cowbull/cowbull.jks
+  
+3. Now get the SHA (fingerprint) which will be unique for each .jks file. The fingerprint for above .jks file is pasted below. To get that SHA, use the command
+       expo fetch:android:hashes --config ./app.json
+
+	Accessing credentials for sandeepamarnath in project cowbull
+
+	Google Certificate Fingerprint:     34:6B:F7:F2:14:F5:61:62:CC:E7:12:B6:27:96:59:35:95:A7:3B:98
+	Google Certificate Hash (SHA-1):    346BF7F214F56162CCE712B62796593595A73B98
+	Google Certificate Hash (SHA-256):  A27308D5FDF6759AB7C9698643992666C039DF6C462297758FE2EA710359A6DB
+	Facebook Key Hash:                  NGv38hT1YWLM5xK2J5ZZNZWnO5g=
+
+
+4. Now, you can create apk/aab file using this SHA by the command
+       
+       expo build:android
+
+	You can select apk / aab. 
+
+	* To generate apk directly without prompting, use the command expo build:android -t apk
+
+	* To generate aab directly without prompting, use the command expo build:android -t aab
+
+
+ Now, What if you lost the keys. Then you can contact google.
+
+You need to send pem file to google. To generate pem for your keys. You type command 
+expo fetch:android:upload-cert 
+
+
+A PEM file will be generated. You will have to upload it in 
