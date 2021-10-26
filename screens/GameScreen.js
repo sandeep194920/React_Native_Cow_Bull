@@ -145,7 +145,7 @@ const GameScreen = (props) => {
         if (words.length === 0) {
             guessNextWord(true)
         }
-        if (attempts === game['maxAttempts'] - 1) {
+        if (attempts === game['maxAttempts'] - 1 && words[words.length - 1].bull !== game.letters) {
             console.log(`Next chance is the last chance`)
             if (!extraChancesTaken) {
                 // show user an option that he can take more chances
