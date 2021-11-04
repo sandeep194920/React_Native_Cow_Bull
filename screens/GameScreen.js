@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { StyleSheet, Text, View, Dimensions, BackHandler, ScrollView, Platform, Alert, Vibration } from 'react-native'
 import { useGlobal } from '../context'
 import { AdBannerTypes, Colors, commonStyles, GameAttempts, gameVoice, Screens } from '../Utils/Configs'
@@ -16,6 +16,10 @@ const GameScreen = (props) => {
     const { theme, isGuessNext, guessNextWord, words, setWords, game, attempts, setAttempts, navigation, gameOver, setGameOver, resetGame, computerChoice, setHintsTaken, hintsTaken, userHintPositions, setUserHintPositions, interstitialAds, rewardAds, exitApp, setLoading, loading, playVoice, shouldVoicePlay,
         extraChancesTaken, setExtraChancesTaken, initializeGame
     } = useGlobal()
+
+    const scrollViewRef = useRef();
+
+
     const styles = StyleSheet.create({
         gameContainer: {
             ...commonStyles(theme, phoneHeight, phoneWidth).common.containerStyle,
@@ -163,6 +167,7 @@ const GameScreen = (props) => {
         if (words.length > 0 && words[words.length - 1].bull === game.letters) {
             props.navigation.navigate(Screens.GAME_OVER, { gameResult: 'won', navigation })
             setGameOver(true)
+            setExtraChancesTaken(false)
             shouldVoicePlay && playVoice(gameVoice.WON)
             Vibration.vibrate(2 * 400)
         }
@@ -172,6 +177,7 @@ const GameScreen = (props) => {
 
             props.navigation.navigate(Screens.GAME_OVER, { gameResult: 'lost', navigation })
             setGameOver(true)
+            setExtraChancesTaken(false)
             shouldVoicePlay && playVoice(gameVoice.LOST)
         }
 
@@ -237,6 +243,7 @@ const GameScreen = (props) => {
                             props.navigation.navigate(Screens.GAME_OVER, { gameResult: 'revealed', navigation })
                             shouldVoicePlay && playVoice(gameVoice.LOST)
                             setGameOver(true)
+                            setExtraChancesTaken(false)
                         }, 2000)
                     },
                     style: 'destructive'
@@ -375,7 +382,11 @@ const GameScreen = (props) => {
                 <Text style={{ ...styles.commonText, ...styles.difficulty }}>{game.difficulty}</Text>
             </View>
 
-            <ScrollView indicatorStyle='white' style={styles.attemptsContainer}>
+            <ScrollView indicatorStyle='white'
+                ref={scrollViewRef}
+                style={styles.attemptsContainer}
+                onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
+            >
                 {words.map((word, index) => {
                     return <Attempt word={word} key={word + index} slno={index + 1} letters={word.userWord.toUpperCase().split('')} />
                 })}
