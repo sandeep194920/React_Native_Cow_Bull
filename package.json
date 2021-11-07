@@ -32,6 +32,7 @@
     "react-native-randombytes": "^3.6.1",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.4.0",
+    "react-native-splash-screen": "^3.2.0",
     "react-native-web": "~0.13.12",
     "rn-nodeify": "^10.3.0",
     "which": "^2.0.2",

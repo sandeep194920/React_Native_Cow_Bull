@@ -107,13 +107,16 @@ const HomeScreen = (props) => {
     return (
         <View style={styles.homeContainer}>
             <View style={styles.iconContainer}>
-                {/* {shouldVoicePlay ? <Entypo onPress={voiceMuteHandler} style={styles.sound} name="sound" size={phoneWidth * 0.06} color={Colors.orange} />
+                {/* {shouldVoicePlay ? <GiSoundOn onPress={voiceMuteHandler} style={styles.sound} name="sound" size={phoneWidth * 0.06} color={Colors.orange} />
                     :
-                    <Entypo onPress={voiceMuteHandler} style={styles.sound} name="sound-mute" size={phoneWidth * 0.07} color={Colors.gray} />} */}
+                    <GiSoundOff onPress={voiceMuteHandler} style={styles.sound} name="sound-mute" size={phoneWidth * 0.07} color={Colors.gray} />} */}
+
+                {/* <GiSoundOn /> */}
 
                 {shouldVoicePlay ? <AntDesign onPress={voiceMuteHandler} name="sound" size={phoneWidth * 0.07} color={Colors.orange} />
                     :
                     <AntDesign onPress={voiceMuteHandler} name="sound" size={phoneWidth * 0.07} color={Colors.gray} />}
+
 
                 <Ionicons onPress={themeHandler} style={styles.theme} name={theme === "black" ? "sunny" : "moon-sharp"} size={phoneWidth * 0.07} color={Colors.orange} />
             </View>
